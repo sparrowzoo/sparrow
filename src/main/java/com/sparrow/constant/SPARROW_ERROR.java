@@ -21,13 +21,38 @@ import com.sparrow.protocol.ModuleSupport;
 import com.sparrow.support.AbstractErrorSupport;
 
 /**
- * /** 第一位 1系统或2模块错误 <p> 2-3位模块 00全局模块(公共使用) 01用户模块  02 EXCEL 03 BLOG 04 SHOP 05 UPLOAD 06 ACTIVITY <p> 4-5位错误编码
+ * first byte:
+ *
+ * 1 表示系统模块
+ *
+ * 2 模块错误
+ *
+ * 2-3 bytes:
+ *
+ * 00:全局模块(公共使用)
+ *
+ * 01:用户模块
+ *
+ * 02:EXCEL
+ *
+ * 03:BLOG
+ *
+ * 04:SHOP
+ *
+ * 05:UPLOAD
+ *
+ * 06:ACTIVITY
+ *
+ * 4-5 bytes
+ *
+ * 错误编码
+ *
+ *
  * 对于开发者和接口的调用者都隐藏着一个信息（当前操作的接口名称）
  *
  * @author harry 2013-11-9下午10:01:03
  */
 public class SPARROW_ERROR extends AbstractErrorSupport {
-
 
     public static final SPARROW_ERROR SYSTEM_SERVER_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "01", "System error");
 
@@ -62,12 +87,12 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
     public static final SPARROW_ERROR GLOBAL_CONTENT_REPEAT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "07", "Repeat content");
 
     public static final SPARROW_ERROR GLOBAL_UNSUPPORTED_IMAGE_TYPE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "08",
-            "Unsupported image type only support JPG, GIF, PNG");
+        "Unsupported image type only support JPG, GIF, PNG");
 
     public static final SPARROW_ERROR GLOBAL_IMAGE_SIZE_TOO_LARGE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "09", "Image size too large");
 
     public static final SPARROW_ERROR GLOBAL_ACCOUNT_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "10",
-            "Account or ip or app is illegal, can not continue");
+        "Account or ip or app is illegal, can not continue");
 
     public static final SPARROW_ERROR GLOBAL_OUT_OF_TIMES_LIMIT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "11", "Out of times limit");
 
@@ -154,7 +179,6 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
     public static final SPARROW_ERROR ACTIVITY_SCAN_TOKEN_TIME_OUT = new SPARROW_ERROR(SPARROW_MODULE.ACTIVITY, "01", "activity scan token time out");
     public static final SPARROW_ERROR ACTIVITY_TIMES_OUT = new SPARROW_ERROR(SPARROW_MODULE.ACTIVITY, "02", "activity time out");
     public static final SPARROW_ERROR ACTIVITY_RULE_GIFT_TIMES_OUT = new SPARROW_ERROR(SPARROW_MODULE.ACTIVITY, "03", "activity gift time out");
-
 
     public SPARROW_ERROR(ModuleSupport moduleSupport, String code, String message) {
         super(false, moduleSupport, code, message);
