@@ -94,8 +94,8 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
             Long productCount = cacheClient.set().getSize(productKey);
             Long consumerCount=cacheClient.set().getSize(consumerKey);
             Boolean match = productCount.equals(consumerCount);
-            logger.info("product key {}:count {},match {}", productKey.key(),
-                productCount,
+            logger.info("product key {}:product count {}-->consumer count {},match {}", productKey.key(),
+                productCount,consumerCount,
                 match);
             if (!match) {
                 return false;
