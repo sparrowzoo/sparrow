@@ -14,19 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.sparrow.constant.cache.key;
 
-package com.sparrow.mq;
-
+import com.sparrow.constant.SPARROW_MODULE;
 import com.sparrow.constant.cache.KEY;
-import com.sparrow.container.ContainerAware;
 
 /**
- * created by harry on 2016/4/8.
- *
- * @author harry
+ * @author by harry
  */
-public interface MQPublisher extends ContainerAware{
-    void publish(MQEvent event,KEY productKey) throws Throwable;
+public class KEY_MQ_IDEMPOTENT {
+    public static final KEY.Business IDEMPOTENT = new KEY.Business(SPARROW_MODULE.GLOBAL, "IDEMPOTENT");
 
-    void publish(MQEvent event) throws Throwable;
 }

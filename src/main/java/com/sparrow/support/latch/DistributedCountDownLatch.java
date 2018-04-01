@@ -26,53 +26,42 @@ public interface DistributedCountDownLatch {
     /**
      * KEY消费
      *
-     * @param consumerKey monitor ey
+     * @param monitorKey monitor ey
      * @param key         consume msg key
      */
-    void consume(KEY consumerKey, String key);
-
-    /**
-     * 消费幂等
-     *
-     * @param consumeKey
-     * @return
-     */
-    boolean consumable(KEY consumeKey, String key);
+    void consume(KEY monitorKey, String key);
 
     /**
      * KEY生产
      *
-     * @param productKey productKey
+     * @param monitorKey monitorKey
      * @param key        product msg key
      */
-    void product(KEY productKey, String key);
+    void product(KEY monitorKey, String key);
 
     /**
      * 是否结束
      *
-     * @param productKey  productKey
-     * @param consumerKey consumerKey
+     * @param monitorKey  monitorKey
      * @return
      */
-    boolean isFinish(KEY productKey, KEY consumerKey);
+    boolean isFinish(KEY monitorKey);
 
     /**
      * monitor
      *
-     * @param productKey     product key
-     * @param consumerKey    consumer key
+     * @param monitorKey     monitor key
      * @param secondInterval 探测时间间隔
      * @return
      */
-    boolean monitor(KEY productKey, KEY consumerKey, int secondInterval);
+    boolean monitor(KEY monitorKey, int secondInterval);
 
     /**
      * 默认2秒控测一次
      *
-     * @param productKey  productKey
-     * @param consumerKey consumer key
+     * @param monitorKey  monitorKey
      * @return
      */
-    boolean monitor(KEY productKey, KEY consumerKey);
+    boolean monitor(KEY monitorKey);
 
 }

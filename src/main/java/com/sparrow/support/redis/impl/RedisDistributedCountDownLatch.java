@@ -43,32 +43,23 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
         this.cacheClient = cacheClient;
     }
 
-
-
-
     @Override
-    public void consume(KEY consumerKey, final String key) {
-        if (consumerKey == null) {
-            throw new UnsupportedOperationException("product key is null");
+    public void consume(KEY monitoryKey, final String key) {
+        if (monitoryKey == null) {
+            throw new UnsupportedOperationException("monitor key is null");
         }
         while (true) {
             try {
-                cacheClient.set().add(consumerKey, key);
-                return;
+                cacheClient.string().increase(monitoryKey, -1L);
+                break;
             } catch (CacheConnectionException e) {
                 logger.error("monitor consume connection break ", e);
             }
         }
+
     }
 
-    @Override
-    public boolean consumable(KEY consumeKey,String keys) {
-        try {
-            return !cacheClient.set().exist(consumeKey,keys);
-        } catch (CacheConnectionException e) {
-            return true;
-        }
-    }
+
 
     @Override
     public void product(KEY productKey, final String key) {
@@ -77,7 +68,7 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
         }
         while (true) {
             try {
-                cacheClient.set().add(productKey, key);
+                cacheClient.string().increase(productKey, 1L);
                 return;
             } catch (CacheConnectionException e) {
                 logger.error("productKey product connection break ", e);
@@ -86,15 +77,15 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
     }
 
     @Override
-    public boolean isFinish(KEY productKey,KEY consumerKey) {
-        if (StringUtility.isNullOrEmpty(productKey)) {
+    public boolean isFinish(KEY monitorKey) {
+        if (StringUtility.isNullOrEmpty(monitorKey)) {
             throw new UnsupportedOperationException("product key is null");
         }
         try {
-            Long productCount = cacheClient.set().getSize(productKey);
-            Long consumerCount=cacheClient.set().getSize(consumerKey);
-            Boolean match = productCount.equals(consumerCount);
-            logger.info("product key {}:count {},match {}", productKey.key(),
+            Long productCount = cacheClient.string().get(monitorKey, Long.class);
+            //must be equal 0
+            Boolean match = productCount == 0L;
+            logger.info("product key {}:count {},match {}", monitorKey.key(),
                 productCount,
                 match);
             if (!match) {
@@ -105,8 +96,7 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
         }
         while (true) {
             try {
-                cacheClient.key().delete(productKey);
-                cacheClient.key().delete(consumerKey);
+                cacheClient.key().delete(monitorKey);
                 return true;
             } catch (CacheConnectionException ignore) {
                 logger.error("monitor error", ignore);
@@ -115,9 +105,9 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
     }
 
     @Override
-    public boolean monitor(KEY productKey,KEY consumerKey, int secondInterval) {
+    public boolean monitor(KEY monitorKey, int secondInterval) {
         while (true) {
-            if (isFinish(productKey,consumerKey)) {
+            if (isFinish(monitorKey)) {
                 return true;
             }
             try {
@@ -128,7 +118,7 @@ public class RedisDistributedCountDownLatch implements DistributedCountDownLatch
     }
 
     @Override
-    public boolean monitor(KEY productKey,KEY consumerKey) {
-        return this.monitor(productKey,consumerKey, 2);
+    public boolean monitor(KEY monitorKey) {
+        return this.monitor(monitorKey, 2);
     }
 }
