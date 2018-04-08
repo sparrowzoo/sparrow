@@ -26,7 +26,7 @@ public class Bucket<T> {
     private List<T> bucket;
     private Integer size;
 
-    private Integer count=0;
+    private Integer count = 0;
 
     private Overflow<T> overflow;
 
@@ -34,16 +34,15 @@ public class Bucket<T> {
         this(128);
     }
 
-    public Bucket(Integer size){
-        this(size,null);
+    public Bucket(Integer size) {
+        this(size, null);
     }
 
-    public Bucket(Integer size,Overflow<T> overflow) {
+    public Bucket(Integer size, Overflow<T> overflow) {
         this.bucket = new ArrayList<T>(size);
         this.size = size;
-        this.overflow=overflow;
+        this.overflow = overflow;
     }
-
 
 
     public List<T> fill(T item) {
@@ -52,7 +51,7 @@ public class Bucket<T> {
             List<T> returnList = new ArrayList<T>(this.bucket);
             this.bucket.clear();
             this.count++;
-            if(overflow!=null){
+            if (overflow != null) {
                 this.overflow.hook(returnList);
             }
             return returnList;
@@ -70,14 +69,21 @@ public class Bucket<T> {
 
     public void clear() {
         this.bucket.clear();
-        this.count=0;
+        this.count = 0;
     }
 
-    public boolean isEmpty(){
-        return this.bucket.size()==0;
+    public void over() {
+        if (!this.isEmpty() && this.overflow != null) {
+            this.overflow.hook(this.bucket);
+            this.clear();
+        }
+    }
+
+    public boolean isEmpty() {
+        return this.bucket.size() == 0;
     }
 
     public Integer getCount() {
-        return count+(this.bucket.size()>0?1:0);
+        return count + (this.bucket.size() > 0 ? 1 : 0);
     }
 }
