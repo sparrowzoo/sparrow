@@ -41,21 +41,23 @@ public class DefaultIdempotent implements MQIdempotent {
             try {
                 KEY key = new KEY.Builder().business(KEY_MQ_IDEMPOTENT.IDEMPOTENT).businessId(keys).build();
                 Integer value = cacheClient.string().get(key, Integer.class);
-                return value!=null&&value.equals(DIGIT.ONE);
+                return value != null && value.equals(DIGIT.ONE);
             } catch (CacheConnectionException e) {
                 logger.error("consumable connection break ", e);
             }
         }
     }
 
-    @Override public void consumed(String keys) {
+    @Override public boolean consumed(String keys) {
         while (true) {
             try {
                 KEY consumeKey = new KEY.Builder().business(KEY_MQ_IDEMPOTENT.IDEMPOTENT).businessId(keys).build();
-                String value = cacheClient.string().setExpire(consumeKey, 60 * 60 * 72, DIGIT.ONE);
-                if (value != null) {
-                    return;
+                Long value = cacheClient.string().setIfNotExist(consumeKey, DIGIT.ONE);
+                if (value > 0) {
+                    cacheClient.key().expire(consumeKey, 60 * 60 * 72);
+                    return true;
                 }
+                return false;
             } catch (CacheConnectionException e) {
                 logger.error("consumable connection break ", e);
             }
