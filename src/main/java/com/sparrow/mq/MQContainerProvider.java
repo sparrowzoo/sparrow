@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
  * @author harry
  */
 public class MQContainerProvider {
-    private static QueueHandlerMappingContainer queueHandlerMappingContainer;
+    private static volatile QueueHandlerMappingContainer  queueHandlerMappingContainer;
 
     public static QueueHandlerMappingContainer getContainer() {
         if (queueHandlerMappingContainer != null) {
