@@ -22,5 +22,5 @@ package com.sparrow.mq;
 public interface MQIdempotent {
     boolean duplicate(String keys);
 
-    void consumed(String keys);
+    boolean consumed(String keys);
 }
