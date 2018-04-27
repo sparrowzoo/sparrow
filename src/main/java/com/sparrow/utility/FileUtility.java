@@ -69,6 +69,9 @@ public class FileUtility {
     }
 
     public List<String> readLines(InputStream inputStream, String charset) {
+        if(inputStream==null){
+            return null;
+        }
 
         List<String> fileLines = new ArrayList<String>();
         if (StringUtility.isNullOrEmpty(charset)) {
