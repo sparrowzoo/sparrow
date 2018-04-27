@@ -65,7 +65,7 @@ public class ClassUtility {
      * @throws ClassNotFoundException, IOException, URISyntaxException
      */
     public static List<Class> getClasses(
-        String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
+            String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         String path = packageName.replace(SYMBOL.DOT, SYMBOL.SLASH);
         Enumeration<URL> resources = classLoader.getResources(path);
@@ -77,14 +77,14 @@ public class ClassUtility {
                 classes.addAll(findClass(directory, packageName));
             } else if ("jar".equalsIgnoreCase(resource.getProtocol())) {
                 classes.addAll(findClass(((JarURLConnection) resource.openConnection())
-                    .getJarFile(), path));
+                        .getJarFile(), path));
             }
         }
         return classes;
     }
 
     private static List<Class> findClass(JarFile jarFile, String packagePath)
-        throws ClassNotFoundException, URISyntaxException {
+            throws ClassNotFoundException, URISyntaxException {
         List<Class> classes = new ArrayList<Class>();
         Enumeration<JarEntry> entrys = jarFile.entries();
         while (entrys.hasMoreElements()) {
@@ -100,7 +100,7 @@ public class ClassUtility {
     }
 
     private static List<Class> findClass(File directory, String packageName)
-        throws ClassNotFoundException, URISyntaxException {
+            throws ClassNotFoundException, URISyntaxException {
         List<Class> classes = new ArrayList<Class>();
         if (directory == null || !directory.exists()) {
             return null;
@@ -153,5 +153,24 @@ public class ClassUtility {
             return String.class.getName() + " []";
         }
         return basicType.getName();
+    }
+
+    public static ClassLoader getDefaultClassLoader() {
+        ClassLoader cl = null;
+        try {
+            cl = Thread.currentThread().getContextClassLoader();
+        } catch (Throwable ignore) {
+
+        }
+        if (cl == null) {
+            cl = ClassUtility.class.getClassLoader();
+            if (cl == null) {
+                try {
+                    cl = ClassLoader.getSystemClassLoader();
+                } catch (Throwable ignore) {
+                }
+            }
+        }
+        return cl;
     }
 }
