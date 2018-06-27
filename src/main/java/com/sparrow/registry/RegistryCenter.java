@@ -123,5 +123,13 @@ public interface RegistryCenter {
      * @param cachePath cache path
      * @return object
      */
-    Object getRawCache(String cachePath);
+    Object getCache(String cachePath);
+
+    /**
+     * 直接获取操作注册中心的原生客户端.
+     * 如：Zookeeper或Redis等原生客户端.
+     *
+     * @return 注册中心的原生客户端
+     */
+    Object getRawClient();
 }
