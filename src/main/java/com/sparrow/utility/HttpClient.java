@@ -19,6 +19,8 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.*;
 import com.sparrow.enums.HTTP_METHOD;
+
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPOutputStream;
 import org.slf4j.Logger;
@@ -280,6 +282,44 @@ public class HttpClient {
                 } catch (IOException ignore) {
                 }
             }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException ignore) {
+
+                }
+            }
+            if (httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
+        }
+    }
+
+    public static ByteBuffer download(String fileUrl) {
+        URL url;
+        BufferedInputStream bis = null;
+        HttpURLConnection httpURLConnection = null;
+        int bufferSize = 1024;
+        try {
+            byte[] buf = new byte[bufferSize];
+            int size = 0;
+            // 建立链接
+            url = new URL(fileUrl);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            // 连接指定的资源
+            httpURLConnection.connect();
+            // 获取网络输入流
+            bis = new BufferedInputStream(httpURLConnection.getInputStream());
+            ByteBuffer buffer=ByteBuffer.allocate(bis.available());
+            // 保存文件
+            while ((size = bis.read(buf)) != -1) {
+                buffer.put(buf, 0, size);
+            }
+            return buffer;
+        } catch (Exception e) {
+            logger.error("download file error", e);
+            throw new RuntimeException(e);
+        } finally {
             if (bis != null) {
                 try {
                     bis.close();

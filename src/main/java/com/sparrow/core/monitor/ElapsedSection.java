@@ -51,7 +51,7 @@ public class ElapsedSection {
 
     public static String section(Long time) {
         if (time < 0) {
-            throw new IllegalArgumentException(time + "can not support arguemnt");
+            throw new IllegalArgumentException(time + "can not support argument");
         }
         for (Section section : SECTIONS) {
             if (time >= section.getStart() && time < section.getEnd()) {

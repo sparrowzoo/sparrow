@@ -20,6 +20,7 @@ package com.sparrow.utility;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
 import com.sparrow.constant.CONSTANT;
+import com.sparrow.constant.magic.CHAR_SYMBOL;
 import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.container.Container;
 import com.sparrow.core.spi.ApplicationContext;
@@ -480,7 +481,7 @@ public class StringUtility {
      * @return
      */
     public static String humpToLower(String source) {
-        return humpToLower(source, SYMBOL.UNDERLINE.charAt(0));
+        return humpToLower(source, CHAR_SYMBOL.UNDERLINE);
     }
 
     public static String humpToLower(String source, char split) {
