@@ -23,6 +23,7 @@ import com.sparrow.constant.FILE;
 import com.sparrow.constant.magic.DIGIT;
 import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.support.EnvironmentSupport;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +71,7 @@ public class FileUtility {
     }
 
     public List<String> readLines(InputStream inputStream, String charset) {
-        if(inputStream==null){
+        if (inputStream == null) {
             return null;
         }
 
@@ -80,7 +82,7 @@ public class FileUtility {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(
-                inputStream, charset));
+                    inputStream, charset));
             String tempString;
             while ((tempString = reader.readLine()) != null) {
                 fileLines.add(tempString);
@@ -144,8 +146,7 @@ public class FileUtility {
         if (destFile.isDirectory()) {
             return fullFilePath;
         }
-        int index = fullFilePath.lastIndexOf(File.separator);
-        String descDirectoryPath = fullFilePath.substring(DIGIT.ZERO, index + DIGIT.ONE);
+        String descDirectoryPath =this.getDirectory(fullFilePath);
         if (StringUtility.isNullOrEmpty(descDirectoryPath)) {
             descDirectoryPath = System.getProperty("user.dir");
             fullFilePath = descDirectoryPath + File.separator + fullFilePath;
@@ -165,13 +166,13 @@ public class FileUtility {
         try {
             //先判断class下是否存在
             String fileFullPath = EnvironmentSupport.getInstance().getClassesPhysicPath() + filePath;
-            if (!new File(fileFullPath).exists()) {
+            if (!new File(this.getDirectory(fileFullPath)).exists()) {
                 //不存在则新建class以外的目录
                 fileFullPath = this.makeDirectory(filePath);
             }
             OutputStream outputStream = new FileOutputStream(fileFullPath);
             osw = new OutputStreamWriter(outputStream,
-                charset);
+                    charset);
             osw.write(s, DIGIT.ZERO, s.length());
             osw.flush();
             return true;
@@ -275,7 +276,7 @@ public class FileUtility {
     }
 
     public String search(String path, String keyword, int skip,
-        Comparator<String> compare, int minSkip) {
+                         Comparator<String> compare, int minSkip) {
         File file = new File(path);
 
         BufferedReader reader = null;
@@ -284,7 +285,7 @@ public class FileUtility {
                 throw new FileNotFoundException(file.getPath());
             }
             reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream(file), CONSTANT.CHARSET_UTF_8), skip);
+                    new FileInputStream(file), CONSTANT.CHARSET_UTF_8), skip);
             String tempString;
             reader.mark(skip);
             skip /= 2;
@@ -376,7 +377,7 @@ public class FileUtility {
      */
     public String getExtension(String fileUrl) {
         return fileUrl.substring(fileUrl.lastIndexOf('.'))
-            .toLowerCase();
+                .toLowerCase();
     }
 
     public String getImageExtension(String fileUrl) {
@@ -386,10 +387,10 @@ public class FileUtility {
             return extension;
         }
         String[] imageExtension = imageExtensionConfig
-            .split("\\|");
+                .split("\\|");
         // jpeg 或者是其他格式都转换成jpg
         if (EXTENSION.JPEG.equalsIgnoreCase(extension)
-            || !StringUtility.existInArray(imageExtension, extension)) {
+                || !StringUtility.existInArray(imageExtension, extension)) {
             extension = EXTENSION.JPG;
         }
         return extension;
@@ -404,15 +405,20 @@ public class FileUtility {
     /**
      * 获取文件名 不包含扩展名
      *
-     * @param fulleFilePath
+     * @param fullFilePath
      * @return
      */
-    public String getFileName(String fulleFilePath) {
+    public String getFileName(String fullFilePath) {
         // 获取客户端文件名 http://img.zhuaququ.com/0/0.100.jpg?date=new date()
-        int fileNameStartIndex = fulleFilePath.lastIndexOf('/') + DIGIT.ONE;
-        int fileNameEndIndex = fulleFilePath.lastIndexOf('.');
-        return fulleFilePath.substring(fileNameStartIndex,
-            fileNameEndIndex);
+        int fileNameStartIndex = fullFilePath.lastIndexOf('/') + DIGIT.ONE;
+        int fileNameEndIndex = fullFilePath.lastIndexOf('.');
+        return fullFilePath.substring(fileNameStartIndex,
+                fileNameEndIndex);
+    }
+
+    public String getDirectory(String fullFilePath) {
+        int index = fullFilePath.lastIndexOf(File.separator);
+        return fullFilePath.substring(DIGIT.ZERO, index + DIGIT.ONE);
     }
 
     /**
@@ -425,7 +431,7 @@ public class FileUtility {
      * @return
      */
     public String getBreakUpPath(long id, String extension, boolean isWebPath,
-        String size) {
+                                 String size) {
         boolean isImage = this.isImage(extension);
         long remaining = id % DIGIT.TEN;
         long remaining1 = id % DIGIT.THOUSAND;
@@ -435,16 +441,16 @@ public class FileUtility {
         if (isImage) {
             if (isWebPath) {
                 path = Config.getValue(FILE.PATH.IMG_URL)
-                    + "/%2$s/%3$s/%4$s/%5$s%6$s";
+                        + "/%2$s/%3$s/%4$s/%5$s%6$s";
             } else {
                 path = Config.getValue(FILE.PATH.IMG_UNC)
-                    + "/%2$s/%3$s/%4$s/%5$s%6$s";
+                        + "/%2$s/%3$s/%4$s/%5$s%6$s";
             }
             return String.format(path, remaining, size, remaining2, remaining1,
-                id, extension);
+                    id, extension);
         }
         path = Config.getValue(FILE.PATH.FILE_UNC)
-            + "/%1$s/%2$s/%3$s%4$s";
+                + "/%1$s/%2$s/%3$s%4$s";
         return String.format(path, remaining2, remaining1, id, extension);
     }
 
@@ -459,7 +465,7 @@ public class FileUtility {
 
     public boolean isImage(String extension) {
         return StringUtility.existInArray(Config
-            .getValue(FILE.IMAGE_EXTENSION).split("\\|"), extension);
+                .getValue(FILE.IMAGE_EXTENSION).split("\\|"), extension);
     }
 
     /**
@@ -473,7 +479,7 @@ public class FileUtility {
         String fileId = this.getFileName(filePath);
         String extension = this.getImageExtension(filePath);
         return this.getBreakUpPath(Integer.valueOf(fileId), extension, false,
-            size);
+                size);
     }
 
     public void delete(String path, long beforeMillis) {
@@ -498,9 +504,9 @@ public class FileUtility {
         }
     }
 
-    public boolean existLine(String fileName,String line){
-        List<String> lineList=this.readLines(fileName);
-        return StringUtility.existInArray(lineList.toArray(),line);
+    public boolean existLine(String fileName, String line) {
+        List<String> lineList = this.readLines(fileName);
+        return StringUtility.existInArray(lineList.toArray(), line);
     }
 
     /**
@@ -512,33 +518,33 @@ public class FileUtility {
         if (this.isImage(extension)) {
             String imageExtension = this.getImageExtension(clientFileName);
             String imageFullPath = FileUtility.getInstance().getBreakUpPath(
-                fileId,
-                imageExtension, false, FILE.SIZE.ORIGIN);
+                    fileId,
+                    imageExtension, false, FILE.SIZE.ORIGIN);
             File origin = new File(imageFullPath);
             if (origin.exists()) {
                 origin.delete();
             }
 
             File big = new File(imageFullPath.replace(FILE.SIZE.ORIGIN,
-                FILE.SIZE.BIG));
+                    FILE.SIZE.BIG));
             if (big.exists()) {
                 big.delete();
             }
 
             File middle = new File(imageFullPath.replace(FILE.SIZE.ORIGIN,
-                FILE.SIZE.MIDDLE));
+                    FILE.SIZE.MIDDLE));
             if (middle.exists()) {
                 middle.delete();
             }
 
             File small = new File(imageFullPath.replace(FILE.SIZE.ORIGIN,
-                FILE.SIZE.SMALL));
+                    FILE.SIZE.SMALL));
             if (small.exists()) {
                 small.delete();
             }
         } else {
             String attachFileFullName = FileUtility.getInstance().getBreakUpPath(
-                fileId, extension, false, FILE.SIZE.ATTACH);
+                    fileId, extension, false, FILE.SIZE.ATTACH);
             File origin = new File(attachFileFullName);
             if (origin.exists()) {
                 origin.delete();
