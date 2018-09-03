@@ -19,6 +19,7 @@ package com.sparrow.core.monitor.impl;
 import com.sparrow.core.monitor.ElapsedSection;
 import com.sparrow.core.monitor.ElapsedTimeMonitor;
 import com.sparrow.utility.StringUtility;
+import java.util.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,22 +28,34 @@ import org.slf4j.LoggerFactory;
  */
 public class LogElapsedTimeMonitorImpl implements ElapsedTimeMonitor {
     private Logger logger = LoggerFactory.getLogger(LogElapsedTimeMonitorImpl.class);
-    private ThreadLocal<Long> start = new ThreadLocal<Long>();
+    private ThreadLocal<Stack<Long>> start = new ThreadLocal<Stack<Long>>();
 
     @Override public void start() {
-        start.set(System.currentTimeMillis());
+        if (start.get() == null) {
+            this.start.set(new Stack<Long>());
+        }
+        start.get().push(System.currentTimeMillis());
     }
 
     @Override public void elapsed(Object... keys) {
-        long elapsed = System.currentTimeMillis() - start.get();
-        logger.info("{},elapsed {}", StringUtility.join("-", keys), ElapsedSection.section(elapsed));
-        start.remove();
+        long current = System.currentTimeMillis();
+        long start = this.start.get().pop();
+        long elapsed = current - start;
+        if (this.start.get() != null && this.start.get().size() == 0) {
+            this.start.remove();
+        }
+        logger.info("thread id {},thread-name {} ,{},elapsed:[{}-{}={}],elapsed-section {}",
+            Thread.currentThread().getId(),
+            Thread.currentThread().getName(),
+            StringUtility.join("-", keys), current, start, elapsed, ElapsedSection.section(elapsed));
     }
 
     @Override public void elapsedAndRestart(Object... keys) {
-        long elapsed = System.currentTimeMillis() - start.get();
-        logger.info("{},elapsed {}", StringUtility.join("-", keys), ElapsedSection.section(elapsed));
-        start.set(System.currentTimeMillis());
+        this.elapsed(keys);
+        this.start();
     }
 
+    @Override public String toString() {
+        return "[log elapsed time info ] "+(this.start.get() == null ? "null" : this.start.get().toString());
+    }
 }
