@@ -43,14 +43,49 @@ public class DateTimeUtility {
 
     private static Logger logger = LoggerFactory.getLogger(DateTimeUtility.class);
 
-    public static Pair<Long, Long> getTimeSegment(DATE_TIME_UNIT condition) {
+    public static Pair<Long, Long> getTimeSegment(DATE_TIME_UNIT condition, Long timeMillis) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeInMillis(timeMillis);
         Pair<Long, Long> pair = null;
         Long start = 0L;
         Long end = 0L;
         switch (condition) {
+            case YEAR:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                calendar.set(Calendar.SECOND, DIGIT.ZERO);
+                calendar.set(Calendar.MINUTE, DIGIT.ZERO);
+                calendar.set(Calendar.HOUR_OF_DAY, DIGIT.ZERO);
+                calendar.set(Calendar.DAY_OF_MONTH, DIGIT.ONE);
+                calendar.set(Calendar.MONTH, Calendar.JANUARY);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.YEAR, DIGIT.ONE);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
+            case MONTH:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                calendar.set(Calendar.SECOND, DIGIT.ZERO);
+                calendar.set(Calendar.MINUTE, DIGIT.ZERO);
+                calendar.set(Calendar.HOUR_OF_DAY, DIGIT.ZERO);
+                calendar.set(Calendar.DAY_OF_MONTH, DIGIT.ONE);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.MONTH, DIGIT.ONE);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
+            case WEEK:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                calendar.set(Calendar.SECOND, DIGIT.ZERO);
+                calendar.set(Calendar.MINUTE, DIGIT.ZERO);
+                calendar.set(Calendar.HOUR_OF_DAY, DIGIT.ZERO);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
             case DAY:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
                 calendar.set(Calendar.SECOND, DIGIT.ZERO);
                 calendar.set(Calendar.MINUTE, DIGIT.ZERO);
                 calendar.set(Calendar.HOUR_OF_DAY, DIGIT.ZERO);
@@ -58,7 +93,33 @@ public class DateTimeUtility {
                 calendar.add(Calendar.DAY_OF_MONTH, DIGIT.ONE);
                 end = calendar.getTimeInMillis();
                 pair = Pair.create(start, end);
-            default:
+                break;
+            case HOUR:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                calendar.set(Calendar.SECOND, DIGIT.ZERO);
+                calendar.set(Calendar.MINUTE, DIGIT.ZERO);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.HOUR_OF_DAY, DIGIT.ONE);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
+            case MINUTE:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                calendar.set(Calendar.SECOND, DIGIT.ZERO);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.MINUTE, DIGIT.ONE);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
+            case SECOND:
+                calendar.set(Calendar.MILLISECOND, DIGIT.ZERO);
+                start = calendar.getTimeInMillis();
+                calendar.add(Calendar.SECOND, DIGIT.ONE);
+                end = calendar.getTimeInMillis();
+                pair = Pair.create(start, end);
+                break;
+            case MILLISECOND:
+                throw new UnsupportedOperationException("MILLISECOND Unsupported  Operation!");
         }
         return pair;
     }
@@ -107,10 +168,10 @@ public class DateTimeUtility {
      * @return
      */
     public static long addTime(int calendar, int amount) {
-        return addTime(System.currentTimeMillis(),calendar,amount);
+        return addTime(System.currentTimeMillis(), calendar, amount);
     }
 
-    public static long addTime(Long time,int calendar, int amount) {
+    public static long addTime(Long time, int calendar, int amount) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date(time));
         cal.add(calendar, amount);

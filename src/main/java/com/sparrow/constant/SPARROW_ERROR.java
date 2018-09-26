@@ -17,6 +17,7 @@
 
 package com.sparrow.constant;
 
+import com.sparrow.support.AbstractErrorSupport;
 import com.sparrow.support.ErrorSupport;
 import com.sparrow.support.ModuleSupport;
 
@@ -30,9 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author harry 2013-11-9下午10:01:03
  */
-public class SPARROW_ERROR implements ErrorSupport {
+public class SPARROW_ERROR extends AbstractErrorSupport {
 
-    private static volatile Map<Integer, String> container = new ConcurrentHashMap<Integer, String>();
 
     public static final SPARROW_ERROR SYSTEM_SERVER_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "01", "System error");
 
@@ -67,12 +67,12 @@ public class SPARROW_ERROR implements ErrorSupport {
     public static final SPARROW_ERROR GLOBAL_CONTENT_REPEAT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "07", "Repeat content");
 
     public static final SPARROW_ERROR GLOBAL_UNSUPPORTED_IMAGE_TYPE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "08",
-        "Unsupported image type only support JPG, GIF, PNG");
+            "Unsupported image type only support JPG, GIF, PNG");
 
     public static final SPARROW_ERROR GLOBAL_IMAGE_SIZE_TOO_LARGE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "09", "Image size too large");
 
     public static final SPARROW_ERROR GLOBAL_ACCOUNT_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "10",
-        "Account or ip or app is illegal, can not continue");
+            "Account or ip or app is illegal, can not continue");
 
     public static final SPARROW_ERROR GLOBAL_OUT_OF_TIMES_LIMIT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "11", "Out of times limit");
 
@@ -160,62 +160,12 @@ public class SPARROW_ERROR implements ErrorSupport {
     public static final SPARROW_ERROR ACTIVITY_TIMES_OUT = new SPARROW_ERROR(SPARROW_MODULE.ACTIVITY, "02", "activity time out");
     public static final SPARROW_ERROR ACTIVITY_RULE_GIFT_TIMES_OUT = new SPARROW_ERROR(SPARROW_MODULE.ACTIVITY, "03", "activity gift time out");
 
-    private ModuleSupport module;
-    private boolean system;
-    private int code;
-    private String message;
-
-    @Override
-    public boolean system() {
-        return system;
-    }
-
-    @Override
-    public ModuleSupport module() {
-        return module;
-    }
-
-    @Override
-    public int getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
 
     public SPARROW_ERROR(ModuleSupport moduleSupport, String code, String message) {
-        this(false, moduleSupport, code, message);
+        super(false, moduleSupport, code, message);
     }
 
     public SPARROW_ERROR(boolean system, ModuleSupport moduleSupport, String code, String message) {
-        this.system = system;
-        this.message = message;
-        this.module = moduleSupport;
-        this.code = Integer.valueOf((system ? 1 : 2) + moduleSupport.code() + code);
-    }
-
-    @Override
-    public String name() {
-        if (container != null && container.size() > 0 && container.get(this.code) != null) {
-            return container.get(this.code);
-        }
-        synchronized (SPARROW_ERROR.class) {
-            if (container != null && container.size() > 0 && container.get(this.code) != null) {
-                return container.get(this.code);
-            }
-            for (Field field : this.getClass().getDeclaredFields()) {
-                try {
-                    Object object = field.get(ErrorSupport.class);
-                    if (object != null) {
-                        ErrorSupport sparrowError = (ErrorSupport) object;
-                        container.put(sparrowError.getCode(), field.getName().toLowerCase());
-                    }
-                } catch (Throwable ignore) {
-                }
-            }
-            return container.get(this.code);
-        }
+        super(system, moduleSupport, code, message);
     }
 }
