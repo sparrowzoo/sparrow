@@ -199,26 +199,6 @@ public class StringUtility {
     }
 
     /**
-     * 通过set方法获取字段名称
-     *
-     * @param setMethod
-     * @return
-     */
-    public static String getFieldBySetMethod(String setMethod) {
-        return getFieldByGetMethod(setMethod);
-    }
-
-    /**
-     * 通过field获取其set方法
-     *
-     * @param beanName
-     * @return
-     */
-    public static String getSetMethodNameByField(String beanName) {
-        return "set" + setFirstByteUpperCase(beanName.trim());
-    }
-
-    /**
      * 通过field获取其get方法
      *
      * @param beanName

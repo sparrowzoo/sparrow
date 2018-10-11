@@ -17,8 +17,6 @@
 
 package com.sparrow.support.db;
 
-import com.sparrow.enums.STATUS_RECORD;
-import com.sparrow.orm.query.AGGREGATE;
 import java.util.List;
 
 /**
@@ -48,11 +46,10 @@ public interface DaoSupport<T, I> {
     /**
      * 修改记录状态
      *
-     * @param ids
-     * @param status
+     * @param statusCriteria
      * @return
      */
-    int changeStatus(String ids, STATUS_RECORD status);
+    int changeStatus(StatusCriteria statusCriteria);
 
     /**
      * 删除指定记录
@@ -70,26 +67,15 @@ public interface DaoSupport<T, I> {
 
     T getEntity(I id);
 
-    T getEntity(Object key, String uniqueKey);
+    T getEntityByUnique(UniqueKeyCriteria uniqueKeyCriteria);
 
     List<T> getList();
 
-    /**
-     * 用来判断重复添加
-     * <p/>
-     * 对于unique字段
-     *
-     * @param key
-     * @param uniqueKey
-     * @return
-     */
-    Long getCount(Object key, String uniqueKey);
+    Long getCountByUnique(UniqueKeyCriteria uniqueKeyCriteria);
 
     Long getCount(Object key);
 
-    <X> X getFieldValue(String fieldName, Object key);
+    <X> X getFieldValueByUnique(UniqueKeyCriteria uniqueKeyCriteria);
 
-    <X> X getFieldValue(String fieldName, Object key, String uniqueKey);
-
-    <X> X getAggregate(String fieldName, AGGREGATE aggregate);
+    <X> X getAggregate(AggregateCriteria aggregateCriteria);
 }

@@ -62,9 +62,9 @@ public class Expression {
         Expression expression = new Expression();
         Pair<String, String> propertyPair = Pair.split(property, "\\.");
         expression.alias = propertyPair.getFirst();
-        EntityManager entityManager = EntityManager.get(expression.alias);
-        Pair<String, String> fieldPair = Pair.split(propertyPair.getSecond(), "\\$");
-        expression.field = entityManager.getField(fieldPair.getFirst());
+//        EntityManager entityManager = EntityManager.get(expression.alias);
+//        Pair<String, String> fieldPair = Pair.split(propertyPair.getSecond(), "\\$");
+//        expression.field = entityManager.getField(fieldPair.getFirst());
         expression.showAlias = showAlias;
 
         if (ignoreEmpty && StringUtility.isNullOrEmpty(value)) {
@@ -80,10 +80,10 @@ public class Expression {
         if (comparisonOperator != null && clause != null && value != null) {
             String alias = expression.showAlias ? expression.alias + SYMBOL.DOT : SYMBOL.EMPTY;
             result = alias + expression.field.getColumnName() + SYMBOL.BLANK;
-            if (!StringUtility.isNullOrEmpty(fieldPair.getSecond())) {
-                String operator = fieldPair.getSecond().substring(0, 1);
-                result = result + operator + fieldPair.getSecond().substring(1);
-            }
+//            if (!StringUtility.isNullOrEmpty(fieldPair.getSecond())) {
+//                String operator = fieldPair.getSecond().substring(0, 1);
+//                result = result + operator + fieldPair.getSecond().substring(1);
+//            }
             result = result + comparisonOperator.rendered();
             if (parameters != null) {
                 result = result + SYMBOL.QUESTION_MARK;

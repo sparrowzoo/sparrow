@@ -18,6 +18,7 @@
 package com.sparrow.json;
 
 import com.sparrow.support.Entity;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ public interface Json {
 
     <T> T parse(String json, Class<T> clazz);
 
+    <T> T parse(String json, Class... clazz);
+
     <T> List<T> parseList(String json, Class<T> clazz);
 
-    Map<String,Object>  parse(String json);
+    Map<String, Object> parse(String json);
 }

@@ -39,15 +39,17 @@ public class Field extends TypeConverter {
     private boolean unique;
     private int scale;
     private boolean persistence = true;
+    private String columnDefinition;
 
-    public Field(String name, Class type, Column column, Hash hash, GeneratedValue generatedValue, Id id) {
-        this.name = name;
+    public Field(String property, Class type, Column column, Hash hash, GeneratedValue generatedValue, Id id) {
+        this.name = property;
         this.type = type;
         if (column != null) {
             this.columnName = column.name();
             this.unique = column.unique();
             this.updatable = column.updatable();
             this.scale = column.scale();
+            this.columnDefinition=column.columnDefinition();
         }
 
         if (hash != null) {
@@ -105,5 +107,9 @@ public class Field extends TypeConverter {
 
     public boolean isPersistence() {
         return persistence;
+    }
+
+    public String getColumnDefinition() {
+        return columnDefinition;
     }
 }

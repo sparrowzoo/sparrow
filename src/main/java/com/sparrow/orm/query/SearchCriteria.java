@@ -28,6 +28,8 @@ public class SearchCriteria extends WhereCriteria {
 
     private Boolean distinct;
 
+    private AGGREGATE aggregate;
+
     /**
      * 分组字段
      */
@@ -58,5 +60,13 @@ public class SearchCriteria extends WhereCriteria {
 
     public void setDistinct(Boolean distinct) {
         this.distinct = distinct;
+    }
+
+    public AGGREGATE getAggregate() {
+        return aggregate;
+    }
+
+    public void setAggregate(AGGREGATE aggregate) {
+        this.aggregate = aggregate;
     }
 }
