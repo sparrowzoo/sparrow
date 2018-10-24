@@ -137,8 +137,7 @@ public class Config {
         return load(stream, charset);
     }
 
-    public static void initSystem(String configFilePath)
-            throws IOException {
+    public static void initSystem(String configFilePath) {
         Cache cache = Cache.getInstance();
         Map<String, String> systemMessage = loadFromClassesPath(configFilePath);
         if (systemMessage == null) {

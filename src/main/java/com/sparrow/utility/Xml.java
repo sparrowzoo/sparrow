@@ -43,8 +43,6 @@ import java.util.TreeMap;
  * @author harry
  */
 public class Xml {
-
-
     public static Document getXmlDocumentByPath(String xmlFullPath,
                                                 String dtdName) throws ParserConfigurationException, SAXException,
             IOException {
