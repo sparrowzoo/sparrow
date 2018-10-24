@@ -116,22 +116,20 @@ public class DATE_TIME {
      * time unit from Millis to year
      */
     @SuppressWarnings("serial")
-    public static final Map<String, Integer> BEFORE_FORMAT = new LinkedHashMap<String, Integer>() {
-        {
-            put("秒前", 60);
-            put("分钟前", 60);
-            put("小时前", 24);
-            put("天前", 30);
-            put("月前", 12);
-            put("年前", 100);
-        }
-    };
+    public static final Map<String, Integer> BEFORE_FORMAT = new LinkedHashMap<String, Integer>();
 
     public static Map<DATE_TIME_UNIT, Integer> DEFAULT_FIRST_VALUE = new HashMap<DATE_TIME_UNIT, Integer>(6);
     public static Map<DATE_TIME_UNIT, Integer> DATE_TIME_UNIT_CALENDER_CONVERTER = new HashMap<DATE_TIME_UNIT, Integer>(7);
     public static Map<DATE_TIME_UNIT, Long> MILLISECOND_UNIT = new HashMap<DATE_TIME_UNIT, Long>(6);
 
     static {
+        BEFORE_FORMAT.put("s", 60);
+        BEFORE_FORMAT.put("m", 60);
+        BEFORE_FORMAT.put("h", 24);
+        BEFORE_FORMAT.put("d", 30);
+        BEFORE_FORMAT.put("M", 12);
+        BEFORE_FORMAT.put("y", 0);
+
         //0表示1月
         DEFAULT_FIRST_VALUE.put(DATE_TIME_UNIT.MONTH, DIGIT.ZERO);
         DEFAULT_FIRST_VALUE.put(DATE_TIME_UNIT.DAY, DIGIT.ONE);

@@ -19,7 +19,6 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.DATE_TIME;
 import com.sparrow.constant.magic.DIGIT;
-import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.core.Pair;
 import com.sparrow.enums.DATE_TIME_UNIT;
 
@@ -27,10 +26,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 import org.slf4j.Logger;
@@ -232,29 +228,54 @@ public class DateTimeUtility {
         return sdf.format(timestamp);
     }
 
+    public static String getBeforeFormatTimeBySecond(Long seconds) {
+        return getBeforeFormatTimeBySecond(seconds, 0,0);
+    }
+
+    /**
+     * 根据秒间隔格式化时间
+     *
+     * @param seconds
+     * @return
+     */
+    public static String getBeforeFormatTimeBySecond(Long seconds, int depth,int start) {
+        if (depth == 0) {
+            depth = DATE_TIME.BEFORE_FORMAT.size();
+        }
+        Long interval=seconds;
+        Iterator<String> it = DATE_TIME.BEFORE_FORMAT.keySet().iterator();
+        Stack<Pair<Integer, String>> result = new Stack<>();
+        StringBuilder beforeFormat = new StringBuilder();
+        do {
+            String key = it.next();
+            if (result.size() == depth - 1) {
+                result.push(Pair.create(interval.intValue(), key));
+                break;
+            }
+            Integer value = DATE_TIME.BEFORE_FORMAT.get(key);
+            result.push(Pair.create((int) (interval % value), key));
+            interval = interval / value;
+        }
+        while (true);
+        while (result.size()>start) {
+            Pair<Integer, String> pair = result.pop();
+            if (pair.getFirst() > 0) {
+                beforeFormat.append(pair.getFirst() + Config.getLanguageValue("date_time_unit_" + pair.getSecond(), null, pair.getSecond()));
+            }
+        }
+        return beforeFormat.toString();
+    }
+
     /**
      * 获取**前的格式的时间
      *
      * @return
      */
-    public static String getBeforeFormatTime(Long timestamp) {
+    public static String getBeforeFormatTime(Long timestamp, int depth,int start) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
         long timeSplit = (System.currentTimeMillis() - cal.getTimeInMillis()) / 1000;
-        Iterator<String> keyIt = DATE_TIME.BEFORE_FORMAT.keySet().iterator();
-        Stack<String> result = new Stack<String>();
-        String beforeFormat = SYMBOL.EMPTY;
-        do {
-            String key = keyIt.next();
-            Integer value = DATE_TIME.BEFORE_FORMAT.get(key);
-            result.push(timeSplit % value + key);
-            timeSplit = timeSplit / value;
-        }
-        while (timeSplit > DIGIT.ZERO);
-        if (!result.isEmpty()) {
-            beforeFormat = result.pop();
-        }
-        return beforeFormat;
+        return getBeforeFormatTimeBySecond(timeSplit, depth,start);
     }
 
     /**
