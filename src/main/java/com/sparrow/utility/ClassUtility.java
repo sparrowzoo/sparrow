@@ -160,7 +160,6 @@ public class ClassUtility {
         try {
             cl = Thread.currentThread().getContextClassLoader();
         } catch (Throwable ignore) {
-
         }
         if (cl == null) {
             cl = ClassUtility.class.getClassLoader();
