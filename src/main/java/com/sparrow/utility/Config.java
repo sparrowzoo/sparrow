@@ -52,26 +52,42 @@ public class Config {
     }
 
     public static String getLanguageValue(String key, String language) {
-        language = language.toLowerCase();
+        return getLanguageValue(key, language, SYMBOL.EMPTY);
+    }
+
+    private static String defaultOrEmpty(String defaultValue) {
+        return StringUtility.isNullOrEmpty(defaultValue) ? SYMBOL.EMPTY : defaultValue;
+    }
+
+    public static String getLanguageValue(String key, String language, String defaultValue) {
+        if (StringUtility.isNullOrEmpty(language)) {
+            language = getValue(CONFIG.LANGUAGE);
+        }
+        else {
+            language = language.toLowerCase();
+        }
         Cache cache = Cache.getInstance();
         Map<String, Map<String, String>> internationalization = cache
-            .get(CACHE_KEY.INTERNATIONALIZATION);
+                .get(CACHE_KEY.INTERNATIONALIZATION);
         if (internationalization == null) {
-            return SYMBOL.EMPTY;
+            return defaultOrEmpty(defaultValue);
         }
 
         Map<String, String> internationalizationMap = internationalization
-            .get(language);
+                .get(language);
         if (internationalizationMap == null) {
-            return SYMBOL.EMPTY;
+            return defaultOrEmpty(defaultValue);
         }
         String value = internationalizationMap.get(key);
         if (value == null) {
-            return SYMBOL.EMPTY;
+            return defaultOrEmpty(defaultValue);
         }
         String rootPath = Config.getValue(CONFIG.ROOT_PATH);
         if (!StringUtility.isNullOrEmpty(rootPath) && value.contains(SYMBOL.DOLLAR + CONFIG.ROOT_PATH)) {
             value = value.replace(SYMBOL.DOLLAR + CONFIG.ROOT_PATH, rootPath);
+        }
+        if (StringUtility.isNullOrEmpty(value)) {
+            return defaultValue;
         }
         return value;
     }
@@ -99,7 +115,7 @@ public class Config {
             } catch (UnsupportedEncodingException ignore) {
             }
             systemMessage
-                .put(key.toString(), value);
+                    .put(key.toString(), value);
         }
         return systemMessage;
     }
@@ -121,8 +137,7 @@ public class Config {
         return load(stream, charset);
     }
 
-    public static void initSystem(String configFilePath)
-        throws IOException {
+    public static void initSystem(String configFilePath) {
         Cache cache = Cache.getInstance();
         Map<String, String> systemMessage = loadFromClassesPath(configFilePath);
         if (systemMessage == null) {
@@ -147,10 +162,10 @@ public class Config {
             language = getValue(CONFIG.LANGUAGE);
         }
         Map<String, String> properties = loadFromClassesPath("/messages_"
-            + language
-            + ".properties", CONSTANT.CHARSET_UTF_8);
+                + language
+                + ".properties", CONSTANT.CHARSET_UTF_8);
         Map<String, Map<String, String>> internationalization = cache
-            .get(CACHE_KEY.INTERNATIONALIZATION);
+                .get(CACHE_KEY.INTERNATIONALIZATION);
         if (internationalization == null) {
             internationalization = new HashMap<String, Map<String, String>>();
             cache.put(CACHE_KEY.INTERNATIONALIZATION, internationalization);
@@ -158,10 +173,11 @@ public class Config {
         internationalization.put(language, properties);
     }
 
-    public static String getValue(String key){
-        return getValue(key,null);
+    public static String getValue(String key) {
+        return getValue(key, null);
     }
-    public static String getValue(String key,String defaultValue) {
+
+    public static String getValue(String key, String defaultValue) {
         try {
             Object value = Cache.getInstance().get(CACHE_KEY.CONFIG_FILE, key);
             if (value == null) {

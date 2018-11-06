@@ -36,7 +36,7 @@ public class BeanUtility {
         MethodAccessor targetMethodAccessor = container.getProxyBean(target.getClass());
         List<TypeConverter> targetFieldList = container.getFieldList(target.getClass());
         for (TypeConverter targetField : targetFieldList) {
-            if (ignoreProperties != null && StringUtility.existInArray(ignoreProperties, targetField.getName())) {
+            if (StringUtility.existInArray(ignoreProperties, targetField.getName())) {
                 continue;
             }
             targetMethodAccessor.set(target, targetField.getName(), sourceMethodAccessor.get(source, targetField.getName()));
