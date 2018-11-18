@@ -369,11 +369,11 @@ public class StringUtility {
      * 从数组array中排除exceptArray并拼接成数组 用于标签删除时的帖子标签更新
      *
      * @param array
-     * @param joinChar
+     * @param separator
      * @param exceptArray
      * @return
      */
-    public static String join(Object[] array, char joinChar,
+    public static String join(Object[] array, char separator,
         Object[] exceptArray) {
         StringBuilder sb = new StringBuilder();
         for (Object object : array) {
@@ -381,21 +381,21 @@ public class StringUtility {
                 continue;
             }
             if (sb.length() > 0) {
-                sb.append(joinChar);
+                sb.append(separator);
             }
             sb.append(object);
         }
         return sb.toString();
     }
 
-    public static String join(String joinChar, Object... array) {
+    public static String join(String separator,Object... array) {
         StringBuilder sb = new StringBuilder();
         for (Object object : array) {
             if (object == null) {
                 continue;
             }
             if (sb.length() > 0) {
-                sb.append(joinChar);
+                sb.append(separator);
             }
             sb.append(object);
         }
