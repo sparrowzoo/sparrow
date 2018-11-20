@@ -28,6 +28,13 @@ import java.util.List;
  * @author harry
  */
 public class WhereCriteria extends PagerSearch {
+    public WhereCriteria() {
+        super(0, 0);
+    }
+
+    public WhereCriteria(Integer currentPageIndex, Integer pageSize) {
+        super(currentPageIndex, pageSize);
+    }
 
     private List<Object> tableSuffix = new ArrayList<Object>();
 

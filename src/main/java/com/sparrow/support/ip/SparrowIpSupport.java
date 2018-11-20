@@ -81,4 +81,24 @@ public class SparrowIpSupport implements IpSupport {
             throw new RuntimeException("UnknownHostException", ex);
         }
     }
+
+    @Override
+    public Long toLong(String ip) {
+        long result = 0;
+        String[] ipAddressInArray = ip.split("\\.");
+        for (int i = 3; i >= 0; i--) {
+            long ipSegment = Long.parseLong(ipAddressInArray[3 - i]);
+            //left shifting 24,16,8,0 and bitwise OR
+            result |= ipSegment << (i * 8);
+        }
+        return result;
+    }
+
+    @Override
+    public String parse(Long ip) {
+        return ((ip >> 24) & 0xFF) + "."
+                + ((ip >> 16) & 0xFF) + "."
+                + ((ip >> 8) & 0xFF) + "."
+                + (ip & 0xFF);
+    }
 }

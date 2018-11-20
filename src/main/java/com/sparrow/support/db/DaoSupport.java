@@ -17,6 +17,8 @@
 
 package com.sparrow.support.db;
 
+import com.sparrow.support.protocol.pager.PagerSearch;
+
 import java.util.List;
 
 /**
@@ -70,6 +72,8 @@ public interface DaoSupport<T, I> {
     T getEntityByUnique(UniqueKeyCriteria uniqueKeyCriteria);
 
     List<T> getList();
+
+    List<T> getList(PagerSearch query);
 
     Long getCountByUnique(UniqueKeyCriteria uniqueKeyCriteria);
 

@@ -17,36 +17,48 @@
 
 package com.sparrow.support.protocol.pager;
 
-import com.sparrow.constant.magic.SYMBOL;
+import java.util.List;
 
 /**
- * simple pager search parameter
- *
+ * simple pager result without html
  * @author harry
  */
-public class PagerSearch extends SimplePager {
+public class SimplePagerResult<T> extends SimplePager{
 
-    /**
-     * avoid deep pager
-     *
-     * @param pageSize
-     */
-    public PagerSearch(Integer pageSize) {
-        super(0, pageSize);
-    }
-
-
-    public PagerSearch(Integer currentPageIndex, Integer pageSize) {
+    public SimplePagerResult(Integer currentPageIndex, Integer pageSize) {
         super(currentPageIndex, pageSize);
     }
 
+    protected Long recordCount;
 
-    public String getLimitClause() {
-        //no page
-        if (pageSize <= 0) {
-            return SYMBOL.EMPTY;
-        }
-        Integer pageIndex = this.getCurrentPageIndex() == 0 ? 0 : this.getCurrentPageIndex() - 1;
-        return " limit " + (pageIndex * this.getPageSize()) + "," + this.getPageSize();
+    protected List<T> list;
+
+    public Long getRecordCount() {
+        return recordCount;
+    }
+
+    public void setRecordCount(Long recordCount) {
+        this.recordCount = recordCount;
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    /**
+     * 根据总记录数和每页记录数获取最后页码
+     *
+     * @return
+     */
+    public Integer getLastPageIndex() {
+        return (int) Math.ceil((double) this.recordCount / this.pageSize);
+    }
+
+    public boolean more() {
+        return getCurrentPageIndex() < getLastPageIndex();
     }
 }

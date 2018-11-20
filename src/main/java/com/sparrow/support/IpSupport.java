@@ -1,16 +1,14 @@
 package com.sparrow.support;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
-
 /**
- * @author TCLDUSER
+ * @author harry
  */
 public interface IpSupport {
     String getLocalIp();
 
     String getLocalHostName();
+
+    Long toLong(String ip);
+
+    String parse(Long ip);
 }
