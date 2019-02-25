@@ -22,7 +22,7 @@ package com.sparrow.mq;
  *
  * @author harry
  */
-public interface QueueHandlerMappingContainer {
+public interface EventHandlerMappingContainer {
 
     void put(MQHandler handler);
 

@@ -22,13 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
  * @author harry
  */
-public class DefaultQueueHandlerMappingContainer implements QueueHandlerMappingContainer {
+public class DefaultQueueHandlerMappingContainer implements EventHandlerMappingContainer {
     private Logger logger = LoggerFactory.getLogger(DefaultQueueHandlerMappingContainer.class);
 
     public DefaultQueueHandlerMappingContainer() {

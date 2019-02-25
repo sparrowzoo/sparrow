@@ -24,9 +24,9 @@ import com.sparrow.container.Container;
  * @date 2018/1/19
  */
 public abstract class AbstractMQHandler<T extends MQEvent> implements MQHandler<T> {
-    private QueueHandlerMappingContainer queueHandlerMappingContainer;
+    private EventHandlerMappingContainer queueHandlerMappingContainer;
 
-    public void setQueueHandlerMappingContainer(QueueHandlerMappingContainer queueHandlerMappingContainer) {
+    public void setQueueHandlerMappingContainer(EventHandlerMappingContainer queueHandlerMappingContainer) {
         this.queueHandlerMappingContainer = queueHandlerMappingContainer;
     }
 

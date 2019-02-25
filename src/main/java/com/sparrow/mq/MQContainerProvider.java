@@ -24,18 +24,18 @@ import java.util.ServiceLoader;
  * @author harry
  */
 public class MQContainerProvider {
-    private static volatile QueueHandlerMappingContainer  queueHandlerMappingContainer;
+    private static volatile EventHandlerMappingContainer queueHandlerMappingContainer;
 
-    public static QueueHandlerMappingContainer getContainer() {
+    public static EventHandlerMappingContainer getContainer() {
         if (queueHandlerMappingContainer != null) {
             return queueHandlerMappingContainer;
         }
-        synchronized (QueueHandlerMappingContainer.class) {
+        synchronized (EventHandlerMappingContainer.class) {
             if (queueHandlerMappingContainer != null) {
                 return queueHandlerMappingContainer;
             }
-            ServiceLoader<QueueHandlerMappingContainer> loader = ServiceLoader.load(QueueHandlerMappingContainer.class);
-            Iterator<QueueHandlerMappingContainer> it = loader.iterator();
+            ServiceLoader<EventHandlerMappingContainer> loader = ServiceLoader.load(EventHandlerMappingContainer.class);
+            Iterator<EventHandlerMappingContainer> it = loader.iterator();
             if (it.hasNext()) {
                 queueHandlerMappingContainer = it.next();
                 return queueHandlerMappingContainer;
@@ -43,7 +43,7 @@ public class MQContainerProvider {
             String defaultProvider = "com.sparrow.mq.DefaultQueueHandlerMappingContainer";
             try {
                 Class<?> rabbitPublisher = Class.forName(defaultProvider);
-                queueHandlerMappingContainer = (QueueHandlerMappingContainer) rabbitPublisher.newInstance();
+                queueHandlerMappingContainer = (EventHandlerMappingContainer) rabbitPublisher.newInstance();
                 return queueHandlerMappingContainer;
             } catch (ClassNotFoundException x) {
                 throw new RuntimeException(

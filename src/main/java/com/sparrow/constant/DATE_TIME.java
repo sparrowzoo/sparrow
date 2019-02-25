@@ -75,32 +75,20 @@ public class DATE_TIME {
 
     public static final String FORMAT_YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
-    private static final Map<String, ThreadLocal<DateFormat>> DATE_FORMAT_CONTAINER = new ConcurrentHashMap<String, ThreadLocal<DateFormat>>();
+    private static final ThreadLocal<Map<String, DateFormat>> DATE_FORMAT_CONTAINER = new ThreadLocal<>();
 
-    private static Lock lock = new ReentrantLock();
 
     public static DateFormat getInstance(final String format) {
-        if (DATE_FORMAT_CONTAINER.get(format) != null) {
-            return DATE_FORMAT_CONTAINER.get(format).get();
-        } else {
-            lock.lock();
-            try {
-                if (DATE_FORMAT_CONTAINER.get(format) != null) {
-                    return DATE_FORMAT_CONTAINER.get(format).get();
-                } else {
-                    ThreadLocal<DateFormat> dateFormatThreadLocal = new ThreadLocal<DateFormat>() {
-                        @Override
-                        protected DateFormat initialValue() {
-                            return new SimpleDateFormat(format);
-                        }
-                    };
-                    DATE_FORMAT_CONTAINER.put(format, dateFormatThreadLocal);
-                    return dateFormatThreadLocal.get();
-                }
-            } finally {
-                lock.unlock();
-            }
+        Map<String, DateFormat> dateFormatMap = DATE_FORMAT_CONTAINER.get();
+        if (dateFormatMap == null) {
+            dateFormatMap = new ConcurrentHashMap<>();
+            DATE_FORMAT_CONTAINER.set(dateFormatMap);
         }
+        if (dateFormatMap.containsKey(format)) {
+            return dateFormatMap.get(format);
+        }
+        dateFormatMap.put(format, new SimpleDateFormat(format));
+        return dateFormatMap.get(format);
     }
 
     /**

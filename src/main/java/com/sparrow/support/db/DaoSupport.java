@@ -37,6 +37,13 @@ public interface DaoSupport<T, I> {
     Long insert(T model);
 
     /**
+     * 批量插入
+     * @param models
+     * @return
+     */
+    Long batchInsert(List<T> models);
+
+    /**
      * 更新
      * <p/>
      * 支持分表
