@@ -41,7 +41,7 @@ public interface DaoSupport<T, I> {
      * @param models
      * @return
      */
-    Long batchInsert(List<T> models);
+    //Long batchInsert(List<T> models);
 
     /**
      * 更新
