@@ -34,6 +34,14 @@ public class JvmParameter {
         this.newSize = this.xmn;
         this.maxNewSize = this.xmn;
 
+        /*
+
+        JAVA_OPTS="-server -XX:-OmitStackTraceInFastThrow -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8081,server=y,suspend=n"
+        JAVA_OPTS="$JAVA_OPTS -XX:+UseConcMarkSweepGC -XX:SurvivorRatio=5 -XX:CMSInitiatingOccupancyFraction=80"
+        JAVA_OPTS="$JAVA_OPTS -XX:+PrintTenuringDistribution -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -Xloggc:$LOGS_HOME/gc.log"
+        JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=LOGS_HOME/dump.hprof"
+*/
+
         if (survivorRatio > 0) {
             this.survivorRatio = survivorRatio;
         }
