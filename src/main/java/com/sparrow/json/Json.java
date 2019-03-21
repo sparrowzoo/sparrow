@@ -17,7 +17,7 @@
 
 package com.sparrow.json;
 
-import com.sparrow.support.Entity;
+import com.sparrow.protocol.Entity;
 
 import java.util.List;
 import java.util.Map;

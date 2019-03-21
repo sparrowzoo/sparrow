@@ -17,6 +17,8 @@
 
 package com.sparrow.support;
 
+import com.sparrow.protocol.Entity;
+
 /**
  * @author harry
  */

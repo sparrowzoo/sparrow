@@ -17,18 +17,18 @@
 
 package com.sparrow.utility;
 
+import com.sparrow.cg.MethodAccessor;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
 import com.sparrow.constant.CONSTANT;
 import com.sparrow.constant.magic.CHAR_SYMBOL;
 import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.container.Container;
-import com.sparrow.core.spi.ApplicationContext;
-import com.sparrow.core.TypeConverter;
 import com.sparrow.core.Pair;
-import com.sparrow.cg.MethodAccessor;
+import com.sparrow.core.TypeConverter;
+import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.cryptogram.ThreeDES;
-import com.sparrow.support.Entity;
+import com.sparrow.protocol.Entity;
 
 import java.io.*;
 import java.net.URLEncoder;

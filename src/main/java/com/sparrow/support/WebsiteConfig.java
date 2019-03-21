@@ -20,6 +20,7 @@ package com.sparrow.support;
 import com.sparrow.constant.CONFIG_KEY_DB;
 import com.sparrow.constant.CONSTANT;
 import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.protocol.Entity;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
@@ -45,21 +46,21 @@ public class WebsiteConfig implements Entity {
     public WebsiteConfig(Map<String, String> websiteConfigMap) {
         if (websiteConfigMap != null && websiteConfigMap.size() > 0) {
             this.title = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                + CONFIG_KEY_DB.WEBSITE_CONFIG.TITLE);
+                    + CONFIG_KEY_DB.WEBSITE_CONFIG.TITLE);
             this.description = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.DESCRIPTION);
+                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.DESCRIPTION);
             this.keywords = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.KEYWORDS);
+                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.KEYWORDS);
             this.contact = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                + CONFIG_KEY_DB.WEBSITE_CONFIG.CONTACT);
+                    + CONFIG_KEY_DB.WEBSITE_CONFIG.CONTACT);
             this.banner = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER);
+                    + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER);
             this.icp = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                + CONFIG_KEY_DB.WEBSITE_CONFIG.ICP);
+                    + CONFIG_KEY_DB.WEBSITE_CONFIG.ICP);
             this.bannerFlash = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER_FLASH);
+                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER_FLASH);
             this.logo = websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                + CONFIG_KEY_DB.WEBSITE_CONFIG.LOGO);
+                    + CONFIG_KEY_DB.WEBSITE_CONFIG.LOGO);
             return;
         }
         String configPrefix = "web_config_";

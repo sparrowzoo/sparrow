@@ -20,7 +20,7 @@ package com.sparrow.core;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.enums.STATUS_RECORD;
 import com.sparrow.json.Json;
-import com.sparrow.support.Entity;
+import com.sparrow.protocol.Entity;
 import com.sparrow.utility.StringUtility;
 
 import java.math.BigDecimal;

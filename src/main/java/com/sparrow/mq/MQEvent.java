@@ -17,7 +17,7 @@
 
 package com.sparrow.mq;
 
-import com.sparrow.support.Entity;
+import com.sparrow.protocol.Entity;
 
 /**
  * @author harry
