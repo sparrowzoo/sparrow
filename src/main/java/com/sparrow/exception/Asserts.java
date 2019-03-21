@@ -18,7 +18,8 @@
 package com.sparrow.exception;
 
 import com.sparrow.enums.ERROR_FIELD_SUFFIX;
-import com.sparrow.support.ErrorSupport;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ErrorSupport;
 
 /**
  * @author harry
@@ -31,7 +32,7 @@ public class Asserts {
     public static void isTrue(boolean expression, ErrorSupport errorSupport,
         ERROR_FIELD_SUFFIX suffix) throws BusinessException {
         if (expression) {
-            throw new BusinessException(errorSupport, suffix);
+            throw new BusinessException(errorSupport, suffix.name());
         }
     }
 }

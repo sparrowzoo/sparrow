@@ -17,7 +17,7 @@
 
 package com.sparrow.support.mobile;
 
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
 
 /**
  * MobileSupport

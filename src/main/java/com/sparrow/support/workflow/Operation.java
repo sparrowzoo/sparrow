@@ -19,7 +19,7 @@ package com.sparrow.support.workflow;
 
 import com.sparrow.constant.SPARROW_ERROR;
 import com.sparrow.exception.Asserts;
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
 import com.sparrow.utility.StringUtility;
 
 /**

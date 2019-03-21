@@ -17,9 +17,10 @@
 
 package com.sparrow.support;
 
-import java.util.Map;
 import com.sparrow.enums.DIMENSION_LEVEL;
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
+
+import java.util.Map;
 
 /**
  * @author harry

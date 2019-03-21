@@ -19,7 +19,7 @@ package com.sparrow.constant.cache;
 
 import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.core.Pair;
-import com.sparrow.support.ModuleSupport;
+import com.sparrow.protocol.ModuleSupport;
 import com.sparrow.utility.StringUtility;
 
 import java.util.Arrays;

@@ -17,8 +17,8 @@
 
 package com.sparrow.orm.query;
 
+import com.sparrow.protocol.pager.PagerQuery;
 import com.sparrow.support.db.RowMapper;
-import com.sparrow.support.protocol.pager.PagerSearch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author harry
  */
-public class WhereCriteria extends PagerSearch {
+public class WhereCriteria extends PagerQuery {
     public WhereCriteria() {
         super(0, 0);
     }

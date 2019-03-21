@@ -17,7 +17,7 @@
 
 package com.sparrow.support;
 
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
 
 /**
  * @author harry

@@ -17,13 +17,8 @@
 
 package com.sparrow.constant;
 
+import com.sparrow.protocol.ModuleSupport;
 import com.sparrow.support.AbstractErrorSupport;
-import com.sparrow.support.ErrorSupport;
-import com.sparrow.support.ModuleSupport;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * /** 第一位 1系统或2模块错误 <p> 2-3位模块 00全局模块(公共使用) 01用户模块  02 EXCEL 03 BLOG 04 SHOP 05 UPLOAD 06 ACTIVITY <p> 4-5位错误编码

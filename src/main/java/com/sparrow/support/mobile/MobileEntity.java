@@ -17,9 +17,11 @@
 
 package com.sparrow.support.mobile;
 
-import com.sparrow.constant.*;
+import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
+import com.sparrow.constant.SPARROW_ERROR;
 import com.sparrow.enums.ERROR_FIELD_SUFFIX;
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
 import com.sparrow.utility.Config;
 
 /**
@@ -135,7 +137,7 @@ public class MobileEntity {
         Long currentTime = System.currentTimeMillis();
         Long validTime = this.sendTime + mobileValidateTokenAvailableTime * 1000;
         if (currentTime > validTime) {
-            throw new BusinessException(SPARROW_ERROR.USER_VALIDATE_TIME_OUT, field);
+            throw new BusinessException(SPARROW_ERROR.USER_VALIDATE_TIME_OUT, field.name());
         }
         return true;
     }
@@ -156,7 +158,7 @@ public class MobileEntity {
             return result;
         }
         if (!validateCode.equals(this.validateCode)) {
-            throw new BusinessException(SPARROW_ERROR.GLOBAL_VALIDATE_CODE_ERROR, field);
+            throw new BusinessException(SPARROW_ERROR.GLOBAL_VALIDATE_CODE_ERROR, field.name());
         }
         return true;
     }

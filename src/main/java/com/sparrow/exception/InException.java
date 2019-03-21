@@ -17,7 +17,7 @@
 
 package com.sparrow.exception;
 
-import com.sparrow.support.ErrorSupport;
+import com.sparrow.protocol.ErrorSupport;
 import com.sparrow.utility.StringUtility;
 
 import java.util.Arrays;

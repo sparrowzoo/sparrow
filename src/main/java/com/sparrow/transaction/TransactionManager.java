@@ -17,7 +17,7 @@
 
 package com.sparrow.transaction;
 
-import com.sparrow.exception.BusinessException;
+import com.sparrow.protocol.BusinessException;
 
 /**
  * 在start 之前要手动将suffix设置

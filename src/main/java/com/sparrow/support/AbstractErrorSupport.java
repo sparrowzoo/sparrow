@@ -1,6 +1,8 @@
 package com.sparrow.support;
 
 import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.protocol.ErrorSupport;
+import com.sparrow.protocol.ModuleSupport;
 
 import java.lang.reflect.Field;
 import java.util.Map;

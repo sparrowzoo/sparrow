@@ -17,7 +17,7 @@
 
 package com.sparrow.orm.query;
 
-import com.sparrow.support.protocol.pager.PagerSearch;
+import com.sparrow.protocol.pager.PagerQuery;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SearchCriteria extends WhereCriteria {
     public SearchCriteria() {
     }
 
-    public SearchCriteria(PagerSearch query) {
+    public SearchCriteria(PagerQuery query) {
         super(query.getCurrentPageIndex(),query.getPageSize());
     }
 

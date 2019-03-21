@@ -17,7 +17,7 @@
 
 package com.sparrow.constant;
 
-import com.sparrow.support.ModuleSupport;
+import com.sparrow.protocol.ModuleSupport;
 
 /**
  * @author harry

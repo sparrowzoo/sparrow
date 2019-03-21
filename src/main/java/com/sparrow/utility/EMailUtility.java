@@ -17,21 +17,18 @@
 
 package com.sparrow.utility;
 
-import java.util.Collections;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import com.sparrow.constant.*;
-import com.sparrow.exception.BusinessException;
+import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
+import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.protocol.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Collections;
+import java.util.Properties;
 
 /**
  * @author harry

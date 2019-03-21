@@ -17,7 +17,7 @@
 
 package com.sparrow.exception;
 
-import com.sparrow.support.ErrorSupport;
+import com.sparrow.protocol.ErrorSupport;
 
 /**
  * 内部错误
