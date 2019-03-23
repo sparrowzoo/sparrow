@@ -5,6 +5,8 @@ import com.sparrow.constant.CONSTANT;
 import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.enums.ORM_ENTITY_META_DATA;
+import com.sparrow.protocol.db.Hash;
+import com.sparrow.protocol.enums.HashType;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
@@ -80,7 +82,6 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
             Column column = method.getAnnotation(Column.class);
             Hash hash = method.getAnnotation(Hash.class);
-            Status status = method.getAnnotation(Status.class);
             GeneratedValue generatedValue = method.getAnnotation(GeneratedValue.class);
             Id id = method.getAnnotation(Id.class);
 

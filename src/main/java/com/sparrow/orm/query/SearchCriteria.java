@@ -17,6 +17,7 @@
 
 package com.sparrow.orm.query;
 
+import com.sparrow.protocol.enums.AGGREGATE;
 import com.sparrow.protocol.pager.PagerQuery;
 
 import java.util.List;
