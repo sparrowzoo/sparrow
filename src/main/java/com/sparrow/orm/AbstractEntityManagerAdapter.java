@@ -68,7 +68,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
             updateSQL.append(CONSTANT.TABLE_SUFFIX);
         }
 
-        String createDDLHeader = String.format("DROP TABLE IF EXISTS `%s`;\nCREATE TABLE `%s` (\n", tableName);
+        String createDDLHeader = String.format("DROP TABLE IF EXISTS `%s`;\nCREATE TABLE `%s` (\n", tableName,tableName);
         String primaryCreateDDL = "";
         insertSQL.append("(");
         updateSQL.append(" set ");
