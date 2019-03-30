@@ -3,18 +3,26 @@ package com.sparrow.orm;
 import com.sparrow.constant.CONFIG_KEY_DB;
 import com.sparrow.constant.CONSTANT;
 import com.sparrow.constant.magic.SYMBOL;
-import com.sparrow.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.enums.ORM_ENTITY_META_DATA;
 import com.sparrow.protocol.db.Hash;
+import com.sparrow.protocol.db.Split;
+import com.sparrow.protocol.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.protocol.enums.HashType;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.persistence.*;
-import java.lang.reflect.Method;
-import java.util.*;
 
 public abstract class AbstractEntityManagerAdapter implements EntityManager {
     protected static Logger logger = LoggerFactory.getLogger(AbstractEntityManagerAdapter.class);
@@ -170,6 +178,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         this.init(clazz);
     }
 
+    @Override
     public boolean initTable(Class clazz) {
         // 初始化表名
         if (!clazz.isAnnotationPresent(Table.class)) {
