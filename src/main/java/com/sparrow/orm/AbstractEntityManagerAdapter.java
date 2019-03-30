@@ -68,7 +68,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
             updateSQL.append(CONSTANT.TABLE_SUFFIX);
         }
 
-        String createDDLHeader = String.format("CREATE TABLE `%s` (\n", tableName);
+        String createDDLHeader = String.format("DROP TABLE IF EXISTS `%s`;\nCREATE TABLE `%s` (\n", tableName);
         String primaryCreateDDL = "";
         insertSQL.append("(");
         updateSQL.append(" set ");
@@ -146,7 +146,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
                 + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
 
         createDDLField.append(String.format("PRIMARY KEY (`%s`)\n", this.primary.getColumnName()));
-        createDDLField.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
+        createDDLField.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='"+tableName+"';\n");
 
         this.createDDL = createDDLHeader + primaryCreateDDL + createDDLField.toString();
         this.insert = insertSQL.toString();
