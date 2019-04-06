@@ -17,9 +17,10 @@
 
 package com.sparrow.exception;
 
-import com.sparrow.enums.ERROR_FIELD_SUFFIX;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.ErrorSupport;
+
+import java.util.List;
 
 /**
  * @author harry
@@ -30,9 +31,14 @@ public class Asserts {
     }
 
     public static void isTrue(boolean expression, ErrorSupport errorSupport,
-        ERROR_FIELD_SUFFIX suffix) throws BusinessException {
+                              String suffix) throws BusinessException {
+        isTrue(expression, errorSupport, suffix, null);
+    }
+
+    public static void isTrue(boolean expression, ErrorSupport errorSupport,
+                              String suffix, List<Object> parameters) throws BusinessException {
         if (expression) {
-            throw new BusinessException(errorSupport, suffix.name());
+            throw new BusinessException(errorSupport, suffix, parameters);
         }
     }
 }

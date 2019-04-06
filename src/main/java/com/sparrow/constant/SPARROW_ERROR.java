@@ -108,6 +108,9 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
 
     public static final SPARROW_ERROR GLOBAL_OPERATION_VALIDATE_ROLE_INVALID = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "17", "operation validate role is invalid");
 
+    public static final SPARROW_ERROR GLOBAL_PARAMETER_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "18", "parameter is illegal");
+
+
     public static final SPARROW_ERROR USER_NAME_EXIST = new SPARROW_ERROR(SPARROW_MODULE.USER, "01", "User name exist");
 
     public static final SPARROW_ERROR USER_EMAIL_EXIST = new SPARROW_ERROR(SPARROW_MODULE.USER, "02", "User email exist");
