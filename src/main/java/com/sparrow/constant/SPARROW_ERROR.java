@@ -110,6 +110,8 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
 
     public static final SPARROW_ERROR GLOBAL_PARAMETER_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "18", "parameter is illegal");
 
+    public static final SPARROW_ERROR GLOBAL_SMS_SEND_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "19", "short message service error");
+
 
     public static final SPARROW_ERROR USER_NAME_EXIST = new SPARROW_ERROR(SPARROW_MODULE.USER, "01", "User name exist");
 

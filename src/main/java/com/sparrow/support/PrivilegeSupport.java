@@ -27,13 +27,15 @@ import java.util.Map;
  */
 public interface PrivilegeSupport {
 
+    boolean accessible(Long writer,Long currentUserId);
+
     boolean accessible(Long userId,
         String resource, String value) throws BusinessException;
 
     String getStrategy(Long userId,
         String strategyCode) throws BusinessException;
 
-    void setPrivilege(String selectedPolicy, String selectedResource,
+    void setPrivilege(String strategy, String selectedResource,
         Long groupId) throws BusinessException;
 
     /**

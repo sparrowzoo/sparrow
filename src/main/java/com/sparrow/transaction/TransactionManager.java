@@ -17,8 +17,6 @@
 
 package com.sparrow.transaction;
 
-import com.sparrow.protocol.BusinessException;
-
 /**
  * 在start 之前要手动将suffix设置
  *
@@ -26,7 +24,7 @@ import com.sparrow.protocol.BusinessException;
  */
 public interface TransactionManager {
 
-    <T> T start(Transaction<T> transaction) throws BusinessException;
+    <T> T start(Transaction<T> transaction);
 
-    <T> T start(Transaction<T> transaction, String dataSourceKey) throws BusinessException;
+    <T> T start(Transaction<T> transaction, String dataSourceKey);
 }

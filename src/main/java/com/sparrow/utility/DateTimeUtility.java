@@ -229,7 +229,7 @@ public class DateTimeUtility {
     }
 
     public static String getBeforeFormatTimeBySecond(Long seconds) {
-        return getBeforeFormatTimeBySecond(seconds, 0,0);
+        return getBeforeFormatTimeBySecond(seconds, 0, 0);
     }
 
     /**
@@ -238,11 +238,11 @@ public class DateTimeUtility {
      * @param seconds
      * @return
      */
-    public static String getBeforeFormatTimeBySecond(Long seconds, int depth,int start) {
+    public static String getBeforeFormatTimeBySecond(Long seconds, int depth, int start) {
         if (depth == 0) {
             depth = DATE_TIME.BEFORE_FORMAT.size();
         }
-        Long interval=seconds;
+        Long interval = seconds;
         Iterator<String> it = DATE_TIME.BEFORE_FORMAT.keySet().iterator();
         Stack<Pair<Integer, String>> result = new Stack<>();
         StringBuilder beforeFormat = new StringBuilder();
@@ -257,7 +257,7 @@ public class DateTimeUtility {
             interval = interval / value;
         }
         while (true);
-        while (result.size()>start) {
+        while (result.size() > start) {
             Pair<Integer, String> pair = result.pop();
             if (pair.getFirst() > 0) {
                 beforeFormat.append(pair.getFirst() + Config.getLanguageValue("date_time_unit_" + pair.getSecond(), null, pair.getSecond()));
@@ -271,11 +271,11 @@ public class DateTimeUtility {
      *
      * @return
      */
-    public static String getBeforeFormatTime(Long timestamp, int depth,int start) {
+    public static String getBeforeFormatTime(Long timestamp, int depth, int start) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
         long timeSplit = (System.currentTimeMillis() - cal.getTimeInMillis()) / 1000;
-        return getBeforeFormatTimeBySecond(timeSplit, depth,start);
+        return getBeforeFormatTimeBySecond(timeSplit, depth, start);
     }
 
     /**
@@ -310,5 +310,10 @@ public class DateTimeUtility {
             calendar.set(DATE_TIME.DATE_TIME_UNIT_CALENDER_CONVERTER.get(u), DATE_TIME.DEFAULT_FIRST_VALUE.get(u));
         }
         return calendar.getTimeInMillis();
+    }
+
+
+    public static long roundingExpire(Long timestamp, Long expire) {
+        return timestamp / expire;
     }
 }
