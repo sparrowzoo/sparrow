@@ -84,7 +84,7 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
 
     public static final SPARROW_ERROR GLOBAL_CONTENT_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "06", "Content is illegal");
 
-    public static final SPARROW_ERROR GLOBAL_CONTENT_REPEAT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "07", "Repeat content");
+    public static final SPARROW_ERROR GLOBAL_CONTENT_DUPLICATE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "07", "Content duplicate");
 
     public static final SPARROW_ERROR GLOBAL_UNSUPPORTED_IMAGE_TYPE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "08",
         "Unsupported image type only support JPG, GIF, PNG");
