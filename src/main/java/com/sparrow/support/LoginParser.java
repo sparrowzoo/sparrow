@@ -22,7 +22,7 @@ import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
 import com.sparrow.constant.USER;
 import com.sparrow.cryptogram.Hmac;
 import com.sparrow.cryptogram.ThreeDES;
-import com.sparrow.protocol.LoginDTO;
+import com.sparrow.protocol.LoginToken;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
@@ -37,9 +37,9 @@ public class LoginParser implements Serializable {
     private static final long serialVersionUID = -2215039934860669170L;
     static Logger logger = LoggerFactory.getLogger(LoginParser.class);
 
-    public static LoginDTO parse(String permission, String deviceId) {
+    public static LoginToken parse(String permission, String deviceId) {
         // 第一次请求时没有session id
-        LoginDTO login = new LoginDTO();
+        LoginToken login = new LoginToken();
         login.setUserId(USER.VISITOR_ID);
         login.setUserName(Config.getLanguageValue(
                 CONFIG_KEY_LANGUAGE.USER_VISITOR,
@@ -102,7 +102,7 @@ public class LoginParser implements Serializable {
     }
 
 
-    public static String getPermission(LoginDTO login) {
+    public static String getPermission(LoginToken login) {
         if (login.getUserName().equalsIgnoreCase(USER.ADMIN)) {
             login.setUserId(USER.ADMIN_ID);
         }

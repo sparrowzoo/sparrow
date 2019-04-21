@@ -22,7 +22,7 @@ import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.cache.KEY;
 import com.sparrow.constant.cache.key.KEY_USER;
 import com.sparrow.exception.CacheConnectionException;
-import com.sparrow.protocol.LoginDTO;
+import com.sparrow.protocol.LoginToken;
 import com.sparrow.support.LoginParser;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.JSUtility;
@@ -86,7 +86,7 @@ public class CookieUtility {
         return null;
     }
 
-    public LoginDTO getUser(HttpServletRequest request) {
+    public LoginToken getUser(HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
         String permission;
         KEY permissionKey = new KEY.Builder().business(KEY_USER.PERMISSION).businessId(sessionId).build();
