@@ -17,8 +17,8 @@
 
 package com.sparrow.support;
 
-import com.sparrow.constant.magic.DIGIT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 
 /**
  * @author harry

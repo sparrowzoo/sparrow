@@ -1,8 +1,8 @@
 package com.sparrow.orm;
 
 import com.sparrow.constant.CONFIG_KEY_DB;
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.enums.ORM_ENTITY_META_DATA;
 import com.sparrow.protocol.db.Hash;
 import com.sparrow.protocol.db.Split;

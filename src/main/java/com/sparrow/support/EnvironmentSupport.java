@@ -17,8 +17,8 @@
 
 package com.sparrow.support;
 
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.utility.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

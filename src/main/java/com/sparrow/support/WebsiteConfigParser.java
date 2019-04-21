@@ -18,7 +18,7 @@
 package com.sparrow.support;
 
 import com.sparrow.constant.CONFIG_KEY_DB;
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.protocol.Entity;
 import com.sparrow.protocol.WebsiteConfig;

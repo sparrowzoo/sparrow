@@ -18,7 +18,7 @@
 package com.sparrow.support;
 
 import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.OpenAuthAccount;
 import com.sparrow.protocol.enums.PLATFORM;
 import com.sparrow.utility.Config;

@@ -18,7 +18,6 @@
 package com.sparrow.utility;
 
 import com.sparrow.cg.MethodAccessor;
-import com.sparrow.constant.EXTENSION;
 import com.sparrow.constant.FILE;
 import com.sparrow.constant.REGEX;
 import com.sparrow.constant.SPARROW_ERROR;
@@ -27,6 +26,7 @@ import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.Entity;
 
+import com.sparrow.protocol.constant.EXTENSION;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;

@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.sparrow.constant.*;
 import com.sparrow.constant.FILE.SIZE;
-import com.sparrow.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -18,8 +18,8 @@
 package com.sparrow.support.excel;
 
 import com.sparrow.constant.REGEX;
-import com.sparrow.constant.magic.DIGIT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.enums.DATA_TYPE;
 import com.sparrow.support.excel.exception.TemplateCellValidateException;
 import com.sparrow.utility.FileUtility;

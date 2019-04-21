@@ -17,7 +17,7 @@
 
 package com.sparrow.support.web;
 
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -18,7 +18,7 @@
 package com.sparrow.utility;
 
 import com.sparrow.constant.DATE_TIME;
-import com.sparrow.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.core.Pair;
 import com.sparrow.enums.DATE_TIME_UNIT;
 

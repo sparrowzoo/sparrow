@@ -17,11 +17,12 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.EXTENSION;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.constant.FILE;
-import com.sparrow.constant.magic.DIGIT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.EXTENSION;
+import com.sparrow.protocol.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.support.EnvironmentSupport;
 
 import java.io.BufferedReader;

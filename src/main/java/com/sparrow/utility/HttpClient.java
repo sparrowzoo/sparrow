@@ -20,6 +20,8 @@ package com.sparrow.utility;
 import com.sparrow.constant.*;
 import com.sparrow.enums.HTTP_METHOD;
 
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.EXTENSION;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPOutputStream;

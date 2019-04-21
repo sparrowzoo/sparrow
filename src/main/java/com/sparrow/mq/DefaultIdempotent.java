@@ -19,7 +19,7 @@ package com.sparrow.mq;
 import com.sparrow.cache.CacheClient;
 import com.sparrow.constant.cache.KEY;
 import com.sparrow.constant.cache.key.KEY_MQ_IDEMPOTENT;
-import com.sparrow.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.exception.CacheConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

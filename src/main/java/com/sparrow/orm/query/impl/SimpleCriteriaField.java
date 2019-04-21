@@ -17,7 +17,7 @@
 
 package com.sparrow.orm.query.impl;
 
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.orm.query.CriteriaField;
 
 /**

@@ -17,8 +17,8 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

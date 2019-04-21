@@ -17,7 +17,7 @@
 
 package com.sparrow.cryptogram;
 
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.utility.StringUtility;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

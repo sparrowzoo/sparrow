@@ -19,8 +19,8 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.REGEX;
 
-import com.sparrow.constant.magic.ESCAPED;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.ESCAPED;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import java.util.ArrayList;
 import java.util.List;
 

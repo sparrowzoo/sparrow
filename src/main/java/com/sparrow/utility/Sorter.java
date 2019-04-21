@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Pair;
 import com.sparrow.enums.ORDER;
 

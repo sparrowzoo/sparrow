@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.constant.REGEX;
 import com.sparrow.core.Pair;
 

@@ -19,7 +19,7 @@ package com.sparrow.support.lucence.daemon.impl;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
 import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONSTANT;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.support.lucence.IndexManager;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.FileUtility;

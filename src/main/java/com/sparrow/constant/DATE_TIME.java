@@ -17,7 +17,7 @@
 
 package com.sparrow.constant;
 
-import com.sparrow.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.enums.DATE_TIME_UNIT;
 
 import java.sql.Timestamp;

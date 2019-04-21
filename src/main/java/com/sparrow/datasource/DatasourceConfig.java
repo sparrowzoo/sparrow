@@ -17,7 +17,7 @@
 
 package com.sparrow.datasource;
 
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.utility.StringUtility;
 
 /**

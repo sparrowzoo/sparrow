@@ -17,10 +17,12 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.ESCAPED;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.ESCAPED;
+import com.sparrow.protocol.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.support.EnvironmentSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -43,6 +45,7 @@ import java.util.TreeMap;
  * @author harry
  */
 public class Xml {
+    private static Logger logger= LoggerFactory.getLogger(Xml.class);
     public static Document getXmlDocumentByPath(String xmlFullPath,
                                                 String dtdName) throws ParserConfigurationException, SAXException,
             IOException {
@@ -72,7 +75,8 @@ public class Xml {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            logger.error("get xml dodument parse config error",e);
+            return null;
         }
         Document document = null;
         try {
@@ -81,7 +85,7 @@ public class Xml {
                         .getBytes(CONSTANT.CHARSET_UTF_8)));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("get xml document error",e);
         }
         return document;
     }

@@ -19,8 +19,8 @@ package com.sparrow.support.web;
 
 import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Cache;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;

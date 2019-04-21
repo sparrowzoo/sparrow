@@ -17,7 +17,7 @@
 
 package com.sparrow.servlet.impl;
 
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.servlet.ServletContainer;
 import com.sparrow.support.web.CookieUtility;
 import com.sparrow.support.web.ServletUtility;

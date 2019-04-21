@@ -1,7 +1,7 @@
 package com.sparrow.support.pager;
 
 import com.sparrow.constant.PAGER;
-import com.sparrow.constant.magic.ESCAPED;
+import com.sparrow.protocol.constant.magic.ESCAPED;
 import com.sparrow.protocol.pager.SimplePagerResult;
 import com.sparrow.utility.StringUtility;
 

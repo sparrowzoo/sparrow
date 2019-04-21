@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.EXTENSION;
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.container.Container;
 import com.sparrow.io.FileService;
 import java.io.File;

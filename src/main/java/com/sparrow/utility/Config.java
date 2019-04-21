@@ -19,8 +19,8 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Cache;
 import com.sparrow.support.EnvironmentSupport;
 import org.slf4j.Logger;

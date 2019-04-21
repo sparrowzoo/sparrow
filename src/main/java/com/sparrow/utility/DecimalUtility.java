@@ -18,9 +18,9 @@
 package com.sparrow.utility;
 
 import com.sparrow.constant.DECIMAL_FORMAT;
-import com.sparrow.constant.magic.CAPITAL_RMB;
-import com.sparrow.constant.magic.DIGIT;
-import com.sparrow.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.magic.CAPITAL_RMB;
+import com.sparrow.protocol.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.magic.DIGIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

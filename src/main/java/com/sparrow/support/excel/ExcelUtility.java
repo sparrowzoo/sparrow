@@ -17,8 +17,8 @@
 
 package com.sparrow.support.excel;
 
-import com.sparrow.constant.EXTENSION;
 import com.sparrow.enums.DATA_TYPE;
+import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.support.excel.exception.TemplateCellValidateException;
 import com.sparrow.support.excel.exception.TemplateFieldNotMatchException;
 import com.sparrow.support.excel.exception.TemplateFileException;
