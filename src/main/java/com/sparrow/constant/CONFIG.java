@@ -49,6 +49,7 @@ public class CONFIG {
     public static final String DEFAULT_DATA_SOURCE_KEY = "data_source";
     public static final String DEFAULT_USER_PASSWORD = "default_user_password";
     public static final String DEFAULT_PAGE_EXTENSION = "default_page_extension";
+    public static final String DEFAULT_PAGE_PREFIX = "default_page_prefix";
 
     public static final String WEBSITE = "website";
     public static final String IMAGE_WEBSITE = "image_website";
