@@ -24,7 +24,7 @@ import com.sparrow.constant.SPARROW_ERROR;
 import com.sparrow.core.TypeConverter;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.exception.Asserts;
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 
 import com.sparrow.protocol.constant.EXTENSION;
 import javax.imageio.ImageIO;
@@ -371,7 +371,7 @@ public class ImageUtility {
      * @param entity
      * @return
      */
-    public static java.util.List<Long> getImageList(Entity entity) {
+    public static java.util.List<Long> getImageList(POJO entity) {
         java.util.List<Long> imageIdList = new ArrayList<Long>();
         java.util.List<TypeConverter> fieldList = ApplicationContext.getContainer().getFieldList(entity.getClass());
         MethodAccessor methodAccessor = ApplicationContext.getContainer().getProxyBean(entity.getClass());

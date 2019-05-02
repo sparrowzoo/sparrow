@@ -17,12 +17,12 @@
 
 package com.sparrow.support;
 
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 
 /**
  * @author harry
  */
-public class LoginDialog implements Entity {
+public class LoginDialog implements POJO {
     private Boolean login;
     private Boolean showHead;
     private String url;

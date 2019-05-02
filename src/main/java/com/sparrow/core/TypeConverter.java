@@ -19,7 +19,7 @@ package com.sparrow.core;
 
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.json.Json;
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.enums.STATUS_RECORD;
 import com.sparrow.utility.StringUtility;
 
@@ -121,8 +121,8 @@ public class TypeConverter {
             //转成string
             if (this.getType() == String.class) {
                 //当前值是entity对象则转json
-                if (Entity.class.isAssignableFrom(valueType)) {
-                    return json.toString((Entity) value);
+                if (POJO.class.isAssignableFrom(valueType)) {
+                    return json.toString((POJO) value);
                 }
                 return stringValue;
             }
@@ -163,7 +163,7 @@ public class TypeConverter {
                 return new BigDecimal(stringValue);
             }
             //转成实例对象
-            if (Entity.class.isAssignableFrom(this.getType())) {
+            if (POJO.class.isAssignableFrom(this.getType())) {
                 return json.parse(stringValue, this.getType());
             }
         } catch (RuntimeException e) {

@@ -29,10 +29,14 @@ import com.sparrow.constant.CACHE_KEY;
  */
 public class Cache {
     private Map<String, Map<String, ?>> map = new ConcurrentHashMap<String, Map<String, ?>>();
-    private static Cache cache = new Cache();
+
+    private static class Nested{
+        private static Cache cache=new Cache();
+    }
+
 
     public static Cache getInstance() {
-        return cache;
+        return Nested.cache;
     }
 
     /**
@@ -118,7 +122,7 @@ public class Cache {
 
     @SuppressWarnings("unchecked")
     public <T> Map<String, T> get(String key) {
-        return (Map<String, T>) cache.get(this.map, key);
+        return (Map<String, T>) Nested.cache.get(this.map, key);
     }
 
     public void clear() {

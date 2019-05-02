@@ -27,7 +27,7 @@ import com.sparrow.core.Pair;
 import com.sparrow.core.TypeConverter;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.cryptogram.ThreeDES;
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 
 import com.sparrow.protocol.constant.CONSTANT;
 import java.io.*;
@@ -624,7 +624,7 @@ public class StringUtility {
         return serialParameters(map);
     }
 
-    public static String getParameter(Entity entity) {
+    public static String getParameter(POJO entity) {
         Container container = ApplicationContext.getContainer();
         List<TypeConverter> fieldList = container.getFieldList(entity.getClass());
         MethodAccessor methodAccessor = container.getProxyBean(entity.getClass());

@@ -17,7 +17,7 @@
 
 package com.sparrow.json;
 
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public interface Json {
 
-    String toString(Entity model);
+    String toString(POJO model);
 
     String toString(Map<String, Object> map);
 

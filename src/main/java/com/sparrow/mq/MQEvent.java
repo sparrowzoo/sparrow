@@ -17,11 +17,11 @@
 
 package com.sparrow.mq;
 
-import com.sparrow.protocol.Entity;
+import com.sparrow.protocol.POJO;
 
 /**
  * @author harry
  */
-public interface MQEvent extends Entity {
+public interface MQEvent extends POJO {
 
 }
