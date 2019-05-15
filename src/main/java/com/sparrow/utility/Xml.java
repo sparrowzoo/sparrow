@@ -46,6 +46,7 @@ import java.util.TreeMap;
  */
 public class Xml {
     private static Logger logger= LoggerFactory.getLogger(Xml.class);
+
     public static Document getXmlDocumentByPath(String xmlFullPath,
                                                 String dtdName) throws ParserConfigurationException, SAXException,
             IOException {
@@ -213,5 +214,9 @@ public class Xml {
             xml = xml.replace(ESCAPED.DOUBLE_QUOTES, SYMBOL.DOUBLE_QUOTES);
         }
         return xml;
+    }
+
+    public String getNamespace(Node node){
+        return node.getNamespaceURI();
     }
 }
