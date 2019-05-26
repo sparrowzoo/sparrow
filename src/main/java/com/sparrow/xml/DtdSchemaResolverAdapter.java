@@ -18,14 +18,12 @@ public class DtdSchemaResolverAdapter implements EntityResolver {
     /** Suffix for schema definition files. */
     public static final String XSD_SUFFIX = ".xsd";
 
-    private static final String DEFAULT_XML_VALIDATE_NAME="beans";
-
     private final EntityResolver dtdResolver;
 
     private final EntityResolver schemaResolver;
 
     public DtdSchemaResolverAdapter() {
-        this.dtdResolver = new ClassesPathDtdResolver(DEFAULT_XML_VALIDATE_NAME);
+        this.dtdResolver = new ClassesPathDtdResolver();
         this.schemaResolver = new SystemIdSchemaMappingResolver();
     }
 

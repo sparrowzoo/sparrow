@@ -47,29 +47,6 @@ import java.util.TreeMap;
 public class Xml {
     private static Logger logger= LoggerFactory.getLogger(Xml.class);
 
-    public static Document getXmlDocumentByPath(String xmlFullPath,
-                                                String dtdName) throws ParserConfigurationException, SAXException,
-            IOException {
-        final String finalDtdFile = dtdName;
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        if (!StringUtility.isNullOrEmpty(dtdName)) {
-            docBuilder.setEntityResolver(new EntityResolver() {
-                @Override
-                public InputSource resolveEntity(String publicId,
-                                                 String systemId) throws SAXException, IOException {
-                    InputSource is = new InputSource();
-                    is.setByteStream(EnvironmentSupport.getInstance().getFileInputStream("/" + finalDtdFile));
-                    is.setPublicId(publicId);
-                    is.setSystemId(systemId);
-                    return is;
-                }
-            });
-        }
-        return docBuilder.parse(EnvironmentSupport.getInstance().getFileInputStream(xmlFullPath));
-    }
-
     public static Document getXmlDocumentByString(String xml) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;

@@ -32,4 +32,7 @@ public interface DocumentLoader {
         String xmlFilePath, EntityResolver entityResolver, boolean namespaceAware)
         throws Exception;
 
+    Document loadDocument(
+        String xmlFilePath,boolean namespaceAware)
+        throws Exception;
 }

@@ -68,6 +68,12 @@ public class DefaultDocumentLoader implements DocumentLoader {
         return this.loadDocument(xmlFilePath,entityResolver,new SimpleSaxErrorHandler(logger),namespaceAware);
     }
 
+    @Override public Document loadDocument(
+        String xmlFilePath, boolean namespaceAware)
+        throws Exception{
+        return this.loadDocument(xmlFilePath,new DtdSchemaResolverAdapter(),namespaceAware);
+    }
+
     protected DocumentBuilderFactory createDocumentBuilderFactory(int validationMode, boolean namespaceAware)
         throws ParserConfigurationException {
 

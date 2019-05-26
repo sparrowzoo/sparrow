@@ -17,6 +17,7 @@
 package com.sparrow.xml;
 
 import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.FileUtility;
 import java.io.IOException;
 import java.io.InputStream;
 import org.slf4j.Logger;
@@ -25,12 +26,6 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 public class ClassesPathDtdResolver implements EntityResolver {
-
-    private String dtdName;
-
-    public ClassesPathDtdResolver(String dtdName) {
-        this.dtdName = dtdName;
-    }
 
     private static final String DTD_EXTENSION = ".dtd";
 
@@ -45,12 +40,8 @@ public class ClassesPathDtdResolver implements EntityResolver {
         if (systemId == null || !systemId.endsWith(DTD_EXTENSION)) {
             return null;
         }
-        int lastPathSeparator = systemId.lastIndexOf('/');
-        int dtdNameStart = systemId.indexOf(dtdName, lastPathSeparator);
-        if (dtdNameStart == -1) {
-            return null;
-        }
-        String dtdFile = "/"+dtdName + DTD_EXTENSION;
+
+        String dtdFile = "/"+FileUtility.getInstance().getFileNameWithExtension(systemId);
         if (logger.isTraceEnabled()) {
             logger.trace("Trying to locate [" + dtdFile + "] in Spring jar on classpath");
         }

@@ -50,7 +50,7 @@ public class ApplicationContext {
                 container = it.next();
                 return container;
             }
-            String defaultProvider = "com.sparrow.container.impl.SparrowContainerImpl";
+            String defaultProvider = "com.sparrow.container.impl.SparrowContainer";
             try {
                 Class<?> containerClazz = Class.forName(defaultProvider);
                 container = (Container) containerClazz.newInstance();

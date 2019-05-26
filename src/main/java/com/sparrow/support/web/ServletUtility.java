@@ -20,12 +20,14 @@ package com.sparrow.support.web;
 import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Cache;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
 import java.util.Enumeration;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +48,13 @@ public class ServletUtility {
     public boolean include(ServletRequest request) {
         return request
                 .getAttribute(CONSTANT.REQUEST_ACTION_INCLUDE) != null;
+    }
+
+
+    public String getDispatcherUrl(String url) {
+        String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
+        String pagePrefix = Config.getValue(CONFIG.DEFAULT_PAGE_PREFIX, "/template");
+        return pagePrefix + url + extension;
     }
 
     public String getActionKey(ServletRequest request) {
