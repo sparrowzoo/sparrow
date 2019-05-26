@@ -18,8 +18,11 @@
 package com.sparrow.utility;
 
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 /**
@@ -42,8 +45,8 @@ public class CollectionsUtility {
         return collection == null || !collection.iterator().hasNext();
     }
 
-    public static <T> Boolean isNullOrEmpty(T [] collection) {
-        return collection == null || collection.length==0;
+    public static <T> Boolean isNullOrEmpty(T[] collection) {
+        return collection == null || collection.length == 0;
     }
 
     /**
@@ -65,5 +68,20 @@ public class CollectionsUtility {
             result.put(key, value);
         }
         return result;
+    }
+
+    public static void fillMapWithProperties(Map<String,String> map,Properties props) {
+        if (props == null) {
+            return ;
+        }
+        for (Enumeration<?> en = props.propertyNames(); en.hasMoreElements(); ) {
+            String key = (String) en.nextElement();
+            String value = props.getProperty(key);
+            if (value == null) {
+                // Allow for defaults fallback or potentially overridden accessor...
+                value = props.getProperty(key);
+            }
+            map.put(key,value);
+        }
     }
 }

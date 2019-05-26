@@ -41,4 +41,10 @@ public class Asserts {
             throw new BusinessException(errorSupport, suffix, parameters);
         }
     }
+
+    public static void illegalArgument(boolean expression, String message) {
+        if (expression) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

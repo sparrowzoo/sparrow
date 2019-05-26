@@ -32,6 +32,13 @@ import java.util.Map;
  */
 public interface Container {
 
+    FactoryBean getSingletonRegister();
+
+    FactoryBean getControllerRegister();
+
+    FactoryBean getProxyBeanRegister();
+
+    FactoryBean getInterceptorRegister();
     /**
      * 获取类的代理对象
      */
@@ -55,19 +62,10 @@ public interface Container {
     <T> T getBean(SYS_OBJECT_NAME sysObjectName);
 
     /**
-     * 获取所有bean
-     */
-    Map<String, Object> getAllBean();
-
-    /**
      * 初始化container
      */
     void init();
 
     void init(String xmlName, String systemConfigPath);
 
-    /**
-     * 获取某容器下的所有bean
-     */
-    Map<String, Object> getBeanMap(CONTAINER container);
 }

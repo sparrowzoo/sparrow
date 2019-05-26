@@ -46,6 +46,7 @@ public class TypeConverter {
      * 目标类型
      */
     protected Class type;
+
     private Json json = JsonFactory.getProvider();
 
     /**

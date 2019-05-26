@@ -1,5 +1,6 @@
 package com.sparrow.orm;
 
+import com.sparrow.cg.PropertyNamer;
 import com.sparrow.constant.CONFIG_KEY_DB;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
@@ -93,7 +94,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
             GeneratedValue generatedValue = method.getAnnotation(GeneratedValue.class);
             Id id = method.getAnnotation(Id.class);
 
-            String propertyName = StringUtility.setFirstByteLowerCase(StringUtility.getFieldByGetMethod(method.getName()));
+            String propertyName = StringUtility.setFirstByteLowerCase(PropertyNamer.methodToProperty(method.getName()));
             Field field = new Field(propertyName, method.getReturnType(), column, hash, generatedValue, id);
             fields.add(field);
 

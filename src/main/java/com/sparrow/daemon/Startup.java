@@ -17,8 +17,11 @@
 
 package com.sparrow.daemon;
 
+import com.sparrow.container.Container;
+import com.sparrow.container.FactoryBean;
 import com.sparrow.core.spi.ApplicationContext;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -26,12 +29,16 @@ import java.util.Map;
  */
 public class Startup {
     public static void main(String[] args) {
-        ApplicationContext.getContainer().init();
-
-        Map<String, Object> allBean = ApplicationContext.getContainer().getAllBean();
-        for (String beanName : allBean.keySet()) {
-            if (allBean.get(beanName) instanceof Runnable) {
-                ((Runnable) allBean.get(beanName)).run();
+        Container container =
+            ApplicationContext.getContainer();
+        container.init();
+        FactoryBean factory = container.getSingletonRegister();
+        Iterator iterator = factory.keyIterator();
+        while (iterator.hasNext()) {
+            String beanName = (String) iterator.next();
+            Object o = factory.getObject(beanName);
+            if (o instanceof Runnable) {
+                ((Runnable) o).run();
             }
         }
     }

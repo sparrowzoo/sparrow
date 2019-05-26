@@ -48,7 +48,7 @@ public class BatchEventBus<T> {
     private boolean flush = false;
 
 
-    public BatchEventBus(BatchEventBus.Builder builder) {
+    private BatchEventBus(BatchEventBus.Builder builder) {
 
         this.queue = new ArrayBlockingQueue<>(builder.capacity, true);
 
@@ -178,6 +178,10 @@ public class BatchEventBus<T> {
             return this;
         }
 
+
+        public BatchEventBus build() {
+            return new BatchEventBus(this);
+        }
     }
 }
 

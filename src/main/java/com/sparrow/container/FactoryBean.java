@@ -1,5 +1,7 @@
 package com.sparrow.container;
 
+import java.util.Iterator;
+
 public interface FactoryBean<T> {
     void pubObject(String name, T o);
 
@@ -8,4 +10,6 @@ public interface FactoryBean<T> {
     Class<?> getObjectType();
 
     void removeObject(String name);
+
+    Iterator<String> keyIterator();
 }
