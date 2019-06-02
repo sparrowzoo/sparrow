@@ -49,7 +49,7 @@ public class StringUtility {
      * @return
      */
     public static boolean existInArray(Object[] array, Object key) {
-        if (array == null || array.length == 0) {
+        if (array == null || array.length == 0||StringUtility.isNullOrEmpty(key)) {
             return false;
         }
         for (Object s : array) {
