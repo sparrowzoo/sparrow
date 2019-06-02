@@ -62,15 +62,15 @@ public class IndexManager {
             indexDir.mkdir();
         }
 
-        Directory directory = FSDirectory.open(indexDir);
+        //Directory directory = FSDirectory.open(indexDir);
         // 如果被锁定则解锁
-        if (IndexWriter.isLocked(directory)) {
-            IndexWriter.unlock(directory);
-        }
-
-        // 创建索引配置器
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
-                Version.LUCENE_36, analyzer);
+//        if (IndexWriter.isLocked(directory)) {
+//            IndexWriter.unlock(directory);
+//        }
+//
+//        // 创建索引配置器
+//        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
+//                Version.LUCENE_36, analyzer);
         LogMergePolicy mergePolicy = new LogByteSizeMergePolicy();
         // 设置segment添加文档(Document)时的合并频率
         // 值较小,建立索引的速度就较慢
@@ -81,20 +81,24 @@ public class IndexManager {
         // 值较大,适合批量建立索引和更快的搜索
         mergePolicy.setMaxMergeDocs(5000);
         // 启用复合式索引文件格式,合并多个segment
-        mergePolicy.setUseCompoundFile(true);
-        indexWriterConfig.setMergePolicy(mergePolicy);
-        // 设置索引的打开模式
-        indexWriterConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
-        // 创建索引器
-        return new IndexWriter(directory, indexWriterConfig);
+
+        //todo check
+        //mergePolicy.setUseCompoundFile(true);
+//        indexWriterConfig.setMergePolicy(mergePolicy);
+//        // 设置索引的打开模式
+//        indexWriterConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
+//        // 创建索引器
+//        return new IndexWriter(directory, indexWriterConfig);
+        return null;
     }
 
     public IndexReader openIndexReader(String indexPath) throws IOException {
         // 打开索引目录
-        File indexDir = new File(indexPath);
-        Directory directory = FSDirectory.open(indexDir);
-        // 获取访问索引的接口,进行搜索
-        return IndexReader.open(directory);
+//        File indexDir = new File(indexPath);
+//        Directory directory = FSDirectory.open(indexDir);
+//        // 获取访问索引的接口,进行搜索
+//        return IndexReader.open(directory);
+        return null;
     }
 
     public void closeIndexReader(IndexReader indexReader) {
@@ -107,12 +111,12 @@ public class IndexManager {
     }
 
     public void closeIndexSearch(IndexSearcher indexSearcher) {
-        if (indexSearcher != null) {
-            try {
-                indexSearcher.close();
-            } catch (IOException ignore) {
-            }
-        }
+//        if (indexSearcher != null) {
+//            try {
+//                indexSearcher.close();
+//            } catch (IOException ignore) {
+//            }
+//        }
     }
 
     public void closeIndexWriter(IndexWriter indexWriter) throws Exception {

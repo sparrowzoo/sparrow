@@ -116,6 +116,10 @@ public class TypeConverter {
         if (StringUtility.isNullOrEmpty(value)) {
             return null;
         }
+
+        if(this.getType()==Object.class){
+            return value;
+        }
         try {
             Class valueType = value.getClass();
             String stringValue = value.toString();
@@ -127,6 +131,7 @@ public class TypeConverter {
                 }
                 return stringValue;
             }
+
 
             if (this.getType() == byte.class || this.getType() == Byte.class) {
                 return Byte.valueOf(stringValue);
