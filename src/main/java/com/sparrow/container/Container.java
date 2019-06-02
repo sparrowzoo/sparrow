@@ -21,6 +21,7 @@ import com.sparrow.cg.MethodAccessor;
 import com.sparrow.constant.SYS_OBJECT_NAME;
 import com.sparrow.core.TypeConverter;
 import com.sparrow.enums.CONTAINER;
+import com.sparrow.utility.StringUtility;
 import org.apache.poi.ss.formula.functions.T;
 
 import java.lang.reflect.Method;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author harry
  */
 public interface Container {
+
 
     FactoryBean getSingletonRegister();
 
@@ -66,6 +68,7 @@ public interface Container {
      */
     void init();
 
-    void init(String xmlName, String systemConfigPath);
+    void setConfigLocation(String configLocation);
 
+    void setContextConfigLocation(String contextConfigLocation);
 }
