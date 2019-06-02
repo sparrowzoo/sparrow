@@ -17,9 +17,15 @@
 
 package com.sparrow.core;
 
+import com.sparrow.concurrent.SparrowThreadFactory;
+import com.sparrow.core.algorithm.bus.BatchEventBus;
+import com.sparrow.utility.CollectionsUtility;
+
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import com.sparrow.constant.CACHE_KEY;
+import java.util.concurrent.*;
 
 /**
  * 系统缓存类 <p> 加泛型为上层调用时不用类型转换
@@ -28,23 +34,45 @@ import com.sparrow.constant.CACHE_KEY;
  * @version 1.0
  */
 public class Cache {
-    private Map<String, Map<String, ?>> map = new ConcurrentHashMap<String, Map<String, ?>>();
+    private Map<String, SoftReference<ExpirableData<Map<String, ?>>>> expirableMap = new ConcurrentHashMap<>();
 
-    private static class Nested{
-        private static Cache cache=new Cache();
+    private Map<String, Map<String, ?>> map = new ConcurrentHashMap<>();
+
+    static {
+        ScheduledExecutorService cleaner = Executors.newSingleThreadScheduledExecutor(new SparrowThreadFactory.Builder().namingPattern("cache-expire-cleaner").build());
+        cleaner.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Map<String, SoftReference<ExpirableData<Map<String, ?>>>> expirableDataMap = Cache.getInstance().expirableMap;
+                if (expirableDataMap == null || expirableDataMap.size() == 0) {
+                    return;
+                }
+
+                for (String key : expirableDataMap.keySet()) {
+                    SoftReference<ExpirableData<Map<String, ?>>> expirableData = expirableDataMap.get(key);
+                    if(expirableData==null){
+                        continue;
+                    }
+                    ExpirableData<Map<String,?>> data= expirableData.get();
+                    if(data==null){
+                        continue;
+                    }
+                    if (data.isExpire()) {
+                        expirableDataMap.remove(key);
+                    }
+                }
+            }
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
+    private static class Nested {
+        private static Cache cache = new Cache();
+    }
 
     public static Cache getInstance() {
         return Nested.cache;
     }
 
-    /**
-     * 获取map中的值
-     *
-     * @param key key
-     * @return value
-     */
     private <T> T get(Map<String, T> map, String key) {
         if (!map.containsKey(key)) {
             return null;
@@ -57,72 +85,47 @@ public class Cache {
         return value;
     }
 
-    /**
-     * 从二级缓存中获取值 不过期
-     *
-     * @param key key
-     * @return value
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T get(String childCacheKey, String key) {
-        Map<String, ?> childCache = this.get(this.map, childCacheKey);
+    public <T> T get(String L1Key, String L2Key) {
+        Map<String, ?> childCache = this.get(this.map, L1Key);
         if (childCache == null) {
             return null;
         }
-        return (T) this.get(childCache, key);
+        return (T) this.get(map, L2Key);
     }
 
-    /**
-     * 从二级默认缓存中获取
-     *
-     * @param key key
-     * @return value
-     */
-    public <T> T getValueFromDefaultCache(String key) {
-        return this.get(CACHE_KEY.DEFAULT, key);
-    }
 
-    /**
-     * 存入一级缓存 <p> 只接收Map <p> 业务上只接受不变的数据
-     *
-     * @param key key
-     * @param value value
-     */
     public <T> void put(String key, Map<String, T> value) {
         this.map.put(key, value);
     }
 
-    /**
-     * 存入二级缓存 不过期直接保存缓存值
-     *
-     * @param childCacheKey childCacheKey
-     * @param key key
-     * @param value value
-     */
-    public <T> void put(String childCacheKey, String key, T value) {
-        @SuppressWarnings("unchecked")
-        Map<String, T> childCache = (Map<String, T>) this.get(this.map,
-            childCacheKey);
-        if (childCache == null) {
-            childCache = new ConcurrentHashMap<String, T>(1024);
-            this.map.put(childCacheKey, childCache);
-        }
-        childCache.put(key, value);
+
+    public <T> void put(String key, Map<String, T> value, int expire) {
+        this.expirableMap.put(key, new SoftReference<>(new ExpirableData(expire, value)));
     }
 
-    /**
-     * 存入二级默认缓存 不过期直接保存缓存值
-     *
-     * @param key key
-     * @param value value
-     */
-    public <T> void putToDefaultCache(String key, T value) {
-        this.put(CACHE_KEY.DEFAULT, key, value);
+    public <T> void put(String L1Key, String L2Key, T value) {
+        @SuppressWarnings("unchecked")
+        Map<String, T> childCache = (Map<String, T>) this.get(this.map,
+                L1Key);
+        if (childCache == null) {
+            childCache = new ConcurrentHashMap<String, T>(1024);
+            this.map.put(L1Key, childCache);
+        }
+        childCache.put(L2Key, value);
     }
+
 
     @SuppressWarnings("unchecked")
     public <T> Map<String, T> get(String key) {
         return (Map<String, T>) Nested.cache.get(this.map, key);
+    }
+
+    public ExpirableData<Map<String, ?>> getExpirable(String key) {
+        SoftReference<ExpirableData<Map<String,?>>> softReference= Nested.cache.get(this.expirableMap, key);
+        if(softReference==null){
+            return null;
+        }
+        return softReference.get();
     }
 
     public void clear() {

@@ -33,7 +33,7 @@ public abstract class AbstractLock {
         Boolean lock = this.readLock(key);
         int times = 1;
         int timeout = 0;
-        while (lock != null) {
+        while (lock==null||!lock) {
             lock = this.readLock(key);
             try {
                 if (timeout < 1024) {

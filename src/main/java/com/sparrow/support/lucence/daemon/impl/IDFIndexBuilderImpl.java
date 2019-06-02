@@ -19,18 +19,13 @@ package com.sparrow.support.lucence.daemon.impl;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
 import com.sparrow.constant.CONFIG;
-import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.support.lucence.IndexManager;
 import com.sparrow.utility.Config;
-import com.sparrow.utility.FileUtility;
-
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.TermEnum;
 
 import java.util.Calendar;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -81,26 +76,24 @@ public class IDFIndexBuilderImpl implements Runnable {
 
                     if (indexReader == null) {
                         indexReader = indexManager.openIndexReader(idfIndexPath);
-                    } else {
-                        indexReader = IndexReader.openIfChanged(indexReader);
                     }
-                    TermEnum termEnum = indexReader.terms();
-                    StringBuilder sb = new StringBuilder();
-                    int maxDocs = indexReader.maxDoc();
-                    while (termEnum.next()) {
-                        String term = termEnum.term().text();
-                        if (term.length() == 1) {
-                            continue;
-                        }
-                        // 包含term的文档数
-                        int termCount = termEnum.docFreq();
-                        //某一特定词语的IDF，可以由总文件数目除以包含该词语之文件的数目，再将得到的商取对数得到
-                        // idf(t) = 1 +log(文档总数/(包含t的文档数+1))
-                        double idf = 1 + Math.log((double) maxDocs / (termCount + 1));
-                        sb.append(term + "|" + idf);
-                        sb.append(CONSTANT.ENTER_TEXT);
-                    }
-                    FileUtility.getInstance().writeFile(idfWordPath, sb.toString());
+//                    TermEnum termEnum = indexReader.
+//                    StringBuilder sb = new StringBuilder();
+//                    int maxDocs = indexReader.maxDoc();
+//                    while (termEnum.next()) {
+//                        String term = termEnum.term().text();
+//                        if (term.length() == 1) {
+//                            continue;
+//                        }
+//                        // 包含term的文档数
+//                        int termCount = termEnum.docFreq();
+//                        //某一特定词语的IDF，可以由总文件数目除以包含该词语之文件的数目，再将得到的商取对数得到
+//                        // idf(t) = 1 +log(文档总数/(包含t的文档数+1))
+//                        double idf = 1 + Math.log((double) maxDocs / (termCount + 1));
+//                        sb.append(term + "|" + idf);
+//                        sb.append(CONSTANT.ENTER_TEXT);
+//                    }
+//                    FileUtility.getInstance().writeFile(idfWordPath, sb.toString());
                 } catch (Exception ignore) {
                 }
             }
