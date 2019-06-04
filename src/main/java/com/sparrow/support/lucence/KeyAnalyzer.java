@@ -133,7 +133,7 @@ public class KeyAnalyzer {
                 char[] charBuf = charTermAttr.buffer();
                 String term = new String(charBuf, 0, offsetAttr.endOffset()
                         - offsetAttr.startOffset());
-                LexemeWithBoost lexeme = new LexemeWithBoost(positionIncrementAttribute.getPositionIncrement()-1,offsetAttr.startOffset(), term.length(),LexemeWithBoost.getLexemeType(typeAttribute.type()));
+                LexemeWithBoost lexeme = new LexemeWithBoost(positionIncrementAttribute.getPositionIncrement()-1,offsetAttr.startOffset(), term.length(),typeAttribute.type());
                 lexeme.setLexemeText(term);
                 list.add(lexeme);
                 if(root==null||lexeme.getBeginPosition()>=root.getEndPosition()){

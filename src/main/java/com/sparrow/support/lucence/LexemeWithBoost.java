@@ -63,14 +63,14 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
     //词元文本
     private String lexemeText;
     //词元类型
-    private int lexemeType;
+    private String lexemeType;
     //父词元
     private LexemeWithBoost parent;
     //权重
     private int boost;
     
     
-	public LexemeWithBoost(int offset , int begin , int length , int lexemeType){
+	public LexemeWithBoost(int offset , int begin , int length , String lexemeType){
 		this.offset = offset;
 		this.begin = begin;
 		if(length < 0){
@@ -212,48 +212,10 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
 	 * 获取词元类型
 	 * @return int
 	 */
-	public int getLexemeType() {
+	public String getLexemeType() {
 		return lexemeType;
 	}
-	
-	/**
-	 * 获取词元类型标示字符串
-	 * @return String
-	 */
-	public  String getLexemeTypeString(){
-		switch(lexemeType) {
 
-		case TYPE_ENGLISH :
-			return "ENGLISH";
-			
-		case TYPE_ARABIC :
-			return "ARABIC";
-			
-		case TYPE_LETTER :
-			return "LETTER";
-			
-		case TYPE_CNWORD : 
-			return "CN_WORD";
-			
-		case TYPE_CNCHAR : 
-			return "CN_CHAR";
-			
-		case TYPE_OTHER_CJK :
-			return "OTHER_CJK";
-			
-		case TYPE_COUNT :
-			return "COUNT";
-			
-		case TYPE_CNUM :
-			return "TYPE_CNUM";
-			
-		case TYPE_CQUAN:	
-			return "TYPE_CQUAN";
-			
-		default :
-			return "UNKONW";
-		}
-	}
 
 	public static int getLexemeType(String type){
 		switch(type) {
@@ -305,7 +267,7 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
 		this.boost = boost;
 	}
 
-	public void setLexemeType(int lexemeType) {
+	public void setLexemeType(String lexemeType) {
 		this.lexemeType = lexemeType;
 	}
 	
@@ -315,7 +277,7 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
 	 * @param lexemeType
 	 * @return boolean 词元是否成功合并
 	 */
-	public boolean append(LexemeWithBoost l , int lexemeType){
+	public boolean append(LexemeWithBoost l , String lexemeType){
 		if(l != null && this.getEndPosition() == l.getBeginPosition()){
 			this.length += l.getLength();
 			this.lexemeType = lexemeType;
@@ -332,7 +294,7 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
 		StringBuffer strbuf = new StringBuffer();
 		strbuf.append(this.getBeginPosition()).append("-").append(this.getEndPosition());
 		strbuf.append(" : ").append(this.lexemeText).append(" : \t");
-		strbuf.append(this.getLexemeTypeString());
+		strbuf.append(this.getLexemeType());
 		return strbuf.toString();
 	}
 
