@@ -5,6 +5,8 @@ package com.sparrow.pipeline;
  */
 public interface HandlerPipeline {
 
+    boolean isAsc();
+
     void add(Handler handler);
 
     void fire(Object arg);

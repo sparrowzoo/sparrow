@@ -5,8 +5,19 @@ package com.sparrow.pipeline;
  */
 public class SimpleHandlerPipeline implements HandlerPipeline {
 
+    public SimpleHandlerPipeline(boolean asc) {
+        this.asc = asc;
+    }
+
     private HandlerContext head;
     private HandlerContext tail;
+
+    private boolean asc;
+
+    @Override public boolean isAsc() {
+        return asc;
+    }
+
 
     @Override public void add(Handler handler) {
         HandlerContext handlerContext = new HandlerContext(this,handler);
@@ -16,14 +27,16 @@ public class SimpleHandlerPipeline implements HandlerPipeline {
             return;
         }
 
-        HandlerContext prev = tail.prev==null?head:tail.prev;
-        handlerContext.prev = prev;
-        prev.next = handlerContext;
         handlerContext.prev = tail;
+        tail.next = handlerContext;
         tail=handlerContext;
     }
 
     @Override public void fire(Object arg) {
-        head.fire(arg);
+        if(asc) {
+            head.fire(arg);
+            return;
+        }
+        tail.fire(arg);
     }
 }

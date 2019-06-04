@@ -3,6 +3,6 @@ package com.sparrow.pipeline;
 /**
  * @author by harry
  */
-public interface Handler{
-    void invoke(Object arg);
+public interface Handler<T>{
+    void invoke(T arg);
 }
