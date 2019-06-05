@@ -5,17 +5,21 @@ package com.sparrow.pipeline;
  */
 public class SimpleHandlerPipeline implements HandlerPipeline {
 
-    public SimpleHandlerPipeline(boolean asc) {
-        this.asc = asc;
+    public SimpleHandlerPipeline(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    public SimpleHandlerPipeline() {
+        this.reverse=false;
     }
 
     private HandlerContext head;
     private HandlerContext tail;
 
-    private boolean asc;
+    private boolean reverse;
 
-    @Override public boolean isAsc() {
-        return asc;
+    @Override public boolean isReverse() {
+        return reverse;
     }
 
 
@@ -33,7 +37,7 @@ public class SimpleHandlerPipeline implements HandlerPipeline {
     }
 
     @Override public void fire(Object arg) {
-        if(asc) {
+        if(!reverse) {
             head.fire(arg);
             return;
         }
