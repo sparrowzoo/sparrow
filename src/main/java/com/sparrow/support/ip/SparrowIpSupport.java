@@ -1,5 +1,6 @@
 package com.sparrow.support.ip;
 
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.support.IpSupport;
 
 import java.net.InetAddress;
@@ -86,6 +87,9 @@ public class SparrowIpSupport implements IpSupport {
     public Long toLong(String ip) {
         long result = 0;
         String[] ipAddressInArray = ip.split("\\.");
+        if(ipAddressInArray.length<4){
+            return result;
+        }
         for (int i = 3; i >= 0; i--) {
             long ipSegment = Long.parseLong(ipAddressInArray[3 - i]);
             //left shifting 24,16,8,0 and bitwise OR
@@ -96,6 +100,9 @@ public class SparrowIpSupport implements IpSupport {
 
     @Override
     public String parse(Long ip) {
+        if(ip==0L){
+            return SYMBOL.EMPTY;
+        }
         return ((ip >> 24) & 0xFF) + "."
                 + ((ip >> 16) & 0xFF) + "."
                 + ((ip >> 8) & 0xFF) + "."

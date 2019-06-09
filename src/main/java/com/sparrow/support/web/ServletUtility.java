@@ -51,7 +51,10 @@ public class ServletUtility {
     }
 
 
-    public String getDispatcherUrl(String url) {
+    public String assembleActualUrl(String url) {
+        if(!url.startsWith(SYMBOL.SLASH)){
+            url=SYMBOL.SLASH+url;
+        }
         String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
         String pagePrefix = Config.getValue(CONFIG.DEFAULT_PAGE_PREFIX, "/template");
         return pagePrefix + url + extension;

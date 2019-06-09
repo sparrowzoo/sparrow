@@ -72,45 +72,47 @@ public class SPARROW_ERROR extends AbstractErrorSupport {
 
     public static final SPARROW_ERROR GLOBAL_DB_LOAD_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "09", "load error");
 
-    public static final SPARROW_ERROR GLOBAL_REQUEST_ID_NOT_EXIST = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "01", "Request id not exist");
 
-    public static final SPARROW_ERROR GLOBAL_VALIDATE_CODE_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "02", "ValidateCode error");
 
-    public static final SPARROW_ERROR GLOBAL_CONTENT_IS_NULL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "03", "Content is null");
+    public static final SPARROW_ERROR GLOBAL_REQUEST_ID_NOT_EXIST = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "11", "Request id not exist");
 
-    public static final SPARROW_ERROR GLOBAL_CONTAIN_ILLEGAL_WEBSITE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "04", "Contain illegal website");
+    public static final SPARROW_ERROR GLOBAL_VALIDATE_CODE_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "12", "ValidateCode error");
 
-    public static final SPARROW_ERROR GLOBAL_CONTAIN_ADVERTISING = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "05", "Contain advertising");
+    public static final SPARROW_ERROR GLOBAL_CONTENT_IS_NULL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "13", "Content is null");
 
-    public static final SPARROW_ERROR GLOBAL_CONTENT_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "06", "Content is illegal");
+    public static final SPARROW_ERROR GLOBAL_CONTAIN_ILLEGAL_WEBSITE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "14", "Contain illegal website");
 
-    public static final SPARROW_ERROR GLOBAL_CONTENT_DUPLICATE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "07", "Content duplicate");
+    public static final SPARROW_ERROR GLOBAL_CONTAIN_ADVERTISING = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "15", "Contain advertising");
 
-    public static final SPARROW_ERROR GLOBAL_UNSUPPORTED_IMAGE_TYPE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "08",
+    public static final SPARROW_ERROR GLOBAL_CONTENT_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "16", "Content is illegal");
+
+    public static final SPARROW_ERROR GLOBAL_CONTENT_DUPLICATE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "17", "Content duplicate");
+
+    public static final SPARROW_ERROR GLOBAL_UNSUPPORTED_IMAGE_TYPE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "18",
         "Unsupported image type only support JPG, GIF, PNG");
 
-    public static final SPARROW_ERROR GLOBAL_IMAGE_SIZE_TOO_LARGE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "09", "Image size too large");
+    public static final SPARROW_ERROR GLOBAL_IMAGE_SIZE_TOO_LARGE = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "19", "Image size too large");
 
-    public static final SPARROW_ERROR GLOBAL_ACCOUNT_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "10",
+    public static final SPARROW_ERROR GLOBAL_ACCOUNT_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "20",
         "Account or ip or app is illegal, can not continue");
 
-    public static final SPARROW_ERROR GLOBAL_OUT_OF_TIMES_LIMIT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "11", "Out of times limit");
+    public static final SPARROW_ERROR GLOBAL_OUT_OF_TIMES_LIMIT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "21", "Out of times limit");
 
-    public static final SPARROW_ERROR GLOBAL_ADMIN_CAN_NOT_OPERATION = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "12", "Admin can't operation");
+    public static final SPARROW_ERROR GLOBAL_ADMIN_CAN_NOT_OPERATION = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "22", "Admin can't operation");
 
-    public static final SPARROW_ERROR GLOBAL_PARAMETER_NULL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "13", "Parameter is null");
+    public static final SPARROW_ERROR GLOBAL_PARAMETER_NULL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "23", "Parameter is null");
 
-    public static final SPARROW_ERROR GLOBAL_REQUEST_REPEAT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "14", "Request repeat");
+    public static final SPARROW_ERROR GLOBAL_REQUEST_REPEAT = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "24", "Request repeat");
 
-    public static final SPARROW_ERROR GLOBAL_EMAIL_SEND_FAIL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "15", "email send fail");
+    public static final SPARROW_ERROR GLOBAL_EMAIL_SEND_FAIL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "25", "email send fail");
 
-    public static final SPARROW_ERROR GLOBAL_OPERATION_VALIDATE_STATUS_INVALID = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "16", "operation validate status is invalid");
+    public static final SPARROW_ERROR GLOBAL_OPERATION_VALIDATE_STATUS_INVALID = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "26", "operation validate status is invalid");
 
-    public static final SPARROW_ERROR GLOBAL_OPERATION_VALIDATE_ROLE_INVALID = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "17", "operation validate role is invalid");
+    public static final SPARROW_ERROR GLOBAL_OPERATION_VALIDATE_ROLE_INVALID = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "27", "operation validate role is invalid");
 
-    public static final SPARROW_ERROR GLOBAL_PARAMETER_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "18", "parameter is illegal");
+    public static final SPARROW_ERROR GLOBAL_PARAMETER_IS_ILLEGAL = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "28", "parameter is illegal");
 
-    public static final SPARROW_ERROR GLOBAL_SMS_SEND_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "19", "short message service error");
+    public static final SPARROW_ERROR GLOBAL_SMS_SEND_ERROR = new SPARROW_ERROR(true, SPARROW_MODULE.GLOBAL, "29", "short message service error");
 
 
     public static final SPARROW_ERROR USER_NAME_EXIST = new SPARROW_ERROR(SPARROW_MODULE.USER, "01", "User name exist");

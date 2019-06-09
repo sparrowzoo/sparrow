@@ -34,30 +34,6 @@ public class KEY_USER {
      */
     public static final KEY.Business PERMISSION = new KEY.Business(SPARROW_MODULE.USER, "PERMISSION");
 
-    public static final Map<KEY.Business, LockConfig> LOCK_CONFIG = new HashMap<KEY.Business, LockConfig>() {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 3143693232489958715L;
-
-        {
-            // 5分钟不能超10次 不顺延
-            put(LOCK_PUBLISH, LockConfig.getRelativeLock(5 * 60, 10, false, false));
-            // 30分钟之内不超过5次//todo 上线前要修改
-            put(LOCK_LOGIN, LockConfig.getRelativeLock(30 * 60, 100000,
-                    true, false));
-            // 24小时内登录一次加一次积分
-            put(LOCK_LOGIN_CENT, LockConfig.getRelativeLock(24 * 60 * 60, 1, false, false));
-            // 30分钟之内不超过5次
-            put(LOCK_FIND_PASSWORD, LockConfig.getRelativeLock(30 * 60, 5,true, false));
-            // 12小时内不超过20次
-            put(LOCK_REGISTER, LockConfig.getRelativeLock(12 * 60 * 60, 20, false, false));
-            // 1天内只允许1 次
-            put(LOCK_DIG, LockConfig.getAbsoluteLock(DATE_TIME_UNIT.DAY, 1));
-            // 1天只允许1次
-            put(LOCK_LIKE,  LockConfig.getAbsoluteLock(DATE_TIME_UNIT.DAY, 1));
-        }
-    };
 
     /**
      * attention list
@@ -104,4 +80,25 @@ public class KEY_USER {
      * lastest login and high cent
      */
     public static final KEY.Business SORT_POPULARITY = new KEY.Business(SPARROW_MODULE.USER,"SORT","POPULARITY");
+
+    public static final Map<KEY.Business, LockConfig> LOCK_CONFIG = new HashMap<KEY.Business, LockConfig>();
+
+
+    static {
+        // 5分钟不能超10次 不顺延
+        LOCK_CONFIG.put(LOCK_PUBLISH, LockConfig.getRelativeLock(5 * 60, 10, false, false));
+        // 30分钟之内不超过5次//todo 上线前要修改
+        LOCK_CONFIG.put(LOCK_LOGIN, LockConfig.getRelativeLock(30 * 60, 100000,
+            true, false));
+        // 24小时内登录一次加一次积分
+        LOCK_CONFIG.put(LOCK_LOGIN_CENT, LockConfig.getRelativeLock(24 * 60 * 60, 1, false, false));
+        // 30分钟之内不超过5次
+        LOCK_CONFIG.put(LOCK_FIND_PASSWORD, LockConfig.getRelativeLock(30 * 60, 5, true, false));
+        // 12小时内不超过20次
+        LOCK_CONFIG.put(LOCK_REGISTER, LockConfig.getRelativeLock(12 * 60 * 60, 20, false, false));
+        // 1天内只允许1 次
+        LOCK_CONFIG.put(LOCK_DIG, LockConfig.getAbsoluteLock(DATE_TIME_UNIT.DAY, 1));
+        // 1天只允许1次
+        LOCK_CONFIG.put(LOCK_LIKE, LockConfig.getAbsoluteLock(DATE_TIME_UNIT.DAY, 1));
+    }
 }

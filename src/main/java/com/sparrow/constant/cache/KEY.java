@@ -98,6 +98,26 @@ public class KEY {
         public String getModule() {
             return module;
         }
+
+        @Override public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            Business business = (Business) o;
+
+            if (module != null ? !module.equals(business.module) : business.module != null)
+                return false;
+            return key != null ? key.equals(business.key) : business.key == null;
+
+        }
+
+        @Override public int hashCode() {
+            int result = module != null ? module.hashCode() : 0;
+            result = 31 * result + (key != null ? key.hashCode() : 0);
+            return result;
+        }
     }
 
     public static class Builder {

@@ -19,6 +19,8 @@ package com.sparrow.support.web;
 
 import com.sparrow.protocol.constant.CONSTANT;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -98,13 +100,13 @@ public class HttpContext {
         response.remove();
     }
 
-
     public void execute(String script) {
         script = "<script type=\"text/javascript\">" + script + "</script>";
-        String oldScript = (String) this.getHolder().get(CONSTANT.ACTION_RESULT_JAVASCRIPT);
-        if (oldScript != null) {
-            script += oldScript;
+        PrintWriter out = null;
+        try {
+            out = response.get().getWriter();
+        out.println(script);
+        } catch (IOException ignore) {
         }
-        this.getHolder().put(CONSTANT.ACTION_RESULT_JAVASCRIPT, script);
     }
 }

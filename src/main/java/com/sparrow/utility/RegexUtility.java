@@ -91,6 +91,15 @@ public class RegexUtility {
         return multiGroupList;
     }
 
+    /**
+     *
+     * @param actionKey thread-{thread_id}-{page_index}
+     * @return
+     *
+     * thread-([a-z0-9]*)-([a-z0-9]*)
+     * -- thread_id
+     * -- page_index
+     */
     public static Pair<String, List<String>> getActionRegex(String actionKey) {
         String configParameter = "(\\{[a-z0-9]*\\})";
         String digitalAndLetter = "([a-z0-9]*)";
