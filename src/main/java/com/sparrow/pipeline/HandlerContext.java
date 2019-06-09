@@ -20,7 +20,7 @@ class HandlerContext<T> {
     public void fire(T arg) {
         handler.invoke(arg);
 
-        if (pipeline.isAsc()) {
+        if (!pipeline.isReverse()) {
             if (next != null) {
                 next.fire(arg);
             }

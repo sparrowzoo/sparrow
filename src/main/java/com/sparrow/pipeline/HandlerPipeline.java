@@ -5,7 +5,7 @@ package com.sparrow.pipeline;
  */
 public interface HandlerPipeline {
 
-    boolean isAsc();
+    boolean isReverse();
 
     void add(Handler handler);
 
