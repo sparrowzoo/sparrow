@@ -44,7 +44,7 @@ public class LoginParser implements Serializable {
         login.setUserName(Config.getLanguageValue(
                 CONFIG_KEY_LANGUAGE.USER_VISITOR,
                 Config.getValue(CONFIG.LANGUAGE)));
-        login.setAvatar(Config.getValue(CONFIG.DEFAULT_USER_HEAD));
+        login.setAvatar(Config.getValue(CONFIG.DEFAULT_AVATAR));
         if (StringUtility.isNullOrEmpty(permission)) {
             return login;
         }

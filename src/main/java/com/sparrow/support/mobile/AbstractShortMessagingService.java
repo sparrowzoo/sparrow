@@ -3,8 +3,11 @@ package com.sparrow.support.mobile;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
 import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.core.Pair;
+import com.sparrow.cryptogram.ThreeDES;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.MobileShortMessaging;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
@@ -21,13 +24,12 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
 
     private Logger logger = LoggerFactory.getLogger(AbstractShortMessagingService.class);
 
-    public MobileShortMessaging.Builder init(String mobile) {
-        MobileShortMessaging.Builder builder = new MobileShortMessaging.Builder()
+    @Override public MobileShortMessaging.Builder init(String mobile) {
+        return new MobileShortMessaging.Builder()
                 .companyName(Config.getLanguageValue(CONFIG_KEY_LANGUAGE.MOBILE_COMPANY))
                 .key(Config.getValue(CONFIG.MOBILE_KEY))
                 .mobile(mobile)
                 .templateId(Config.getValue(CONFIG.MOBILE_TEMPLATE_ID));
-        return builder;
     }
 
 
@@ -57,7 +59,7 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
      * @param shortMessaging short message entity
      * @return 是否验证成功
      */
-    public Boolean validate(String validateCode, MobileShortMessaging shortMessaging) throws BusinessException {
+    @Override public Boolean validate(String validateCode, MobileShortMessaging shortMessaging) throws BusinessException {
         if (Config.getBooleanValue(CONFIG.DEBUG)) {
             return true;
         }
@@ -74,7 +76,7 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
         return true;
     }
 
-    public MobileShortMessaging.Builder validateCode(MobileShortMessaging.Builder builder) {
+    @Override public MobileShortMessaging.Builder validateCode(MobileShortMessaging.Builder builder) {
         Random random = new Random();
         Integer code = 100000 + random.nextInt(89999);
         builder.validateCode(code.toString());
@@ -83,5 +85,21 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
         builder.content(content);
         logger.debug(content);
         return builder;
+    }
+
+    @Override public Pair<String, String> secretMobile(String mobile) {
+        if (StringUtility.isNullOrEmpty(mobile)) {
+            return Pair.create(SYMBOL.EMPTY, SYMBOL.EMPTY);
+        }
+        if(mobile.length()<11||!StringUtility.isNumeric(mobile)){
+            return Pair.create(SYMBOL.EMPTY, SYMBOL.EMPTY);
+        }
+        String firstSegment = mobile.substring(0, 3);
+        String secondSegment = mobile.substring(3, 7);
+        String thirdSegment = mobile.substring(7);
+
+        mobile = firstSegment + "****" + thirdSegment;
+        String secretMobile = ThreeDES.getInstance().encrypt(secondSegment, Config.getValue(CONFIG.MOBILE_SECRET_3DAS_KEY));
+        return Pair.create(mobile, secretMobile);
     }
 }

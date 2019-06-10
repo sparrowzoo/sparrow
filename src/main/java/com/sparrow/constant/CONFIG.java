@@ -44,7 +44,7 @@ public class CONFIG {
     public static final String DEFAULT_SYSTEM_INDEX = "default_system_index";
     public static final String DEFAULT_MENU_PAGE = "default_menu_page";
     public static final String DEFAULT_FORUM_ICO = "default_forum_ico";
-    public static final String DEFAULT_USER_HEAD = "default_user_head";
+    public static final String DEFAULT_AVATAR = "default_avatar";
     public static final String DEFAULT_BLOG_URL = "default_blog_url";
     public static final String DEFAULT_DATA_SOURCE_KEY = "data_source";
     public static final String DEFAULT_USER_PASSWORD = "default_user_password";
@@ -64,7 +64,6 @@ public class CONFIG {
     public static final String USER_CENTER_URL_FORMAT = "user_center_url_format";
     public static final String ERROR_URL = "error_url";
     public static final String TRANSIT_URL = "transit_url";
-    public static final String TRANSIT_TYPE = "transit_type";
     public static final String EXCEPTION_SWITCH_MODE = "exception_switch_mode";
 
     public static final String EMAIL_HOST = "email_host";

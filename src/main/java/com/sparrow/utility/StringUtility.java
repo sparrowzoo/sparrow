@@ -20,6 +20,7 @@ package com.sparrow.utility;
 import com.sparrow.cg.MethodAccessor;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
+import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.CHAR_SYMBOL;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.container.Container;
@@ -409,6 +410,9 @@ public class StringUtility {
     public static String join(Iterable<?> collection, String joinChar) {
         StringBuilder sb = new StringBuilder();
         for (Object object : collection) {
+            if(object==null){
+                continue;
+            }
             if (sb.length() > 0) {
                 sb.append(joinChar);
             }
@@ -697,7 +701,7 @@ public class StringUtility {
             target = subString(target, SYMBOL.QUESTION_MARK);
         }
 
-        String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION);
+        String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
         if (source.endsWith(extension)) {
             source = source.replace(extension, SYMBOL.EMPTY);
         }
@@ -715,27 +719,20 @@ public class StringUtility {
         return source.equals(target);
     }
 
-    public static Pair<String, String> secretMobile(String mobile) {
-        if (isNullOrEmpty(mobile)) {
-            return Pair.create(SYMBOL.EMPTY, SYMBOL.EMPTY);
+    public static boolean isNumeric(String str){
+        if(isNullOrEmpty(str)){
+            return false;
         }
-        String firstSegment = mobile.substring(0, 3);
-        String secondSegment = mobile.substring(3, 7);
-        String thirdSegment = mobile.substring(7);
-
-        mobile = firstSegment + "****" + thirdSegment;
-        String secretMobile = ThreeDES.getInstance().encrypt(secondSegment, Config.getValue(CONFIG.MOBILE_SECRET_3DAS_KEY));
-        return Pair.create(mobile, secretMobile);
-    }
-
-    public static Boolean isNumeric(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)) {
+        for(int i=0;i<str.length();i++){
+            if(!Character.isDigit(str.charAt(i))){
                 return false;
             }
         }
         return true;
     }
+
+
+
 
     public static String format(String format, Object... args) {
         if (format == null) {

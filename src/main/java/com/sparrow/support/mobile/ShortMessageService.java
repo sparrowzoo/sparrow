@@ -17,6 +17,7 @@
 
 package com.sparrow.support.mobile;
 
+import com.sparrow.core.Pair;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.MobileShortMessaging;
 
@@ -69,4 +70,13 @@ public interface ShortMessageService {
      * @throws BusinessException
      */
     Boolean validate(String validateCode, MobileShortMessaging shortMessaging) throws BusinessException;
+
+    /**
+     * secret mobile
+     * @param mobile mobile no
+     * @return
+     * 135****1111
+     * ****  secret
+     */
+    Pair<String, String> secretMobile(String mobile);
 }
