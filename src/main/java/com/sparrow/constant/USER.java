@@ -40,16 +40,13 @@ public class USER {
     /**
      * 用户ID
      */
-    public static final String ID = "userId";
+    public static final String ID = "user_id";
     /**
      * 用户登录帐号
      */
-    public static final String LOGIN_NAME = "userName";
+    public static final String LOGIN_TOKEN = "login_token";
 
-    /**
-     * 用户名 或者 昵称
-     */
-    public static final String NICK_NAME = "nickName";
+
 
 
     /**
