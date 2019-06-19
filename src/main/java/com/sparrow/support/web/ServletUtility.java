@@ -22,12 +22,11 @@ import com.sparrow.constant.CONFIG;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.core.Cache;
+import com.sparrow.core.cache.Cache;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
 import java.util.Enumeration;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 

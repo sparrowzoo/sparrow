@@ -2,7 +2,7 @@ package com.sparrow.orm;
 
 import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.container.ClassFactoryBean;
-import com.sparrow.core.Cache;
+import com.sparrow.core.cache.Cache;
 import com.sparrow.utility.StringUtility;
 import java.util.Iterator;
 import java.util.Map;
@@ -35,7 +35,8 @@ public class EntityManagerFactoryBean implements ClassFactoryBean<EntityManager>
 
     @Override
     public void removeObject(String name) {
-        Cache.getInstance().get(CACHE_KEY.ORM).remove(name);
+        Map<String,Object> map=Cache.getInstance().get(CACHE_KEY.ORM);
+        map.remove(name);
     }
 
     @Override public Iterator<String> keyIterator() {
