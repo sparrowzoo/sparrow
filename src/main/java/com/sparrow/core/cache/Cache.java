@@ -16,7 +16,6 @@
  */
 
 package com.sparrow.core.cache;
-
 import com.sparrow.concurrent.SparrowThreadFactory;
 
 import java.lang.ref.SoftReference;
