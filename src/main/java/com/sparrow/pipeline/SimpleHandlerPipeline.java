@@ -2,7 +2,8 @@ package com.sparrow.pipeline;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author by harry
@@ -20,8 +21,14 @@ public class SimpleHandlerPipeline implements HandlerPipeline {
 
     private HandlerContext head;
     private HandlerContext tail;
+    private int asyncCount;
 
     private boolean reverse;
+
+    @Override
+    public int getAsyncCount() {
+        return this.asyncCount;
+    }
 
     @Override
     public boolean isReverse() {
@@ -48,17 +55,28 @@ public class SimpleHandlerPipeline implements HandlerPipeline {
     }
 
     @Override
-    public void addAsyc(Handler handler) {
+    public void addAsync(Handler handler) {
         this.add(handler, true);
+        this.asyncCount++;
     }
 
     @Override
-    public void fire(Object arg) {
+    public void fire(Object arg) throws InterruptedException {
+        PipelineAsyncData pipelineAsyncData = null;
+        if (asyncCount > 0 && arg instanceof PipelineAsyncData) {
+            pipelineAsyncData = (PipelineAsyncData) arg;
+            pipelineAsyncData.initLatch(this.asyncCount);
+        }
         if (!reverse) {
             head.fire(arg);
-            return;
+        } else {
+            tail.fire(arg);
         }
-        tail.fire(arg);
+
+        if (pipelineAsyncData != null) {
+            pipelineAsyncData.getCountDownLatch().await();
+        }
+
     }
 
     public ExecutorService getConsumerThreadPool() {

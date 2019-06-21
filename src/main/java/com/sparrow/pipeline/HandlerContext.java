@@ -23,25 +23,29 @@ class HandlerContext<T> {
     }
 
     private Handler handler;
-
-    public void fire(T arg) {
-        if (this.async) {
+    private void innerFire(Object arg){
+        if(this.async) {
+            PipelineAsyncData pipelineAsync = (PipelineAsyncData) arg;
             pipeline.getConsumerThreadPool().submit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.invoke(arg);
+                    handler.invoke(pipelineAsync);
+                    pipelineAsync.getCountDownLatch().countDown();
                 }
             });
-        } else {
-            handler.invoke(arg);
+            return;
         }
+        handler.invoke(arg);
+    }
+
+    public void fire(T arg) {
+        this.innerFire(arg);
         if (!pipeline.isReverse()) {
             if (next != null) {
                 next.fire(arg);
             }
             return;
         }
-
         if (prev != null) {
             prev.fire(arg);
         }

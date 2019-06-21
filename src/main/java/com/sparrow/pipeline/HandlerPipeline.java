@@ -7,13 +7,15 @@ import java.util.concurrent.ExecutorService;
  */
 public interface HandlerPipeline {
 
+    int getAsyncCount();
+
     boolean isReverse();
 
     void add(Handler handler);
 
-    void addAsyc(Handler handler);
+    void fire(Object arg) throws InterruptedException;
 
-    void fire(Object arg);
+    void addAsync(Handler handler);
 
     ExecutorService getConsumerThreadPool();
 }
