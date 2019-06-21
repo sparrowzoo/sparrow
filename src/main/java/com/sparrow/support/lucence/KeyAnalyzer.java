@@ -136,7 +136,7 @@ public class KeyAnalyzer {
                 LexemeWithBoost lexeme = new LexemeWithBoost(positionIncrementAttribute.getPositionIncrement()-1,offsetAttr.startOffset(), term.length(),typeAttribute.type());
                 lexeme.setLexemeText(term);
                 list.add(lexeme);
-                if(root==null||lexeme.getBeginPosition()>=root.getEndPosition()){
+                if(root==null||lexeme.getEndPosition()>root.getEndPosition()){
                     root=lexeme;
                     lexeme.setParent(lexeme);
                     lexeme.setBoost(LexemeWithBoost.WHOLEWORD_SCORE);

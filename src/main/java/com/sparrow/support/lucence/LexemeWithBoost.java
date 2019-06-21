@@ -306,7 +306,7 @@ public class LexemeWithBoost implements Comparable<LexemeWithBoost>{
 				", length=" + length +
 				", lexemeText='" + lexemeText + '\'' +
 				", lexemeType=" + lexemeType +
-				", parent=" + parent.getLexemeText() +
+				", parent=" + (parent==null?"":parent.getLexemeText()) +
 				", boost=" + boost +
 				'}';
 	}
