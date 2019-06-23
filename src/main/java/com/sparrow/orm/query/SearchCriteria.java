@@ -82,4 +82,5 @@ public class SearchCriteria extends WhereCriteria {
     public void setAggregate(AGGREGATE aggregate) {
         this.aggregate = aggregate;
     }
+
 }
