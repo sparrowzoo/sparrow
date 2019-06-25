@@ -19,6 +19,8 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
+import com.sparrow.core.cache.Cache;
+import com.sparrow.core.cache.StrongDurationCache;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.cache.CacheBack;
@@ -39,6 +41,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Config {
     private static Logger logger = LoggerFactory.getLogger(Config.class);
+    private static Cache<String,String> configCache;
+    static {
+        configCache=new StrongDurationCache<>();
+    }
 
     public static String getLanguageValue(String propertiesKey) {
         String language = getValue(CONFIG.LANGUAGE);

@@ -67,4 +67,9 @@ public class StrongDurationCache<K, V> implements Cache<K, V> {
     public void clear() {
         cache.clear();
     }
+
+    @Override
+    public void remove(String name) {
+        cache.remove(name);
+    }
 }

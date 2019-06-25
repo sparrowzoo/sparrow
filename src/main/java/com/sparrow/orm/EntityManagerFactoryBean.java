@@ -1,9 +1,10 @@
 package com.sparrow.orm;
 
-import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.container.ClassFactoryBean;
-import com.sparrow.core.cache.CacheBack;
+import com.sparrow.core.cache.Cache;
+import com.sparrow.core.cache.StrongDurationCache;
 import com.sparrow.utility.StringUtility;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -16,16 +17,16 @@ public class EntityManagerFactoryBean implements ClassFactoryBean<EntityManager>
         return Nested.single;
     }
 
+    private Cache<String,EntityManager> cache=new StrongDurationCache<>();
+
     @Override
     public void pubObject(String name, EntityManager o) {
-        CacheBack.getInstance().put(CACHE_KEY.ORM,
-                name, o);
+        cache.put(name, o);
     }
 
     @Override
     public EntityManager getObject(String name) {
-        return CacheBack.getInstance().get(CACHE_KEY.ORM,
-                name);
+        return cache.get(name);
     }
 
     @Override
@@ -35,12 +36,11 @@ public class EntityManagerFactoryBean implements ClassFactoryBean<EntityManager>
 
     @Override
     public void removeObject(String name) {
-        Map<String,Object> map= CacheBack.getInstance().get(CACHE_KEY.ORM);
-        map.remove(name);
+        cache.remove(name);
     }
 
     @Override public Iterator<String> keyIterator() {
-        Map<String,Object> map= CacheBack.getInstance().get(CACHE_KEY.ORM);
+        Map<String,EntityManager> map=cache.asMap();
         if(map==null){
             return null;
         }
@@ -49,13 +49,11 @@ public class EntityManagerFactoryBean implements ClassFactoryBean<EntityManager>
 
     @Override
     public void pubObject(Class clazz, EntityManager o) {
-        CacheBack.getInstance().put(CACHE_KEY.ORM,
-                StringUtility.getEntityNameByClass(clazz), o);
+       cache.put(StringUtility.getEntityNameByClass(clazz), o);
     }
 
     @Override
     public EntityManager getObject(Class clazz) {
-        return CacheBack.getInstance().get(CACHE_KEY.ORM,
-                StringUtility.getEntityNameByClass(clazz));
+        return cache.get(StringUtility.getEntityNameByClass(clazz));
     }
 }

@@ -23,4 +23,6 @@ public interface Cache<K, V> {
     void invalidateAll();
 
     void clear();
+
+    void remove(String name);
 }
