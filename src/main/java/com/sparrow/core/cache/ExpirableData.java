@@ -1,11 +1,11 @@
 package com.sparrow.core.cache;
 
-public class ExpirableData<T> {
+public class ExpirableData<V> {
     private long t;
     private int seconds;
-    private T data;
+    private V data;
 
-    public ExpirableData(int seconds,T data) {
+    public ExpirableData(int seconds,V data) {
         this.seconds = seconds;
         this.data = data;
         this.t=System.currentTimeMillis();
@@ -15,8 +15,12 @@ public class ExpirableData<T> {
         return seconds;
     }
 
-    public T getData() {
+    public V getData() {
         return data;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
     public boolean isExpire(){

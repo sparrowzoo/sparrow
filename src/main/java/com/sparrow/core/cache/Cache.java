@@ -20,13 +20,7 @@ public interface Cache<K, V> {
 
     ConcurrentMap<K, V> asMap();
 
-    void invalidate(Object key);
-
-    void invalidateAll(Iterable<K> keys);
-
-    void invalidateAll();
-
     void clear();
 
-    void remove(String name);
+    void remove(K name);
 }

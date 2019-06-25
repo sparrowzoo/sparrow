@@ -58,27 +58,12 @@ public class StrongDurationCache<K, V> extends AbstractCache<K, V> {
     }
 
     @Override
-    public void invalidate(Object key) {
-        throw new UnsupportedOperationException("invalidate date not support");
-    }
-
-    @Override
-    public void invalidateAll(Iterable<K> keys) {
-        throw new UnsupportedOperationException("invalidate date not support");
-    }
-
-    @Override
-    public void invalidateAll() {
-        throw new UnsupportedOperationException("invalidate date not support");
-    }
-
-    @Override
     public void clear() {
         cache.clear();
     }
 
     @Override
-    public void remove(String name) {
+    public void remove(K name) {
         cache.remove(name);
     }
 }
