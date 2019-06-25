@@ -358,26 +358,30 @@ public class FileUtility {
     }
 
     /**
-     * 根据单位为KB的长度获取文件长度（可变单位为MB GB）
+     * 根据单位为BYTE的长度获取文件长度（可变单位为MB GB）
      *
-     * @param length 单位是KB
+     * @param length 单位是B
      * @return
      */
-    public String getHumanReadableFileLength(double length) {
-        // 获取其整数部分
-        if (length < DIGIT.ONE) {
-            return Math.ceil(length * DIGIT.K) + "B";
+    public String getHumanReadableFileLength(Long length) {
+        if(length==null){
+            return SYMBOL.EMPTY;
         }
+
+        if (length < DIGIT.THOUSAND) {
+            return length + "B";
+        }
+        double kb=length/1000D;
         // 不小于这个数的最小整数
-        if (length >= DIGIT.ONE && length < DIGIT.K) {
-            return Math.ceil(length) + "KB";
+        if (kb >= DIGIT.ONE && length < DIGIT.K) {
+            return Math.ceil(kb) + "KB";
         }
         // 四舍五入保留两位小数
-        if (length >= DIGIT.K && length < Math.pow(DIGIT.K, DIGIT.TOW)) {
-            return Math.ceil(length / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "MB";
+        if (kb >= DIGIT.K && kb < Math.pow(DIGIT.K, DIGIT.TOW)) {
+            return Math.ceil(kb / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "MB";
         }
         // 四舍五入保留两位小数
-        return Math.ceil(length / DIGIT.K / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "GB";
+        return Math.ceil(kb / DIGIT.K / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "GB";
     }
 
     /**
