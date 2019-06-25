@@ -33,6 +33,7 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
@@ -101,8 +102,9 @@ public class KeyAnalyzer {
     }
 
     public List<LexemeWithBoost> getKeyList(String text) {
+        TokenStream tokens=null;
         try {
-            TokenStream tokens = analyzer.tokenStream("",
+            tokens = analyzer.tokenStream("",
                     new StringReader(text));
             OffsetAttribute offsetAttr = tokens
                     .getAttribute(OffsetAttribute.class);
@@ -149,8 +151,15 @@ public class KeyAnalyzer {
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
-        } finally {
-            analyzer.close();
+        }
+        finally {
+           if(tokens!=null){
+               try {
+                   tokens.close();
+               } catch (IOException e) {
+                   logger.error("token close error",e);
+               }
+           }
         }
     }
 
