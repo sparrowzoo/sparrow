@@ -22,7 +22,7 @@ import com.sparrow.constant.CONFIG;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.core.cache.Cache;
+import com.sparrow.core.cache.CacheBack;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
@@ -88,22 +88,22 @@ public class ServletUtility {
         if (rootPath.indexOf(CONSTANT.LOCALHOST) != 0 && rootPath.indexOf(CONSTANT.LOCALHOST_127) != 0) {
             String website = serverName.substring(serverName.indexOf(".") + 1);
             website = website.substring(0, website.indexOf("."));
-            Cache.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.WEBSITE,
+            CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.WEBSITE,
                     website);
 
-            if (Cache.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN) == null) {
+            if (CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN) == null) {
                 String rootDomain = serverName.substring(serverName.indexOf("."));
-                Cache.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN,
+                CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN,
                         rootDomain);
             }
 
-            if (Cache.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN) == null) {
-                Cache.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN,
+            if (CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN) == null) {
+                CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN,
                         serverName);
             }
             CONSTANT.REPLACE_MAP.put("$website", website);
         }
-        Cache.getInstance().put(CACHE_KEY.CONFIG_FILE,
+        CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE,
                 CONFIG.ROOT_PATH, rootPath);
         return actionKey;
     }

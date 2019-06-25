@@ -368,17 +368,17 @@ public class FileUtility {
             return SYMBOL.EMPTY;
         }
 
-        if (length < DIGIT.THOUSAND) {
+        if (length < DIGIT.K) {
             return length + "B";
         }
-        double kb=length/1000D;
-        // 不小于这个数的最小整数
-        if (kb >= DIGIT.ONE && length < DIGIT.K) {
+        double kb=length/1024D;//for double result
+
+        if (kb >= DIGIT.ONE && kb < DIGIT.K) {
             return Math.ceil(kb) + "KB";
         }
         // 四舍五入保留两位小数
         if (kb >= DIGIT.K && kb < Math.pow(DIGIT.K, DIGIT.TOW)) {
-            return Math.ceil(kb / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "MB";
+            return Math.ceil(kb / DIGIT.K * DIGIT.K) / DIGIT.K + "MB";
         }
         // 四舍五入保留两位小数
         return Math.ceil(kb / DIGIT.K / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "GB";

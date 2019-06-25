@@ -21,7 +21,7 @@ import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.core.cache.Cache;
+import com.sparrow.core.cache.CacheBack;
 import com.sparrow.support.EnvironmentSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class Config {
         else {
             language = language.toLowerCase();
         }
-        Cache cache = Cache.getInstance();
+        CacheBack cache = CacheBack.getInstance();
         Map<String, Map<String, String>> internationalization = cache
                 .get(CACHE_KEY.INTERNATIONALIZATION);
         if (internationalization == null) {
@@ -138,7 +138,7 @@ public class Config {
     }
 
     public static void initSystem(String configFilePath) {
-        Cache cache = Cache.getInstance();
+        CacheBack cache = CacheBack.getInstance();
         Map<String, String> systemMessage = loadFromClassesPath(configFilePath);
         if (systemMessage == null) {
             return;
@@ -157,7 +157,7 @@ public class Config {
     }
 
     public static void initInternationalization(String language) {
-        Cache cache = Cache.getInstance();
+        CacheBack cache = CacheBack.getInstance();
         if (StringUtility.isNullOrEmpty(language)) {
             language = getValue(CONFIG.LANGUAGE);
         }
@@ -179,7 +179,7 @@ public class Config {
 
     public static String getValue(String key, String defaultValue) {
         try {
-            Object value = Cache.getInstance().get(CACHE_KEY.CONFIG_FILE, key);
+            Object value = CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, key);
             if (value == null) {
                 return defaultValue;
             }
