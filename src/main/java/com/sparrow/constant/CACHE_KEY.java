@@ -18,8 +18,6 @@
 package com.sparrow.constant;
 
 /**
- * 二级缓存Cache_Key
- *
  * @author harry
  * @version 1.0
  */
@@ -32,10 +30,6 @@ public class CACHE_KEY {
      * 保存字典表配置参数
      */
     public static final String CONFIG_CODE_DB = "CACHE_KEY_CONFIG_CODE_DB";
-    /**
-     * 应用程序系统级业务缓存(应用程序级默认缓存)
-     */
-    public static final String DEFAULT = "CACHE_KEY_SYSTEM";
      /**
      * 保存ORM参数
      */

@@ -17,15 +17,12 @@
 
 package com.sparrow.support.web;
 
-import com.sparrow.constant.CACHE_KEY;
 import com.sparrow.constant.CONFIG;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.core.cache.CacheBack;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
-
 import java.util.Enumeration;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -84,7 +81,7 @@ public class ServletUtility {
                 + (request.getServerPort() == 80 ? "" : ":"
                 + request.getServerPort()) + path;
         // eclipse tomcat 启动时会默认请求http://localhost故此处加此判断
-        //只解析一二级域名
+        //只解析一二级域名 http://www.sparrowzoo.com
         if (rootPath.indexOf(CONSTANT.LOCALHOST) != 0 && rootPath.indexOf(CONSTANT.LOCALHOST_127) != 0) {
             String website = serverName.substring(serverName.indexOf(".") + 1);
             website = website.substring(0, website.indexOf("."));
@@ -92,19 +89,17 @@ public class ServletUtility {
 
             String rootDomain= Config.getValue(CONFIG.ROOT_DOMAIN);
             if (rootDomain == null) {
-                String rootDomain = serverName.substring(serverName.indexOf("."));
-                CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN,
-                        rootDomain);
+                Config.resetKey(CONFIG.ROOT_DOMAIN,serverName.substring(serverName.indexOf(".")));
             }
 
-            if (CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN) == null) {
-                CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.DOMAIN,
+            String domain=Config.getValue(CONFIG.DOMAIN);
+            if (domain== null) {
+                Config.resetKey(CONFIG.DOMAIN,
                         serverName);
             }
             CONSTANT.REPLACE_MAP.put("$website", website);
         }
-        CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE,
-                CONFIG.ROOT_PATH, rootPath);
+        Config.resetKey(CONFIG.ROOT_PATH, rootPath);
         return actionKey;
     }
 
