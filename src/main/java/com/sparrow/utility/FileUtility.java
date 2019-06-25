@@ -363,14 +363,14 @@ public class FileUtility {
      * @param length 单位是KB
      * @return
      */
-    public String getFileLength(double length) {
+    public String getHumanReadableFileLength(double length) {
         // 获取其整数部分
         if (length < DIGIT.ONE) {
-            return String.valueOf(Math.ceil(length * DIGIT.K)) + "B";
+            return Math.ceil(length * DIGIT.K) + "B";
         }
         // 不小于这个数的最小整数
         if (length >= DIGIT.ONE && length < DIGIT.K) {
-            return String.valueOf(Math.ceil(length)) + "KB";
+            return Math.ceil(length) + "KB";
         }
         // 四舍五入保留两位小数
         if (length >= DIGIT.K && length < Math.pow(DIGIT.K, DIGIT.TOW)) {
