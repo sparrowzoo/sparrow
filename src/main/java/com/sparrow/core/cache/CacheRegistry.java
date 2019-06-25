@@ -13,11 +13,22 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CacheRegistry implements FactoryBean<Cache> {
 
-    private Map<String,Cache> registry=new ConcurrentHashMap<>();
+    private CacheRegistry() {
+    }
+
+    private static class Nested {
+        private static CacheRegistry instant = new CacheRegistry();
+    }
+
+    public static CacheRegistry getInstance() {
+        return Nested.instant;
+    }
+
+    private Map<String, Cache> registry = new ConcurrentHashMap<>();
 
     @Override
     public void pubObject(String name, Cache o) {
-        registry.put(name,o);
+        registry.put(name, o);
     }
 
     @Override

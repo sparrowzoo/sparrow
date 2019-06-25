@@ -10,9 +10,13 @@ import java.util.concurrent.ConcurrentMap;
  * @date: 2019/6/25 14:14
  * @description:
  */
-public class StrongDurationCache<K, V> implements Cache<K, V> {
+public class StrongDurationCache<K, V> extends AbstractCache<K, V> {
 
     private Map<K, V> cache = new ConcurrentHashMap<>();
+
+    public StrongDurationCache(String name) {
+        super(name);
+    }
 
     @Override
     public V get(K key) {
@@ -22,6 +26,11 @@ public class StrongDurationCache<K, V> implements Cache<K, V> {
     @Override
     public void put(K key, V value) {
         cache.put(key, value);
+    }
+
+    @Override
+    public void putAll(Map<K, V> map) {
+        cache.putAll(map);
     }
 
     @Override

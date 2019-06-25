@@ -23,7 +23,6 @@ import com.sparrow.core.cache.Cache;
 import com.sparrow.core.cache.StrongDurationCache;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.core.cache.CacheBack;
 import com.sparrow.support.EnvironmentSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,8 +40,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Config {
     private static Logger logger = LoggerFactory.getLogger(Config.class);
     private static Cache<String,String> configCache;
+    private static Cache<String,Map<String,String>> internationalization;
     static {
-        configCache=new StrongDurationCache<>();
+        configCache=new StrongDurationCache<>(CACHE_KEY.CONFIG_FILE);
+        internationalization=new StrongDurationCache<>(CACHE_KEY.INTERNATIONALIZATION);
     }
 
     public static String getLanguageValue(String propertiesKey) {
@@ -72,9 +72,7 @@ public class Config {
         else {
             language = language.toLowerCase();
         }
-        CacheBack cache = CacheBack.getInstance();
-        Map<String, Map<String, String>> internationalization = cache
-                .get(CACHE_KEY.INTERNATIONALIZATION);
+
         if (internationalization == null) {
             return defaultOrEmpty(defaultValue);
         }
@@ -144,12 +142,11 @@ public class Config {
     }
 
     public static void initSystem(String configFilePath) {
-        CacheBack cache = CacheBack.getInstance();
         Map<String, String> systemMessage = loadFromClassesPath(configFilePath);
         if (systemMessage == null) {
             return;
         }
-        cache.put(CACHE_KEY.CONFIG_FILE, systemMessage);
+        configCache.putAll(systemMessage);
         if (systemMessage.get(CONFIG.RESOURCE_PHYSICAL_PATH) != null) {
             CONSTANT.REPLACE_MAP.put("$physical_resource", systemMessage.get(CONFIG.RESOURCE_PHYSICAL_PATH));
         }
@@ -163,19 +160,12 @@ public class Config {
     }
 
     public static void initInternationalization(String language) {
-        CacheBack cache = CacheBack.getInstance();
         if (StringUtility.isNullOrEmpty(language)) {
             language = getValue(CONFIG.LANGUAGE);
         }
         Map<String, String> properties = loadFromClassesPath("/messages_"
                 + language
                 + ".properties", CONSTANT.CHARSET_UTF_8);
-        Map<String, Map<String, String>> internationalization = cache
-                .get(CACHE_KEY.INTERNATIONALIZATION);
-        if (internationalization == null) {
-            internationalization = new HashMap<String, Map<String, String>>();
-            cache.put(CACHE_KEY.INTERNATIONALIZATION, internationalization);
-        }
         internationalization.put(language, properties);
     }
 
@@ -185,7 +175,7 @@ public class Config {
 
     public static String getValue(String key, String defaultValue) {
         try {
-            Object value = CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, key);
+            Object value = configCache.get(key);
             if (value == null) {
                 return defaultValue;
             }
@@ -210,5 +200,9 @@ public class Config {
             return 0;
         }
         return Integer.valueOf(value);
+    }
+
+    public static void  resetKey(String key,String website){
+        configCache.put(key, website);
     }
 }

@@ -88,10 +88,10 @@ public class ServletUtility {
         if (rootPath.indexOf(CONSTANT.LOCALHOST) != 0 && rootPath.indexOf(CONSTANT.LOCALHOST_127) != 0) {
             String website = serverName.substring(serverName.indexOf(".") + 1);
             website = website.substring(0, website.indexOf("."));
-            CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.WEBSITE,
-                    website);
+            Config.resetKey(CONFIG.WEBSITE, website);
 
-            if (CacheBack.getInstance().get(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN) == null) {
+            String rootDomain= Config.getValue(CONFIG.ROOT_DOMAIN);
+            if (rootDomain == null) {
                 String rootDomain = serverName.substring(serverName.indexOf("."));
                 CacheBack.getInstance().put(CACHE_KEY.CONFIG_FILE, CONFIG.ROOT_DOMAIN,
                         rootDomain);

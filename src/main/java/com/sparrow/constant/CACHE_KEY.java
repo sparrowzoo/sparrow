@@ -36,7 +36,10 @@ public class CACHE_KEY {
      * 应用程序系统级业务缓存(应用程序级默认缓存)
      */
     public static final String DEFAULT = "CACHE_KEY_SYSTEM";
-
+     /**
+     * 保存ORM参数
+     */
+    public static final String ORM = "CACHE_KEY_ORM";
     /**
      * 国际化配置文件
      */
