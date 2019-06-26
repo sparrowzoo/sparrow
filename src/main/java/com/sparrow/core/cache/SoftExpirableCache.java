@@ -1,7 +1,11 @@
 package com.sparrow.core.cache;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
+import com.sparrow.constant.DATE_TIME;
+
 import java.lang.ref.SoftReference;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -106,7 +110,7 @@ public class SoftExpirableCache<K, V> extends AbstractCache<K, V> implements Exp
         if (data != null) {
             ExpirableData<V> expirableData = data.get();
             if (expirableData != null) {
-                expirableData.setSeconds(-1);
+                expirableData.setTimestamp(DATE_TIME.MIN_UNIX_TIMESTAMP.getTime());
             }
         }
     }
@@ -141,5 +145,16 @@ public class SoftExpirableCache<K, V> extends AbstractCache<K, V> implements Exp
         ExpirableData<V> e = new ExpirableData<>(expire, o);
         this.expirableMap.put(key, new SoftReference<>(e));
         return o;
+    }
+
+    @Override
+    public void continueKey(K key) {
+        SoftReference<ExpirableData<V>> data = this.expirableMap.get(key);
+        if (data != null) {
+            ExpirableData<V> expirableData = data.get();
+            if (expirableData != null) {
+                expirableData.setTimestamp(System.currentTimeMillis());
+            }
+        }
     }
 }

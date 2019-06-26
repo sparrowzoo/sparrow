@@ -19,8 +19,8 @@ public class ExpirableData<V> {
         return data;
     }
 
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public void setTimestamp(long t) {
+        this.t = t;
     }
 
     public boolean isExpire(){

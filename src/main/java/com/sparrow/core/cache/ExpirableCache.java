@@ -14,4 +14,6 @@ public interface ExpirableCache<K,V> extends Cache<K,V> {
     void put(K key,V value,int expire);
 
     V get(K key, LocalCacheNotFound<K, V> hook, int expire);
+
+    void  continueKey(K key);
 }
