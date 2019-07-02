@@ -35,6 +35,7 @@ public class CONFIG {
     public static final String REDIS_HOST = "redis_host";
     public static final String REDIS_PORT = "redis_port";
     public static final String RESOURCE = "resource";
+    public static final String UPLOAD_PATH="upload_path";
     public static final String THEMES = "themes";
     public static final String RESOURCE_PHYSICAL_PATH = "resource_physical_path";
     public static final String TEMP = "temp";
