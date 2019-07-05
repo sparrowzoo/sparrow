@@ -65,6 +65,7 @@ public class CONFIG {
     public static final String USER_CENTER_URL_FORMAT = "user_center_url_format";
     public static final String ERROR_URL = "error_url";
     public static final String TRANSIT_URL = "transit_url";
+    public static final String SUCCESS_TRANSIT_URL="success_transit_url";
     public static final String EXCEPTION_SWITCH_MODE = "exception_switch_mode";
 
     public static final String EMAIL_HOST = "email_host";
