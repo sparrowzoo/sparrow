@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SparrowPagerResult<T> extends PagerResult<T> {
 
-    private String indexPageFormat="$.submit()";
-    private String pageFormat="$.submit()";
+    private String indexPageFormat="javascript:$.page.action($pageIndex);";
+    private String pageFormat="javascript:$.page.action($pageIndex);";
     private Integer pageNumberCount =5;
     private boolean simple;
     private Integer pageCount;
@@ -18,12 +18,12 @@ public class SparrowPagerResult<T> extends PagerResult<T> {
     private String html;
 
     public SparrowPagerResult(PagerResult pagerResult) {
-        this(pagerResult.getCurrentPageIndex(), pagerResult.getPageSize(), pagerResult.getRecordCount(), pagerResult.getList());
+        this(pagerResult.getPageSize(),pagerResult.getCurrentPageIndex(), pagerResult.getRecordCount(), pagerResult.getList());
     }
 
 
-    public SparrowPagerResult(Integer currentPageIndex, Integer pageSize, Long recordCount, List<T> list) {
-        super(currentPageIndex, pageSize);
+    public SparrowPagerResult(Integer pageSize,Integer currentPageIndex, Long recordCount, List<T> list) {
+        super(pageSize,currentPageIndex);
         super.setRecordCount(recordCount);
         super.setList(list);
         this.pageCount = (int) Math.ceil(this.recordCount / (double) this.pageSize);
@@ -72,19 +72,13 @@ public class SparrowPagerResult<T> extends PagerResult<T> {
      * 获取分页字符串
      */
     private String html() {
-        if (this.recordCount <= this.pageSize) {
-            return "<input type=\"hidden\" id=\"currentPageIndex\" name=\"currentPageIndex\" value=\"1\"/>\n";
-        }
         String pageNumberStyle = " class=\"num\"";
         String pageFirstStyle = "class=\"first\"";
         String pageFirstDisableStyle = "class=\"disable first\"";
         String disablePageNumStyle = "class=\"disable\"";
         StringBuilder pageString = new StringBuilder();
         pageString.append("<div id=\"divPage\" class=\"page\">\n");
-        pageString
-                .append("<input type=\"hidden\" id=\"currentPageIndex\" name=\"currentPageIndex\" value=\" ");
-        pageString.append(this.currentPageIndex);
-        pageString.append(" \"/>\n ");
+
 
         if (this.currentPageIndex != 1) {
             if (StringUtility.isNullOrEmpty(this.indexPageFormat)) {
