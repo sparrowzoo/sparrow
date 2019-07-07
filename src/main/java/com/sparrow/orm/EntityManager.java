@@ -14,6 +14,8 @@ public interface EntityManager {
 
     String getTableName();
 
+    String getDialectTableName();
+
     Dialect getDialect();
 
     String getInsert();

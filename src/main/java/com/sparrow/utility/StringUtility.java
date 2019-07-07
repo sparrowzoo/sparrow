@@ -229,11 +229,6 @@ public class StringUtility {
         return new String(s);
     }
 
-    public static String getEntityNameByClass(Class entity) {
-        String entityName = entity.getSimpleName();
-        String toLowerCase = entityName.substring(0, 2);
-        return entityName.replaceFirst(toLowerCase, toLowerCase.toLowerCase());
-    }
 
     /**
      * 获取缩进字符

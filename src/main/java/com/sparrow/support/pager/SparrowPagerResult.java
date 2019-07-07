@@ -2,26 +2,31 @@ package com.sparrow.support.pager;
 
 import com.sparrow.constant.PAGER;
 import com.sparrow.protocol.constant.magic.ESCAPED;
-import com.sparrow.protocol.pager.SimplePagerResult;
+import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.utility.StringUtility;
 
 import java.util.List;
 
+public class SparrowPagerResult<T> extends PagerResult<T> {
 
-public class SparrowPagerResult<T> extends SimplePagerResult<T> {
-
-
-    private String indexPageFormat;
-    private String pageFormat;
-    private Integer pageSizeOfPage;
+    private String indexPageFormat="$.submit()";
+    private String pageFormat="$.submit()";
+    private Integer pageNumberCount =5;
     private boolean simple;
+    private Integer pageCount;
 
     private String html;
+
+    public SparrowPagerResult(PagerResult pagerResult) {
+        this(pagerResult.getCurrentPageIndex(), pagerResult.getPageSize(), pagerResult.getRecordCount(), pagerResult.getList());
+    }
+
 
     public SparrowPagerResult(Integer currentPageIndex, Integer pageSize, Long recordCount, List<T> list) {
         super(currentPageIndex, pageSize);
         super.setRecordCount(recordCount);
         super.setList(list);
+        this.pageCount = (int) Math.ceil(this.recordCount / (double) this.pageSize);
     }
 
     public String getIndexPageFormat() {
@@ -40,12 +45,12 @@ public class SparrowPagerResult<T> extends SimplePagerResult<T> {
         this.pageFormat = pageFormat;
     }
 
-    public Integer getPageSizeOfPage() {
-        return pageSizeOfPage;
+    public Integer getPageNumberCount() {
+        return pageNumberCount;
     }
 
-    public void setPageSizeOfPage(Integer pageSizeOfPage) {
-        this.pageSizeOfPage = pageSizeOfPage;
+    public void setPageNumberCount(Integer pageNumberCount) {
+        this.pageNumberCount = pageNumberCount;
     }
 
     public boolean isSimple() {
@@ -65,8 +70,6 @@ public class SparrowPagerResult<T> extends SimplePagerResult<T> {
 
     /**
      * 获取分页字符串
-     *
-     * @return
      */
     private String html() {
         if (this.recordCount <= this.pageSize) {
@@ -78,14 +81,11 @@ public class SparrowPagerResult<T> extends SimplePagerResult<T> {
         String disablePageNumStyle = "class=\"disable\"";
         StringBuilder pageString = new StringBuilder();
         pageString.append("<div id=\"divPage\" class=\"page\">\n");
-        boolean isConvertHTML = this.pageFormat.endsWith(".html");
-        if (!isConvertHTML) {
-            pageString
-                    .append("<input type=\"hidden\" id=\"currentPageIndex\" name=\"currentPageIndex\" value=\" ");
-            pageString.append(this.currentPageIndex);
-            pageString.append(" \"/>\n ");
-        }
-        Integer pageCount = (int) Math.ceil(this.recordCount / (double) this.pageSize);
+        pageString
+                .append("<input type=\"hidden\" id=\"currentPageIndex\" name=\"currentPageIndex\" value=\" ");
+        pageString.append(this.currentPageIndex);
+        pageString.append(" \"/>\n ");
+
         if (this.currentPageIndex != 1) {
             if (StringUtility.isNullOrEmpty(this.indexPageFormat)) {
                 pageString.append("<a " + pageFirstStyle + " href=\""
@@ -118,14 +118,11 @@ public class SparrowPagerResult<T> extends SimplePagerResult<T> {
             pageString.append("<a " + pageFirstDisableStyle + ">首页</a>\n<a "
                     + disablePageNumStyle + ">上一页</a>\n");
         }
-        Integer beginPageIndex = this.currentPageIndex - (pageSizeOfPage - 1);
-        if (this.currentPageIndex % pageSizeOfPage != 0) {
-            beginPageIndex = this.currentPageIndex - this.currentPageIndex
-                    % pageSizeOfPage + 1;
-        }
 
+        int remainderOfPage=this.currentPageIndex % pageNumberCount;
+        int beginPageIndex = this.currentPageIndex-remainderOfPage + 1;
         //当前只显示5个页码
-        Integer endPageIndex = beginPageIndex + 4;
+        int endPageIndex = beginPageIndex + pageNumberCount-1;
         for (Integer i = beginPageIndex; i <= endPageIndex; i++) {
             if (i > pageCount) {
                 break;

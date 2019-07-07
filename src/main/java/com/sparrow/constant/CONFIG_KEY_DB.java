@@ -64,10 +64,6 @@ public class CONFIG_KEY_DB {
         public static final String CONTACT = "Contact";
     }
 
-    public static final String GROUP_PREFIX = "GROUP-";
-    public static final String GROUP_SYSTEM = "GROUP-SYS";
-    public static final String GROUP_FORUM = "GROUP-FRM";
-
     public static final String POLICY_SYSTEM = "P-SYS";
     public static final String POLICY_FORUM = "P-FRM";
 

@@ -53,7 +53,7 @@ public class EnumUtility {
     /**
      * 前端控件使用 枚举转成map
      *
-     * @param className com.sparrow.sparrowError|10
+     * @param className com.sparrow.enums.Status:10:true
      * @return
      */
     public static Map<String, String> getMap(String className) {

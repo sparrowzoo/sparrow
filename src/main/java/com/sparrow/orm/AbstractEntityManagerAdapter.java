@@ -9,6 +9,7 @@ import com.sparrow.protocol.db.Hash;
 import com.sparrow.protocol.db.Split;
 import com.sparrow.protocol.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.protocol.enums.HashType;
+import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import java.lang.reflect.Method;
@@ -42,6 +43,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
     protected Map<String, Field> uniqueFieldMap;
     protected List<Field> hashFieldList;
     protected String tableName;
+    protected String dialectTableName;
     protected String className;
     protected String simpleClassName;
     protected Dialect dialect;
@@ -70,14 +72,15 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         StringBuilder updateSQL = new StringBuilder("update ");
         StringBuilder createDDLField = new StringBuilder();
         boolean isSplitTable = initTable(clazz);
-        updateSQL.append(tableName);
-        insertSQL.append(tableName);
+
+        updateSQL.append(this.dialectTableName);
+        insertSQL.append(this.dialectTableName);
         if (isSplitTable) {
             insertSQL.append(CONSTANT.TABLE_SUFFIX);
             updateSQL.append(CONSTANT.TABLE_SUFFIX);
         }
 
-        String createDDLHeader = String.format("DROP TABLE IF EXISTS `%s`;\nCREATE TABLE `%s` (\n", tableName,tableName);
+        String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", this.dialectTableName);
         String primaryCreateDDL = "";
         insertSQL.append("(");
         updateSQL.append(" set ");
@@ -108,7 +111,6 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
                 this.status = field;
             }
 
-
             if (!field.isPrimary()) {
                 createDDLField.append(String.format(" `%s` %s  %s,\n", column.name(), column.columnDefinition(), column.nullable() ? "" : "NOT NULL"));
             } else {
@@ -122,10 +124,9 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
                 }
             }
 
-
             this.columnPropertyMap.put(column.name(), propertyName);
             String fieldName = dialect.getOpenQuote() + column.name()
-                    + dialect.getCloseQuote();
+                + dialect.getCloseQuote();
             // insertSQL
             if (!HashType.ONLY_HASH.equals(field.getHashStrategy()) && !GenerationType.IDENTITY.equals(field.getGenerationType())) {
                 insertSQL.append(fieldName);
@@ -150,12 +151,12 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         insertSQL.append(SYMBOL.RIGHT_PARENTHESIS);
 
         updateSQL.deleteCharAt(updateSQL.length() - 1).append(
-                " where " + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName()));
-        String deleteSQL = "delete from " + tableName + " where "
-                + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
+            " where " + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName()));
+        String deleteSQL = "delete from " + this.getDialectTableName() + " where "
+            + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
 
         createDDLField.append(String.format("PRIMARY KEY (`%s`)\n", this.primary.getColumnName()));
-        createDDLField.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='"+tableName+"';\n");
+        createDDLField.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='" + tableName + "';\n");
 
         this.createDDL = createDDLHeader + primaryCreateDDL + createDDLField.toString();
         this.insert = insertSQL.toString();
@@ -171,7 +172,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
                 fieldBuilder.append(",");
             }
             if (field.isPersistence()) {
-                fieldBuilder.append(StringUtility.getEntityNameByClass(clazz) + "." + dialect.getOpenQuote() + field.getColumnName() + dialect.getCloseQuote());
+                fieldBuilder.append(dialect.getOpenQuote() + field.getColumnName() + dialect.getCloseQuote());
             }
             this.fieldMap.put(field.getName(), field);
         }
@@ -190,6 +191,9 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         this.tableName = table.name();
         this.schema = table.schema();
         this.dialect = Dialect.getInstance(schema);
+        //`table-name`
+        this.dialectTableName = String.format("%s%s%s", dialect.getOpenQuote(), tableName, dialect.getCloseQuote());
+
         if (split == null) {
             return false;
         }
@@ -210,7 +214,6 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         return true;
     }
 
-
     @Override
     public Field getPrimary() {
         return primary;
@@ -226,11 +229,14 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         return tableName;
     }
 
+    @Override public String getDialectTableName() {
+        return this.dialectTableName;
+    }
+
     @Override
     public Dialect getDialect() {
         return dialect;
     }
-
 
     @Override
     public String getInsert() {
@@ -251,7 +257,6 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
     public String getFields() {
         return fields;
     }
-
 
     @Override
     public Map<String, Field> getFieldMap() {

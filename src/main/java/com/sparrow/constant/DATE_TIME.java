@@ -17,8 +17,8 @@
 
 package com.sparrow.constant;
 
-import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.enums.DATE_TIME_UNIT;
+import com.sparrow.protocol.constant.magic.DIGIT;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -28,8 +28,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author harry

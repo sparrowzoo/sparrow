@@ -44,10 +44,15 @@ public abstract class AbstractServletContainer implements ServletContainer {
     private ServletUtility servletUtility = ServletUtility.getInstance();
     private CookieUtility cookieUtility;
 
+    public void setCookieUtility(CookieUtility cookieUtility) {
+        this.cookieUtility = cookieUtility;
+    }
+
     @Override
     public String getActionKey() {
         return this.servletUtility.getActionKey(this.getRequest());
     }
+
 
     @Override
     public Long getCurrentUserId() {
