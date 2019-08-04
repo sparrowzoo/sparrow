@@ -51,12 +51,6 @@ public class Config {
         return getLanguageValue(propertiesKey, language);
     }
 
-    public static String getLanguageValue(String propertiesKey, Integer index) {
-        String key = EnumUtility.getStringKey(propertiesKey, index);
-        String language = getValue(CONFIG.LANGUAGE);
-        return getLanguageValue(key, language);
-    }
-
     public static String getLanguageValue(String key, String language) {
         return getLanguageValue(key, language, SYMBOL.EMPTY);
     }

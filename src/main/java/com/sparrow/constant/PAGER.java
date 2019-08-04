@@ -31,5 +31,5 @@ public class PAGER {
     /**
      * FORM表单提交的action的格式
      */
-    public static final String ACTION_PAGE_FORMAT = "javascript:page.action($pageIndex);";
+    public static final String ACTION_PAGE_FORMAT ="javascript:$.page.submit($pageIndex);";
 }

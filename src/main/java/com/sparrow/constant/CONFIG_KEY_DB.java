@@ -64,8 +64,8 @@ public class CONFIG_KEY_DB {
         public static final String CONTACT = "Contact";
     }
 
-    public static final String POLICY_SYSTEM = "P-SYS";
-    public static final String POLICY_FORUM = "P-FRM";
+    public static final String STRATAGEM_SYSTEM = "S-SYS";
+    public static final String STRAEAGEM_LEVEL = "S-LEL";
 
     public static final String TAG_FRONT_COLOR = "TAG-FRONT-COLOR";
     public static final String TAG_BACKGROUND_COLOR = "TAG-BACKGROUND-COLOR";

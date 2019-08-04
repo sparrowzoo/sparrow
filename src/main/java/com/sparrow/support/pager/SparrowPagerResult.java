@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SparrowPagerResult<T> extends PagerResult<T> {
 
-    private String indexPageFormat="javascript:$.page.action($pageIndex);";
-    private String pageFormat="javascript:$.page.action($pageIndex);";
+    private String indexPageFormat=PAGER.ACTION_PAGE_FORMAT;
+    private String pageFormat=PAGER.ACTION_PAGE_FORMAT;
     private Integer pageNumberCount =5;
     private boolean simple;
     private Integer pageCount;
@@ -162,7 +162,7 @@ public class SparrowPagerResult<T> extends PagerResult<T> {
                     + "onblur=\"if(this.value.trim()==''){this.value=parseInt($('currentPageIndex').value)+1;}\" value=\""
                     + (this.currentPageIndex + 1)
                     + "\" type=\"text\" />\n");
-            pageString.append("<a id=\"go\" onclick=\"page.toTargetPage(");
+            pageString.append("<a id=\"go\" onclick=\"$.page.toTargetPage(");
             pageString.append(pageCount);
             pageString.append(",'");
             pageString.append(this.pageFormat);

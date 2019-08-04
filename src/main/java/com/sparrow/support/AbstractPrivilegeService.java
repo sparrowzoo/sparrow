@@ -1,6 +1,7 @@
 package com.sparrow.support;
 
 import com.sparrow.constant.USER;
+import com.sparrow.protocol.PrivilegeSupport;
 
 /**
  * @author: zh_harry@163.com
