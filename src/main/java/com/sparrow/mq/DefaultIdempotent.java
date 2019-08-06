@@ -51,8 +51,8 @@ public class DefaultIdempotent implements MQIdempotent {
     @Override public boolean consumed(String keys) {
         while (true) {
             try {
-                //todo
                 KEY consumeKey = new KEY.Builder().business(KEY_MQ_IDEMPOTENT.IDEMPOTENT).businessId(keys).build();
+                //redlock setExpire(key,timestamp)
                 Long value = cacheClient.string().setIfNotExist(consumeKey, DIGIT.ONE);
                 if (value > 0) {
                     cacheClient.key().expire(consumeKey, 60 * 60 * 72);
