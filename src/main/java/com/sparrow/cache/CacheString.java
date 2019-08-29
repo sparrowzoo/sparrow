@@ -28,6 +28,8 @@ import com.sparrow.exception.CacheConnectionException;
 public interface CacheString {
     String set(KEY key, Object value) throws CacheConnectionException;
 
+    String getSet(KEY key, Object value) throws CacheConnectionException;
+
     String get(KEY key) throws CacheConnectionException;
 
     String get(KEY key, CacheDataNotFound<String> hook);
