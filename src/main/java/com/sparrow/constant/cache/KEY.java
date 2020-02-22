@@ -32,33 +32,43 @@ public class KEY {
     private Object businessId;
     private String module;
 
-    private KEY(){}
+    private KEY() {
+    }
+
     private KEY(Builder builder) {
         this.business = builder.business.getKey();
-        this.module=builder.business.getModule();
+        this.module = builder.business.getModule();
         if (builder.businessId != null) {
-            this.businessId = StringUtility.join(Arrays.asList(builder.businessId), SYMBOL.DOT);
+            this.businessId = StringUtility.join(Arrays.asList(builder.businessId), SYMBOL.COLON);
         }
     }
 
-    public static KEY parse(String key){
-        if(StringUtility.isNullOrEmpty(key)){
+    /**
+     * module:business.b2:businessId.id2.id3
+     * user:register.times.validate:{userId}:{k2}
+     *
+     * @param key
+     * @return
+     */
+    public static KEY parse(String key) {
+        if (StringUtility.isNullOrEmpty(key)) {
             return null;
         }
-        KEY k=new KEY();
-        Pair<String,String> businessWithId=Pair.split(key,SYMBOL.COLON);
-        k.businessId=businessWithId.getSecond();
-        String[] businessArray=businessWithId.getFirst().split("\\.");
-        k.module=businessArray[0];
-        k.business=businessWithId.getFirst();
+        KEY k = new KEY();
+        String[] keyArray = key.split(SYMBOL.COLON);
+        k.module = keyArray[0];
+        k.business = keyArray[1];
+        if(keyArray.length>2) {
+            k.businessId = keyArray[2];
+        }
         return k;
     }
 
     public String key() {
         if (StringUtility.isNullOrEmpty(this.businessId)) {
-            return this.business;
+            return (this.module+SYMBOL.COLON+this.business).toLowerCase();
         }
-        return this.business + SYMBOL.COLON + this.businessId;
+        return (this.module+SYMBOL.COLON+this.business + SYMBOL.COLON + this.businessId).toLowerCase();
     }
 
     public String getBusiness() {
@@ -71,23 +81,24 @@ public class KEY {
 
     public static class Business {
         private String module;
-        private StringBuilder key=new StringBuilder();
+        private StringBuilder key = new StringBuilder();
 
         public Business(ModuleSupport module, String... business) {
             this.module = module.name();
-            this.key.append(this.module);
             if (business != null && business.length > 0) {
-                this.key.append(SYMBOL.DOT);
+                if(this.key.length()>0) {
+                    this.key.append(SYMBOL.COLON);
+                }
                 this.key.append(StringUtility.join(Arrays.asList(business), SYMBOL.DOT));
             }
         }
 
-        public Business append(String ... business){
-            if(business==null||business.length==0){
+        public Business append(String... business) {
+            if (business == null || business.length == 0) {
                 return this;
             }
             this.key.append(SYMBOL.DOT);
-            this.key.append(StringUtility.join(Arrays.asList(business),SYMBOL.DOT));
+            this.key.append(StringUtility.join(Arrays.asList(business), SYMBOL.DOT));
             return this;
         }
 
@@ -99,7 +110,8 @@ public class KEY {
             return module;
         }
 
-        @Override public boolean equals(Object o) {
+        @Override
+        public boolean equals(Object o) {
             if (this == o)
                 return true;
             if (o == null || getClass() != o.getClass())
@@ -113,7 +125,8 @@ public class KEY {
 
         }
 
-        @Override public int hashCode() {
+        @Override
+        public int hashCode() {
             int result = module != null ? module.hashCode() : 0;
             result = 31 * result + (key != null ? key.hashCode() : 0);
             return result;

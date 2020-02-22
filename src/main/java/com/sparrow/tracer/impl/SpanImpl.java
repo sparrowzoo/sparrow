@@ -1,6 +1,5 @@
 package com.sparrow.tracer.impl;
 
-
 import com.sparrow.tracer.Span;
 import com.sparrow.tracer.Tracer;
 
@@ -21,7 +20,6 @@ public class SpanImpl implements Span {
     private Span follower;
     private boolean finished;
     private boolean isFollower;
-    private boolean forwardParentCursor;
     private Long startTime;
     private String name;
     private Integer id;
@@ -56,24 +54,7 @@ public class SpanImpl implements Span {
     public void finish() {
         this.endTime = System.currentTimeMillis();
         this.finished = true;
-
-        if (this.parent == null) {
-            return;
-        }
-        //如果未向前移动，则指针不回退
-        if (!this.forwardParentCursor) {
-            return;
-        }
-        if (this.parent.children() == null || this.parent.children().size() == 0) {
-            return;
-        }
-        if (this.tracer.parentCursor() == null) {
-            return;
-        }
-        if (this.tracer.parentCursor().parent() == null) {
-            return;
-        }
-        this.tracer.setParentCursor(this.tracer.parentCursor().parent());
+        this.tracer.setCursor(this);
     }
 
     @Override
@@ -91,16 +72,6 @@ public class SpanImpl implements Span {
     }
 
     @Override
-    public String span() {
-        return this.id + "|"
-                + (this.parent == null ? -1 : this.parent.getId()) + "|"
-                + (this.isFollower ? "F" : "C") + "|"
-                + this.name + "|"
-                + this.startTime + "|"
-                + (this.endTime - this.startTime) + "ms";
-    }
-
-    @Override
     public Span parent() {
         return this.parent;
     }
@@ -115,9 +86,15 @@ public class SpanImpl implements Span {
         return this.children;
     }
 
+    @Override
+    public int duration() {
+        return (int) (this.getEndTime() - this.getStartTime());
+    }
+
     public Tracer getTracer() {
         return tracer;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -131,12 +108,48 @@ public class SpanImpl implements Span {
                 Objects.equals(follower, span.follower);
     }
 
+    public Span getParent() {
+        return parent;
+    }
+
+    public List<Span> getChildren() {
+        return children;
+    }
+
+    public Span getFollower() {
+        return follower;
+    }
+
+    public boolean isFollower() {
+        return isFollower;
+    }
+
+    public Long getStartTime() {
+        return startTime;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Span{" +
+                "tracer=" + tracer +
+                ", parent=" + parent +
+                ", children=" + children +
+                ", follower=" + follower +
+                ", finished=" + finished +
+                ", isFollower=" + isFollower +
+                ", startTime=" + startTime +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(startTime, name, endTime, children, follower);
-    }
-
-    public void setForwardParentCursor(boolean forwardParentCursor) {
-        this.forwardParentCursor = forwardParentCursor;
     }
 }

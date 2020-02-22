@@ -12,36 +12,36 @@ public class SpanBuilderImpl implements SpanBuilder {
         this.tracer = (TracerImpl) tracer;
     }
 
-    private String name;
-    private SpanImpl parent;
-    private TracerImpl tracer;
     /**
-     * 进入span时，是否将指针移动,默认移
+     * span name
      */
-    private boolean forwardParentCursor = true;
+    private String name;
+    /**
+     * 当前span 的parent
+     * parent 为上一个span
+     */
+    private SpanImpl parent;
+    /**
+     * tracer 对象，全局
+     */
+    private TracerImpl tracer;
+
 
     @Override
-    public SpanBuilder asChild(String parent) {
-        return asChild(tracer.getSpanMap().get(parent));
-    }
-
-    @Override
-    public SpanBuilder asChild(Span parent) {
+    public SpanBuilder asChild() {
+        /**
+         * 由全局 builder 构建
+         * 一个新span builder
+         */
         SpanBuilderImpl spanBuilder = new SpanBuilderImpl();
-        spanBuilder.parent = (SpanImpl) parent;
         if (spanBuilder.parent == null) {
-            spanBuilder.parent = (SpanImpl) tracer.parentCursor();
+            spanBuilder.parent = (SpanImpl) tracer.cursor();
         }
         if (spanBuilder.parent == null) {
             spanBuilder.parent = (SpanImpl) tracer.root();
         }
-        spanBuilder.tracer = (TracerImpl) parent.getTracer();
+        spanBuilder.tracer = (TracerImpl) spanBuilder.parent.getTracer();
         return spanBuilder;
-    }
-
-    @Override
-    public SpanBuilder asChild() {
-        return asChild(tracer.parentCursor());
     }
 
     @Override
@@ -50,26 +50,16 @@ public class SpanBuilderImpl implements SpanBuilder {
         return this;
     }
 
-    public SpanBuilder forwardParentCursor(boolean forwardParentCursor) {
-        this.forwardParentCursor = forwardParentCursor;
-        return this;
-    }
-
 
     @Override
     public Span start() {
         SpanImpl span = new SpanImpl(this.tracer, System.currentTimeMillis(), this.name);
-        span.setForwardParentCursor(forwardParentCursor);
         span.setId(this.tracer.nextId());
-        tracer.putSpan(this.name, span);
         if (this.tracer.root() == null) {
             this.tracer.setRoot(span);
-            this.tracer.setParentCursor(span);
+            this.tracer.setCursor(span);
         }
-
-        if (forwardParentCursor) {
-            tracer.setParentCursor(span);
-        }
+        tracer.setCursor(span);
         if (this.parent == null) {
             return span;
         }

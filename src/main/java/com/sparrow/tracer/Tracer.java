@@ -1,5 +1,7 @@
 package com.sparrow.tracer;
 
+import org.slf4j.Logger;
+
 public interface Tracer {
     String getId();
 
@@ -9,7 +11,9 @@ public interface Tracer {
 
     Span root();
 
-    Span parentCursor();
+    Span cursor();
 
     String walking();
+
+    void log(Logger logger, String parameters, String executeContext);
 }

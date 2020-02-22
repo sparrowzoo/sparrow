@@ -4,33 +4,45 @@ import com.sparrow.tracer.Span;
 import com.sparrow.tracer.SpanBuilder;
 import com.sparrow.tracer.Tracer;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.HashMap;
+import org.slf4j.Logger;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TracerImpl implements Tracer {
+    /**
+     * span id 生成器
+     */
     private AtomicInteger nextId = new AtomicInteger(0);
+    /**
+     * trace id
+     */
     private String traceId;
+    /**
+     * 根span
+     */
     private Span root;
-    private Span parentCursor;
+    /**
+     * parent 当前span指针
+     */
+    private ThreadLocal<Span> cursor = new ThreadLocal<>();
+    /**
+     * 全局span builder 对象
+     */
     private SpanBuilder spanBuilder;
-    private Map<String, Span> spanMap = new HashMap<>();
 
-    public Map<String, Span> getSpanMap() {
-        return spanMap;
-    }
-
-    public Integer nextId(){
-       return nextId.incrementAndGet();
-    }
-
-    public void putSpan(String key, Span span) {
-        this.spanMap.put(key, span);
+    public Integer nextId() {
+        return nextId.incrementAndGet();
     }
 
     public TracerImpl(String traceId) {
         this.traceId = traceId;
+    }
+
+    public TracerImpl(String traceId, int startId) {
+        this.traceId = traceId;
+        this.nextId = new AtomicInteger(startId);
     }
 
     public void setRoot(Span root) {
@@ -41,13 +53,13 @@ public class TracerImpl implements Tracer {
         return this.root;
     }
 
-    public void setParentCursor(Span current) {
-        this.parentCursor=current;
+    public void setCursor(Span current) {
+        this.cursor.set(current);
     }
 
     @Override
-    public Span parentCursor() {
-        return this.parentCursor;
+    public Span cursor() {
+        return this.cursor.get();
     }
 
     @Override
@@ -92,20 +104,38 @@ public class TracerImpl implements Tracer {
         return prefix.toString();
     }
 
+    private String spanToMarkdown(SpanImpl span) {
+        return span.getId() + "|"
+                + (span.getParent() == null ? -1 : span.getParent().getId()) + "|"
+                + (span.isFollower() ? "F" : "C") + "|"
+                + span.getName() + "|"
+                + span.getStartTime() + "|"
+                + ((span.getEndTime() == null ? System.currentTimeMillis() : span.getEndTime()) - span.getStartTime()) + "ms";
+    }
+
     @Override
     public String walking() {
         Map<Span, Integer> spanDepthContainer = new LinkedHashMap<>();
         spanDepthContainer.put(root, 0);
         this.recursion(root, spanDepthContainer, 0);
         StringBuilder walking = new StringBuilder("traceId:" + this.traceId);
-        walking.append("\ndepth|span-id|parent-id|f/c|span-name | start|duration");
-        walking.append("\n---|---|---|---|---|---|---");
+        walking.append("###depth|span-id|parent-id|F/C|span-name | start|duration");
+        walking.append("###---|---|---|---|---|---|---");
         for (Span span : spanDepthContainer.keySet()) {
-            walking.append("\n");
+            walking.append("###");
             walking.append(spanDepthContainer.get(span));
             walking.append("|");
-            walking.append(span.span());
+            walking.append(this.spanToMarkdown((SpanImpl) span));
         }
         return walking.toString();
+    }
+
+    @Override
+    public void log(Logger logger, String parameters, String executeContext) {
+        logger.info("tracer id:{} parameter:{} execute logs {} execute duration {}",
+                this.getId(),
+                parameters,
+                executeContext,
+                this.walking());
     }
 }
