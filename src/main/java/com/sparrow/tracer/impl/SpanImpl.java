@@ -1,5 +1,6 @@
 package com.sparrow.tracer.impl;
 
+import com.sparrow.protocol.POJO;
 import com.sparrow.tracer.Span;
 import com.sparrow.tracer.Tracer;
 
@@ -60,6 +61,26 @@ public class SpanImpl implements Span {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public Span setTag(String key, String value) {
+        return null;
+    }
+
+    @Override
+    public Span setTag(String key, boolean value) {
+        return null;
+    }
+
+    @Override
+    public Span setTag(String key, Number value) {
+        return null;
+    }
+
+    @Override
+    public Span setTag(String key, POJO t) {
+        return null;
     }
 
     @Override

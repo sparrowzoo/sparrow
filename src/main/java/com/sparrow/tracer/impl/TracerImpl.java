@@ -6,6 +6,7 @@ import com.sparrow.tracer.Tracer;
 import com.sparrow.utility.CollectionsUtility;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,7 +27,7 @@ public class TracerImpl implements Tracer {
     /**
      * parent 当前span指针
      */
-    private ThreadLocal<Span> cursor = new ThreadLocal<>();
+    public Map<Long,Span> cursor = new HashMap<>();
     /**
      * 全局span builder 对象
      */
@@ -54,12 +55,12 @@ public class TracerImpl implements Tracer {
     }
 
     public void setCursor(Span current) {
-        this.cursor.set(current);
+        this.cursor.put(Thread.currentThread().getId(),current);
     }
 
     @Override
     public Span cursor() {
-        return this.cursor.get();
+        return this.cursor.get(Thread.currentThread().getId());
     }
 
     @Override
