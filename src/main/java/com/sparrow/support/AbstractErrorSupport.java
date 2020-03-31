@@ -7,7 +7,10 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ERROR implements ErrorSupport {
+public abstract class AbstractErrorSupport implements ErrorSupport {
+    /**
+     * global singleton
+     */
     private static volatile Map<Integer, String> container = new ConcurrentHashMap<Integer, String>();
 
     private ModuleSupport module;
@@ -36,19 +39,11 @@ public class ERROR implements ErrorSupport {
         return message;
     }
 
-    public static ERROR business(ModuleSupport moduleSupport, String code, String message) {
-        return new ERROR(false, moduleSupport, code, message);
-    }
-
-    public static ERROR system(ModuleSupport moduleSupport, String code, String message) {
-        return new ERROR(true, moduleSupport, code, message);
-    }
-
-    private ERROR(boolean system, ModuleSupport moduleSupport, String code, String message) {
+    public AbstractErrorSupport(boolean system, ModuleSupport moduleSupport, String code, String message) {
         this.system = system;
         this.message = message;
         this.module = moduleSupport;
-        this.code = Integer.valueOf((system ? 1 : 2) + moduleSupport.code() + code);
+        this.code = Integer.valueOf((system ? 0 : 1) + moduleSupport.code() + code);
     }
 
     @Override
@@ -56,7 +51,7 @@ public class ERROR implements ErrorSupport {
         if (container != null && container.size() > 0 && container.get(this.code) != null) {
             return container.get(this.code);
         }
-        synchronized (ERROR.class) {
+        synchronized (AbstractErrorSupport.class) {
             if (container != null && container.size() > 0 && container.get(this.code) != null) {
                 return container.get(this.code);
             }
