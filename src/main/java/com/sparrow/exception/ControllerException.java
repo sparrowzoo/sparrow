@@ -17,13 +17,13 @@
 
 package com.sparrow.exception;
 
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.protocol.ErrorSupport;
 
 /**
  * @author harry
  */
 public class ControllerException extends RuntimeException {
-    public ControllerException(SPARROW_ERROR message) {
+    public ControllerException(ErrorSupport message) {
         super(message.getMessage());
     }
 }

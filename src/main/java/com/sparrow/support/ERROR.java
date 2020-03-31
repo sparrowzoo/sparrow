@@ -1,6 +1,5 @@
 package com.sparrow.support;
 
-import com.sparrow.constant.SPARROW_ERROR;
 import com.sparrow.protocol.ErrorSupport;
 import com.sparrow.protocol.ModuleSupport;
 
@@ -8,7 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractErrorSupport implements ErrorSupport {
+public class ERROR implements ErrorSupport {
     private static volatile Map<Integer, String> container = new ConcurrentHashMap<Integer, String>();
 
     private ModuleSupport module;
@@ -37,7 +36,15 @@ public abstract class AbstractErrorSupport implements ErrorSupport {
         return message;
     }
 
-    public AbstractErrorSupport(boolean system, ModuleSupport moduleSupport, String code, String message) {
+    public static ERROR business(ModuleSupport moduleSupport, String code, String message) {
+        return new ERROR(false, moduleSupport, code, message);
+    }
+
+    public static ERROR system(ModuleSupport moduleSupport, String code, String message) {
+        return new ERROR(true, moduleSupport, code, message);
+    }
+
+    private ERROR(boolean system, ModuleSupport moduleSupport, String code, String message) {
         this.system = system;
         this.message = message;
         this.module = moduleSupport;
@@ -49,7 +56,7 @@ public abstract class AbstractErrorSupport implements ErrorSupport {
         if (container != null && container.size() > 0 && container.get(this.code) != null) {
             return container.get(this.code);
         }
-        synchronized (SPARROW_ERROR.class) {
+        synchronized (ERROR.class) {
             if (container != null && container.size() > 0 && container.get(this.code) != null) {
                 return container.get(this.code);
             }
