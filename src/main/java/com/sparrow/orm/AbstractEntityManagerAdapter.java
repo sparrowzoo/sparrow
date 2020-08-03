@@ -63,8 +63,8 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         int fieldCount = methods.length;
 
         List<Field> fields = new ArrayList<Field>(fieldCount);
-        uniqueFieldMap = new HashMap<String, Field>();
-        columnPropertyMap = new HashMap<String, String>(fieldCount);
+        uniqueFieldMap = new LinkedHashMap<>();
+        columnPropertyMap = new LinkedHashMap<String, String>(fieldCount);
         hashFieldList = new ArrayList<Field>();
 
         StringBuilder insertSQL = new StringBuilder("insert into ");
