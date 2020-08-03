@@ -20,11 +20,14 @@ package com.sparrow.utility;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 
 import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.db.MethodOrder;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -187,5 +190,38 @@ public class ClassUtility {
             }
         }
         return cl;
+    }
+
+    static class MethodWithRank implements Comparable<MethodWithRank>{
+        private Method method;
+        private Float order;
+
+        MethodWithRank(Method method, Float order) {
+            this.method = method;
+            this.order = order;
+        }
+
+        @Override
+        public int compareTo(MethodWithRank o) {
+            return this.order.compareTo(o.order);
+        }
+    }
+
+    public static Method[] getOrderedMethod(Method[] methods) {
+        List<MethodWithRank> methodList = new ArrayList<>();
+        Method[] orderMethodArray=new Method[methods.length];
+        for (Method m : methods) {
+            if (m.getAnnotation(MethodOrder.class) != null) {
+                Float order = m.getAnnotation(MethodOrder.class).order();
+                methodList.add(new MethodWithRank(m, order));
+            } else {
+                methodList.add(new MethodWithRank(m, Float.MAX_VALUE));
+            }
+        }
+        Collections.sort(methodList);
+        for(int i=0;i<methods.length;i++){
+            orderMethodArray[i]=methodList.get(i).method;
+        }
+        return orderMethodArray;
     }
 }

@@ -6,23 +6,22 @@ import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.enums.ORM_ENTITY_META_DATA;
 import com.sparrow.protocol.db.Hash;
+import com.sparrow.protocol.db.MethodOrder;
 import com.sparrow.protocol.db.Split;
 import com.sparrow.protocol.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.protocol.enums.HashType;
 import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
+
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,10 +55,12 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
     protected String fields;
     protected String createDDL;
 
+
+
     public AbstractEntityManagerAdapter(Class clazz) {
         this.className = clazz.getName();
         this.simpleClassName = clazz.getSimpleName();
-        Method[] methods = clazz.getDeclaredMethods();
+        Method[] methods = ClassUtility.getOrderedMethod(clazz.getDeclaredMethods());
         int fieldCount = methods.length;
 
         List<Field> fields = new ArrayList<Field>(fieldCount);
@@ -126,7 +127,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
             this.columnPropertyMap.put(column.name(), propertyName);
             String fieldName = dialect.getOpenQuote() + column.name()
-                + dialect.getCloseQuote();
+                    + dialect.getCloseQuote();
             // insertSQL
             if (!HashType.ONLY_HASH.equals(field.getHashStrategy()) && !GenerationType.IDENTITY.equals(field.getGenerationType())) {
                 insertSQL.append(fieldName);
@@ -151,9 +152,9 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         insertSQL.append(SYMBOL.RIGHT_PARENTHESIS);
 
         updateSQL.deleteCharAt(updateSQL.length() - 1).append(
-            " where " + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName()));
+                " where " + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName()));
         String deleteSQL = "delete from " + this.getDialectTableName() + " where "
-            + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
+                + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
 
         createDDLField.append(String.format("PRIMARY KEY (`%s`)\n", this.primary.getColumnName()));
         createDDLField.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='" + tableName + "';\n");
@@ -229,7 +230,8 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         return tableName;
     }
 
-    @Override public String getDialectTableName() {
+    @Override
+    public String getDialectTableName() {
         return this.dialectTableName;
     }
 
