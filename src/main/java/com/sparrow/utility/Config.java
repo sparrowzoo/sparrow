@@ -39,11 +39,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Config {
     private static Logger logger = LoggerFactory.getLogger(Config.class);
-    private static Cache<String,String> configCache;
-    private static Cache<String,Map<String,String>> internationalization;
+    private static Cache<String, String> configCache;
+    private static Cache<String, Map<String, String>> internationalization;
+
     static {
-        configCache=new StrongDurationCache<>(CACHE_KEY.CONFIG_FILE);
-        internationalization=new StrongDurationCache<>(CACHE_KEY.INTERNATIONALIZATION);
+        configCache = new StrongDurationCache<>(CACHE_KEY.CONFIG_FILE);
+        internationalization = new StrongDurationCache<>(CACHE_KEY.INTERNATIONALIZATION);
     }
 
     public static String getLanguageValue(String propertiesKey) {
@@ -62,8 +63,7 @@ public class Config {
     public static String getLanguageValue(String key, String language, String defaultValue) {
         if (StringUtility.isNullOrEmpty(language)) {
             language = getValue(CONFIG.LANGUAGE);
-        }
-        else {
+        } else {
             language = language.toLowerCase();
         }
 
@@ -160,7 +160,9 @@ public class Config {
         Map<String, String> properties = loadFromClassesPath("/messages_"
                 + language
                 + ".properties", CONSTANT.CHARSET_UTF_8);
-        internationalization.put(language, properties);
+        if (properties != null) {
+            internationalization.put(language, properties);
+        }
     }
 
     public static String getValue(String key) {
@@ -196,7 +198,7 @@ public class Config {
         return Integer.valueOf(value);
     }
 
-    public static void  resetKey(String key,String website){
+    public static void resetKey(String key, String website) {
         configCache.put(key, website);
     }
 }
