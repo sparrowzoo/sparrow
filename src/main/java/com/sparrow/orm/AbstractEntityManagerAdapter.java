@@ -77,8 +77,8 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         updateSQL.append(this.dialectTableName);
         insertSQL.append(this.dialectTableName);
         if (isSplitTable) {
-            insertSQL.append(CONSTANT.TABLE_SUFFIX);
-            updateSQL.append(CONSTANT.TABLE_SUFFIX);
+            insertSQL.insert(insertSQL.length()-1,CONSTANT.TABLE_SUFFIX);
+            updateSQL.insert(updateSQL.length()-1,CONSTANT.TABLE_SUFFIX);
         }
 
         String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", this.dialectTableName);
