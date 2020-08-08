@@ -18,6 +18,8 @@
 package com.sparrow.cryptogram;
 
 import com.sparrow.utility.StringUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,13 +30,14 @@ import javax.crypto.spec.SecretKeySpec;
  * @author harry
  */
 public class Hmac {
-    public static final String HMAC_SHA1 = "HMAC_SHA1";
+    private static Logger logger=LoggerFactory.getLogger(Hmac.class);
+    public static final String HMAC_SHA1 = "HmacSHA1";
 
-    public static final String HMAC_SHA256 = "HMAC_SHA256";
+    public static final String HMAC_SHA256 = "HmacSHA256";
 
-    public static final String HMAC_SHA512 = "HMAC_SHA512";
+    public static final String HMAC_SHA512 = "HmacSHA512";
 
-    public static final String HMAC_MD5 = "HMAC_MD5";
+    public static final String HMAC_MD5 = "HmacMD5";
 
     private static final int[] DIGITS_POWER
         // 0 1 2 3 4 5 6 7 8
@@ -70,6 +73,7 @@ public class Hmac {
             oauthSignature = mac.doFinal(srcString.getBytes("US-ASCII"));
             return oauthSignature;
         } catch (Exception e) {
+            logger.error("{} is error",algorithm,e);
             return null;
         }
     }
@@ -79,6 +83,7 @@ public class Hmac {
             byte[] oauthSignature = this.cryptogram(algorithm, srcString, secretKey);
             return Base64.encodeBytes(oauthSignature);
         } catch (Exception e) {
+            logger.error("encoder bytes error",e);
             return null;
         }
     }

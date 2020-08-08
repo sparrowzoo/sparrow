@@ -23,6 +23,7 @@ import com.sparrow.constant.USER;
 import com.sparrow.cryptogram.Hmac;
 import com.sparrow.cryptogram.ThreeDES;
 import com.sparrow.protocol.LoginToken;
+import com.sparrow.protocol.constant.CLIENT_INFORMATION;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
@@ -59,17 +60,20 @@ public class LoginParser implements Serializable {
             String userInfo = permission.substring(0, permissionIndex);
             String[] userInfoArray = userInfo.split("&");
 
-            Long expireAt = Long.valueOf(userInfoArray[3].substring("expireAt=".length()));
             String dev = userInfoArray[6].substring("deviceId=".length());
             //设备不一致
             if (!dev.equals(deviceId)) {
                 return login;
             }
 
+            String expireAtStr = userInfoArray[3].substring("expireAt=".length());
+            Long expireAt = 0L;
             //过期
-            if (System
-                    .currentTimeMillis() > expireAt) {
-                return login;
+            if (StringUtility.isNullOrEmpty(expireAtStr) && !"null".equalsIgnoreCase(expireAtStr)) {
+                expireAt = Long.valueOf(expireAtStr);
+                if (System.currentTimeMillis() > expireAt) {
+                    return login;
+                }
             }
 
             String signature = ThreeDES.getInstance().decrypt(

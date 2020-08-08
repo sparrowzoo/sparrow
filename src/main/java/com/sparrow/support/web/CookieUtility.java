@@ -23,13 +23,16 @@ import com.sparrow.constant.cache.KEY;
 import com.sparrow.constant.cache.key.KEY_USER;
 import com.sparrow.exception.CacheConnectionException;
 import com.sparrow.protocol.LoginToken;
+import com.sparrow.protocol.constant.CLIENT_INFORMATION;
 import com.sparrow.support.LoginParser;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.JSUtility;
 import com.sparrow.utility.StringUtility;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,25 +49,26 @@ public class CookieUtility {
     }
 
     public void set(HttpServletResponse response, String key,
-        String value, int days) {
+                    String value, int days) {
         set(response, key, value, days, null);
     }
 
     public void setRoot(HttpServletResponse response, String key,
-        String value, int days) {
+                        String value, int days) {
         String domain = Config.getValue(CONFIG.ROOT_DOMAIN);
         set(response, key, value, days, domain);
     }
 
     public void set(HttpServletResponse response, String key,
-        String value, int days, String domain) {
+                    String value, int days, String domain) {
         if (StringUtility.isNullOrEmpty(domain)) {
             domain = Config.getValue(CONFIG.DOMAIN);
         }
         Cookie cookie = new Cookie(key, JSUtility.encodeURIComponent(value));
-        if(domain!=null) {
-            logger.warn("please config [domain] key in sparrow system config ");
+        if (domain != null) {
             cookie.setDomain(domain);
+        } else {
+            logger.warn("please config [domain] key in sparrow system config ");
         }
         cookie.setPath("/");
         if (days > 0) {
@@ -90,13 +94,12 @@ public class CookieUtility {
         final String sessionId = request.getSession().getId();
         String permission;
         KEY permissionKey = new KEY.Builder().business(KEY_USER.PERMISSION).businessId(sessionId).build();
-        //如果支持redis
 
         try {
-            if(cacheClient!=null) {
+            //如果支持redis,用户量较大时侯jvm 存储有压力，nginx ip_hash 配置
+            if (cacheClient != null) {
                 permission = cacheClient.string().get(permissionKey);
-            }
-            else {
+            } else {
                 permission = (String) request.getSession().getAttribute(permissionKey.getBusiness());
             }
         } catch (CacheConnectionException e) {
@@ -105,14 +108,22 @@ public class CookieUtility {
 
         if (StringUtility.isNullOrEmpty(permission)) {
             permission = this.get(request.getCookies(), permissionKey.getBusiness());
-            if (!StringUtility.isNullOrEmpty(permission) && cacheClient != null) {
-                try {
-                    cacheClient.string().setExpire(permissionKey, 60 * 60, permission);
-                } catch (CacheConnectionException ignore) {
-                    logger.error("cookie connectin break", ignore);
+            if (!StringUtility.isNullOrEmpty(permission)) {
+                if (cacheClient != null) {
+                    try {
+                        cacheClient.string().setExpire(permissionKey, 60 * 60, permission);
+                    } catch (CacheConnectionException ignore) {
+                        logger.error("cookie connection break", ignore);
+                    }
+                } else {
+                    request.getSession().setAttribute(permissionKey.getBusiness(), permission);
                 }
             }
         }
-        return LoginParser.parse(permission, ServletUtility.getInstance().getClientIp(request));
+        String deviceId = request.getHeader(CLIENT_INFORMATION.DEVICE_ID);
+        if (StringUtility.isNullOrEmpty(deviceId)) {
+            deviceId = ServletUtility.getInstance().getClientIp(request);
+        }
+        return LoginParser.parse(permission, deviceId);
     }
 }

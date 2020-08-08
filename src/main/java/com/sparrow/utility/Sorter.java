@@ -46,6 +46,6 @@ public class Sorter {
     @Override
     public String toString() {
         String newSort = String.format("sort=%1$s_%2$s", this.sortKey, this.direction);
-        return StringUtility.replaceParameter(this.queryString, newSort);
+        return QueryStringParser.replace(this.queryString, newSort);
     }
 }
