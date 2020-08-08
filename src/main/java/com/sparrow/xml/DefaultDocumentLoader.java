@@ -17,9 +17,8 @@
 package com.sparrow.xml;
 
 import com.sparrow.support.EnvironmentSupport;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+
+import java.io.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +28,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class DefaultDocumentLoader implements DocumentLoader {
 
@@ -51,7 +51,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
      */
     @Override
     public Document loadDocument(String xmlFilePath, EntityResolver entityResolver,
-        ErrorHandler errorHandler, boolean namespaceAware) throws Exception {
+        ErrorHandler errorHandler, boolean namespaceAware) throws IOException, ParserConfigurationException, SAXException {
         int validationMode = xmlValidationModeDetector.detectValidationMode(xmlFilePath);
         DocumentBuilderFactory factory = createDocumentBuilderFactory(validationMode, namespaceAware);
         DocumentBuilder builder = createDocumentBuilder(factory, entityResolver, errorHandler);
@@ -64,13 +64,12 @@ public class DefaultDocumentLoader implements DocumentLoader {
         }
     }
 
-    @Override public Document loadDocument(String xmlFilePath,EntityResolver entityResolver,boolean namespaceAware) throws Exception {
+    @Override public Document loadDocument(String xmlFilePath,EntityResolver entityResolver,boolean namespaceAware) throws ParserConfigurationException, SAXException, IOException {
         return this.loadDocument(xmlFilePath,entityResolver,new SimpleSaxErrorHandler(logger),namespaceAware);
     }
 
     @Override public Document loadDocument(
-        String xmlFilePath, boolean namespaceAware)
-        throws Exception{
+        String xmlFilePath, boolean namespaceAware) throws IOException, SAXException, ParserConfigurationException {
         return this.loadDocument(xmlFilePath,new DtdSchemaResolverAdapter(),namespaceAware);
     }
 

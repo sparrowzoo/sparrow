@@ -16,11 +16,13 @@
 
 package com.sparrow.xml;
 
-import java.io.InputStream;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 public interface DocumentLoader {
     Document loadDocument(
@@ -33,6 +35,5 @@ public interface DocumentLoader {
         throws Exception;
 
     Document loadDocument(
-        String xmlFilePath,boolean namespaceAware)
-        throws Exception;
+        String xmlFilePath,boolean namespaceAware) throws IOException, SAXException, ParserConfigurationException;
 }

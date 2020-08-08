@@ -27,6 +27,7 @@ import com.sparrow.support.EnvironmentSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -123,7 +124,13 @@ public class Config {
     }
 
     public static Map<String, String> loadFromClassesPath(String configFilePath) {
-        InputStream stream = EnvironmentSupport.getInstance().getFileInputStream(configFilePath);
+        InputStream stream = null;
+        try {
+            stream = EnvironmentSupport.getInstance().getFileInputStream(configFilePath);
+        } catch (FileNotFoundException e) {
+            logger.error("{} file not found", configFilePath);
+            return null;
+        }
         if (stream == null) {
             return null;
         }
@@ -131,7 +138,13 @@ public class Config {
     }
 
     public static Map<String, String> loadFromClassesPath(String configFilePath, String charset) {
-        InputStream stream = EnvironmentSupport.getInstance().getFileInputStream(configFilePath);
+        InputStream stream = null;
+        try {
+            stream = EnvironmentSupport.getInstance().getFileInputStream(configFilePath);
+        } catch (FileNotFoundException e) {
+            logger.error("[{}] file not found ", configFilePath);
+            return null;
+        }
         return load(stream, charset);
     }
 

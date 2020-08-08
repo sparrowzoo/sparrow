@@ -23,16 +23,14 @@ import com.sparrow.utility.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 
 /**
  * @author harry
  */
 public class EnvironmentSupport {
-    private static Logger logger= LoggerFactory.getLogger(EnvironmentSupport.class);
+    private static Logger logger = LoggerFactory.getLogger(EnvironmentSupport.class);
 
     private static EnvironmentSupport environmentSupport = new EnvironmentSupport();
 
@@ -51,12 +49,12 @@ public class EnvironmentSupport {
      */
     public String getClassesPhysicPath() {
         URL url = Thread.currentThread().getContextClassLoader()
-            .getResource("");
+                .getResource("");
         if (url != null) {
             return url.getPath().replace("%20", " ");
         }
         String path = this.getClass().getProtectionDomain().getCodeSource()
-            .getLocation().getPath();
+                .getLocation().getPath();
         return path.substring(0, path.lastIndexOf(SYMBOL.SLASH));
     }
 
@@ -145,19 +143,20 @@ public class EnvironmentSupport {
      * @param relativeFileName
      * @return
      */
-    public InputStream getFileInputStream(String relativeFileName) {
+    public InputStream getFileInputStream(String relativeFileName) throws FileNotFoundException {
         InputStream fileInputStream = null;
-        try {
-            URL url = EnvironmentSupport.class.getResource(relativeFileName);
-            if (url != null) {
-                //xxx.getClass().getResourceAsStream("xx.properties") 有缓存
+        URL url = EnvironmentSupport.class.getResource(relativeFileName);
+        if (url != null) {
+            //xxx.getClass().getResourceAsStream("xx.properties") 有缓存
+            try {
                 fileInputStream = url.openStream();
+            } catch (IOException e) {
+                logger.error("input stream error", e);
+                throw new FileNotFoundException(e.getMessage());
             }
-            if (fileInputStream == null) {
-                fileInputStream = new FileInputStream(new File(relativeFileName));
-            }
-        } catch (Exception e) {
-           logger.error("input stream error",e);
+        }
+        if (fileInputStream == null) {
+            fileInputStream = new FileInputStream(new File(relativeFileName));
         }
         return fileInputStream;
     }
@@ -179,7 +178,7 @@ public class EnvironmentSupport {
                 fileInputStream = new FileInputStream(new File(relativeFileName));
             }
         } catch (Exception e) {
-            logger.error("input stream error",e);
+            logger.error("input stream error", e);
         }
         return fileInputStream;
     }
