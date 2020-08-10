@@ -122,17 +122,16 @@ public class TypeConverter {
         }
         try {
             Class valueType = value.getClass();
-            String stringValue = value.toString();
+
             //转成string
             if (this.getType() == String.class) {
                 //当前值是entity对象则转json
                 if (POJO.class.isAssignableFrom(valueType)) {
                     return json.toString((POJO) value);
                 }
-                return stringValue;
+                return value.toString();
             }
-
-
+            String stringValue = value.toString();
             if (this.getType() == byte.class || this.getType() == Byte.class) {
                 return Byte.valueOf(stringValue);
             }

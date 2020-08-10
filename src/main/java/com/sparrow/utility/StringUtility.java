@@ -45,7 +45,7 @@ public class StringUtility {
      * @return
      */
     public static boolean existInArray(Object[] array, Object key) {
-        if (array == null || array.length == 0||StringUtility.isNullOrEmpty(key)) {
+        if (array == null || array.length == 0 || StringUtility.isNullOrEmpty(key)) {
             return false;
         }
         for (Object s : array) {
@@ -66,7 +66,7 @@ public class StringUtility {
     /**
      * 拆分数组的关键字编码 例如:key1:value1,key2:value2 先对边界字进行编码,以防原码有出来边界字符而无法显示 该函数代码顺序不能变
      *
-     * @param str 需要折分的字符串 格式如:key1:value1,key2:value2
+     * @param str     需要折分的字符串 格式如:key1:value1,key2:value2
      * @param onlyDot
      * @return
      */
@@ -185,7 +185,6 @@ public class StringUtility {
     }
 
 
-
     /**
      * 设置首字母大写
      *
@@ -268,10 +267,10 @@ public class StringUtility {
      */
     public static String getOnlineQQ(String qq) {
         return "<a target=blank href=\"http://wpa.qq.com/msgrd?V=1&Uin={0}&Exe=QQ&Site="
-            + Config.getLanguageValue(CONFIG_KEY_LANGUAGE.WEBSITE_NAME,
-            "zh_cn")
-            + "&Menu=No\"><img border=\"0\" src=\"http://wpa.qq.com/pa?p=1:"
-            + qq + ":1\" alt=\"给我发消息\"></a>";
+                + Config.getLanguageValue(CONFIG_KEY_LANGUAGE.WEBSITE_NAME,
+                "zh_cn")
+                + "&Menu=No\"><img border=\"0\" src=\"http://wpa.qq.com/pa?p=1:"
+                + qq + ":1\" alt=\"给我发消息\"></a>";
     }
 
     /**
@@ -330,9 +329,9 @@ public class StringUtility {
         for (int i = 0; i < tmp.length / 2; i++) {
             byte src0 = tmp[i * 2];
             byte src1 = tmp[i * 2 + 1];
-            byte b0 = Byte.decode("0x" + new String(new byte[] {src0}));
+            byte b0 = Byte.decode("0x" + new String(new byte[]{src0}));
             b0 = (byte) (b0 << 4);
-            byte b1 = Byte.decode("0x" + new String(new byte[] {src1}));
+            byte b1 = Byte.decode("0x" + new String(new byte[]{src1}));
             ret[i] = (byte) (b0 ^ b1);
         }
         return ret;
@@ -347,7 +346,7 @@ public class StringUtility {
      * @return
      */
     public static String join(Object[] array, char separator,
-        Object[] exceptArray) {
+                              Object[] exceptArray) {
         StringBuilder sb = new StringBuilder();
         for (Object object : array) {
             if (existInArray(exceptArray, object)) {
@@ -361,7 +360,7 @@ public class StringUtility {
         return sb.toString();
     }
 
-    public static String join(String separator,Object... array) {
+    public static String join(String separator, Object... array) {
         StringBuilder sb = new StringBuilder();
         for (Object object : array) {
             if (object == null) {
@@ -400,7 +399,7 @@ public class StringUtility {
     public static String join(Iterable<?> collection, String joinChar) {
         StringBuilder sb = new StringBuilder();
         for (Object object : collection) {
-            if(object==null){
+            if (object == null) {
                 continue;
             }
             if (sb.length() > 0) {
@@ -473,10 +472,13 @@ public class StringUtility {
         return new ByteArrayInputStream(s.getBytes(CONSTANT.CHARSET_UTF_8));
     }
 
-    public static String replace(String source, Map<?, String> rep) {
-        for (Object key : rep.keySet()) {
-            if (source.contains(key.toString())) {
-                source = source.replace(key.toString(), rep.get(key));
+    public static String replace(String source, Map<String, String> rep) {
+        if (isNullOrEmpty(source)) {
+            return SYMBOL.EMPTY;
+        }
+        for (String key : rep.keySet()) {
+            if (source.contains(key) && rep.containsKey(key) && rep.get(key) != null) {
+                source = source.replace(key, rep.get(key));
             }
         }
         return source;
@@ -504,8 +506,8 @@ public class StringUtility {
      */
     private static String byteToHexStr(byte mByte) {
         char[] digit = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
-            'B', 'C', 'D', 'E', 'F'};
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+                'B', 'C', 'D', 'E', 'F'};
         char[] tempArr = new char[2];
         tempArr[0] = digit[(mByte >>> 4) & 0X0F];
         tempArr[1] = digit[mByte & 0X0F];
@@ -599,19 +601,17 @@ public class StringUtility {
         return source.equals(target);
     }
 
-    public static boolean isNumeric(String str){
-        if(isNullOrEmpty(str)){
+    public static boolean isNumeric(String str) {
+        if (isNullOrEmpty(str)) {
             return false;
         }
-        for(int i=0;i<str.length();i++){
-            if(!Character.isDigit(str.charAt(i))){
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
                 return false;
             }
         }
         return true;
     }
-
-
 
 
     public static String format(String format, Object... args) {
@@ -661,7 +661,7 @@ public class StringUtility {
     public static String getDigit(String str, int start) {
         char c;
         StringBuilder digit = new StringBuilder(10);
-        while (start<str.length()&&Character.isDigit(c = str.charAt(start++))) {
+        while (start < str.length() && Character.isDigit(c = str.charAt(start++))) {
             digit.append(c);
         }
         return digit.toString();
@@ -688,16 +688,17 @@ public class StringUtility {
      * StringUtils.hasText("12345") = true
      * StringUtils.hasText(" 12345 ") = true
      * </pre>
+     *
      * @param str the {@code CharSequence} to check (may be {@code null})
      * @return {@code true} if the {@code CharSequence} is not {@code null},
      * its length is greater than 0, and it does not contain whitespace only
      * @see Character#isWhitespace
      */
-    public static boolean hasText( CharSequence str) {
+    public static boolean hasText(CharSequence str) {
         return (str != null && str.length() > 0 && containsText(str));
     }
 
-    public static boolean hasText( String str) {
+    public static boolean hasText(String str) {
         return (str != null && !str.isEmpty() && containsText(str));
     }
 

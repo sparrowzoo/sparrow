@@ -102,10 +102,12 @@ public class Config {
             props.load(stream);
         } catch (IOException e) {
             logger.error("load config file error", e);
+            return null;
         }
 
         for (Object key : props.keySet()) {
-            String value = props.getProperty(key.toString());
+            String strKey = key.toString();
+            String value = props.getProperty(strKey);
             if (StringUtility.isNullOrEmpty(charset)) {
                 charset = CONSTANT.CHARSET_UTF_8;
             }
@@ -113,8 +115,16 @@ public class Config {
                 value = new String(value.getBytes(CONSTANT.CHARSET_ISO_8859_1), charset);
             } catch (UnsupportedEncodingException ignore) {
             }
-            systemMessage
-                    .put(key.toString(), value);
+            if (value.startsWith("${") && value.endsWith("}")) {
+                String envKey = value.substring(2, value.length() - 1).toUpperCase();
+                String envValue = System.getenv(envKey);
+                if (envValue == null) {
+                    logger.warn("{} not found,please config env", envKey);
+                    continue;
+                }
+                value = envValue;
+            }
+            systemMessage.put(strKey, value);
         }
         return systemMessage;
     }

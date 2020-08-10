@@ -46,6 +46,8 @@ public interface CacheHash {
 
     <T> T get(KEY key, String field, Class clazz) throws CacheConnectionException;
 
+    <T> T get(KEY key,String field, Class clazz, CacheDataNotFound<T> hook);
+
     Long put(KEY key, String field, Object value) throws CacheConnectionException;
 
     <K,T> Integer put(KEY key, Map<K, T> map) throws CacheConnectionException;
