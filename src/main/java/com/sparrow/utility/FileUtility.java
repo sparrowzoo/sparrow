@@ -18,7 +18,6 @@
 package com.sparrow.utility;
 
 import com.sparrow.protocol.constant.CONSTANT;
-import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.constant.FILE;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.DIGIT;
@@ -458,14 +457,14 @@ public class FileUtility {
      * @param size
      * @return
      */
-    public String getBreakUpPath(long id, String extension, boolean isWebPath,
+    public String getShufflePath(long id, String extension, boolean isWebPath,
                                  String size) {
         boolean isImage = this.isImage(extension);
         long remaining = id % DIGIT.TEN;
         long remaining1 = id % DIGIT.THOUSAND;
         long div = id / DIGIT.THOUSAND;
         long remaining2 = div % DIGIT.THOUSAND;
-        String path = "";
+        String path;
         if (isImage) {
             if (isWebPath) {
                 path = Config.getValue(FILE.PATH.IMG_URL)
@@ -482,7 +481,7 @@ public class FileUtility {
         return String.format(path, remaining2, remaining1, id, extension);
     }
 
-    public String getBreakUpPath(String uuid) {
+    public String getShufflePath(String uuid) {
         int id = Math.abs(uuid.hashCode());
         long remaining = id % DIGIT.TEN;
         long remaining1 = id % DIGIT.THOUSAND;
@@ -506,7 +505,7 @@ public class FileUtility {
     public String getPhysicalPath(String filePath, String size) {
         String fileId = this.getFileName(filePath);
         String extension = this.getImageExtension(filePath);
-        return this.getBreakUpPath(Integer.valueOf(fileId), extension, false,
+        return this.getShufflePath(Integer.valueOf(fileId), extension, false,
                 size);
     }
 
@@ -564,7 +563,7 @@ public class FileUtility {
         Boolean isImage = this.isImage(extension);
         if (this.isImage(extension)) {
             String imageExtension = this.getImageExtension(clientFileName);
-            String imageFullPath = FileUtility.getInstance().getBreakUpPath(
+            String imageFullPath = FileUtility.getInstance().getShufflePath(
                     fileId,
                     imageExtension, false, FILE.SIZE.ORIGIN);
             File origin = new File(imageFullPath);
@@ -591,7 +590,7 @@ public class FileUtility {
             }
             return;
         }
-        String attachFileFullName = FileUtility.getInstance().getBreakUpPath(
+        String attachFileFullName = FileUtility.getInstance().getShufflePath(
                 fileId, extension, false, FILE.SIZE.ATTACH);
         File origin = new File(attachFileFullName);
         if (origin.exists()) {

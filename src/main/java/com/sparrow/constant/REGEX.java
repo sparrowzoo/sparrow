@@ -66,6 +66,11 @@ public class REGEX {
      * 第三方网站（抓取时使用）图片标签 所有图片格式
      */
     public static final String TAG_IMAGE = "<img[\\s\\S]*?src=([\"\'])(.*?)\\1[\\s\\S]*?\\/?>";
+
+    /**
+     * MARK DOWN 图片标签
+     */
+    public static final String TAG_MARKDOWN_IMAGE="!\\[(.*)]\\((.*)\\)";
     /**
      * flashTag标签
      */
@@ -105,6 +110,8 @@ public class REGEX {
      * 密码格式
      */
     public static final String PASSWORD = "^[\\w!@#$%\\^&\\*\\(\\)_]{6,20}$";
+
+
 
     public static final Pattern BAIDU_IMAGE_SEARCH = Pattern.compile(
         "var imgdata=([\\s\\S]*?)<\\/script>", REGEX.OPTION);
