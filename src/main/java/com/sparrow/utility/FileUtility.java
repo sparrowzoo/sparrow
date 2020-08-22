@@ -491,8 +491,12 @@ public class FileUtility {
     }
 
     public boolean isImage(String extension) {
-        return StringUtility.existInArray(Config
-                .getValue(FILE.IMAGE_EXTENSION).split("\\|"), extension);
+        String imageExtension = Config
+                .getValue(FILE.IMAGE_EXTENSION);
+        if (StringUtility.isNullOrEmpty(imageExtension)) {
+            imageExtension = CONSTANT.IMAGE_EXTENSION;
+        }
+        return StringUtility.existInArray(imageExtension.split("\\|"), extension);
     }
 
     /**
@@ -561,7 +565,7 @@ public class FileUtility {
     public void deleteByFileId(Long fileId, String clientFileName) {
         String extension = this.getExtension(clientFileName);
         Boolean isImage = this.isImage(extension);
-        if (this.isImage(extension)) {
+        if (isImage) {
             String imageExtension = this.getImageExtension(clientFileName);
             String imageFullPath = FileUtility.getInstance().getShufflePath(
                     fileId,

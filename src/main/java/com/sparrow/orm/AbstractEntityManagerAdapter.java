@@ -56,7 +56,6 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
     protected String createDDL;
 
 
-
     public AbstractEntityManagerAdapter(Class clazz) {
         this.className = clazz.getName();
         this.simpleClassName = clazz.getSimpleName();
@@ -73,15 +72,15 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         StringBuilder updateSQL = new StringBuilder("update ");
         StringBuilder createDDLField = new StringBuilder();
         boolean isSplitTable = initTable(clazz);
-
-        updateSQL.append(this.dialectTableName);
-        insertSQL.append(this.dialectTableName);
+        StringBuilder splitTableName = new StringBuilder(this.dialectTableName);
         if (isSplitTable) {
-            insertSQL.insert(insertSQL.length()-1,CONSTANT.TABLE_SUFFIX);
-            updateSQL.insert(updateSQL.length()-1,CONSTANT.TABLE_SUFFIX);
+            splitTableName.insert(this.dialectTableName.length() - 1, CONSTANT.TABLE_SUFFIX);
         }
+        updateSQL.append(splitTableName);
+        insertSQL.append(splitTableName);
 
-        String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", this.dialectTableName);
+
+        String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", splitTableName);
         String primaryCreateDDL = "";
         insertSQL.append("(");
         updateSQL.append(" set ");
@@ -287,7 +286,11 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
     @Override
     public String getColumnName(String property) {
-        return this.getField(property).getColumnName();
+        Field field = this.getField(property);
+        if (field == null) {
+            throw new RuntimeException("field is not found \nproperty is '" + property + "'");
+        }
+        return field.getColumnName();
     }
 
     @Override
