@@ -41,7 +41,7 @@ public class CompressUtility {
                 throw new FileNotFoundException(fileName);
             }
             zipOutputStream = new ZipOutputStream(outputStream);
-            ZipEntry entry = new ZipEntry(FileUtility.getInstance().getFileNameWithExtension(fileName));
+            ZipEntry entry = new ZipEntry(FileUtility.getInstance().getFileNameProperty(fileName).getFullFileName());
             zipOutputStream.putNextEntry(entry);
             FileUtility.getInstance().copy(new FileInputStream(file), zipOutputStream);
         } catch (IOException e) {

@@ -41,7 +41,7 @@ public class ClassesPathDtdResolver implements EntityResolver {
             return null;
         }
 
-        String dtdFile = "/"+FileUtility.getInstance().getFileNameWithExtension(systemId);
+        String dtdFile = "/"+FileUtility.getInstance().getFileNameProperty(systemId).getFullFileName();
         if (logger.isTraceEnabled()) {
             logger.trace("Trying to locate [" + dtdFile + "] in Spring jar on classpath");
         }

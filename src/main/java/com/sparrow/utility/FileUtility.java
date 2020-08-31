@@ -40,6 +40,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
+import com.sparrow.support.file.FileNameProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,7 +170,7 @@ public class FileUtility {
         if (destFile.isDirectory()) {
             return fullFilePath;
         }
-        String descDirectoryPath = this.getDirectory(fullFilePath);
+        String descDirectoryPath = this.getFileNameProperty(fullFilePath).getDirectory();
         if (StringUtility.isNullOrEmpty(descDirectoryPath)) {
             descDirectoryPath = System.getProperty("user.dir");
             fullFilePath = descDirectoryPath + File.separator + fullFilePath;
@@ -189,7 +190,7 @@ public class FileUtility {
         try {
             //先判断class下是否存在
             String fileFullPath = EnvironmentSupport.getInstance().getClassesPhysicPath() + filePath;
-            if (!new File(this.getDirectory(fileFullPath)).exists()) {
+            if (!new File(this.getFileNameProperty(fileFullPath).getDirectory()).exists()) {
                 //不存在则新建class以外的目录
                 fileFullPath = this.makeDirectory(filePath);
             }
@@ -226,7 +227,7 @@ public class FileUtility {
             String fileFullPath = this.makeDirectory(descFilePath);
             File descFile = new File(fileFullPath);
             if (descFile.isDirectory()) {
-                descFile = new File(fileFullPath + File.separator + FileUtility.getInstance().getFileNameWithExtension(srcFilePath));
+                descFile = new File(fileFullPath + File.separator + this.getFileNameProperty(srcFilePath).getFullFileName());
             }
             is = new FileInputStream(srcFilePath);
             fos = new FileOutputStream(descFile);
@@ -396,56 +397,38 @@ public class FileUtility {
         return Math.ceil(kb / DIGIT.K / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "GB";
     }
 
-    /**
-     * 获取文件扩展名
-     *
-     * @param fileUrl
-     * @return .jpg
-     */
-    public String getExtension(String fileUrl) {
-        return fileUrl.substring(fileUrl.lastIndexOf('.'))
+    public FileNameProperty getFileNameProperty(String fullFilePath) {
+        FileNameProperty fileNameProperty = new FileNameProperty();
+        int lastFileSeparatorIndex = fullFilePath.lastIndexOf(File.separator);
+        if (lastFileSeparatorIndex == -1) {
+            lastFileSeparatorIndex = fullFilePath.lastIndexOf("/");
+        }
+        String directory = fullFilePath.substring(DIGIT.ZERO, lastFileSeparatorIndex + DIGIT.ONE);
+        int fileNameEndIndex = fullFilePath.lastIndexOf('.');
+        String fileName = fullFilePath.substring(lastFileSeparatorIndex + DIGIT.ONE,
+                fileNameEndIndex);
+        String extension = fullFilePath.substring(fileNameEndIndex)
                 .toLowerCase();
-    }
+        String fullFileName = fileName + extension;
 
-    public String getImageExtension(String fileUrl) {
-        String extension = this.getExtension(fileUrl);
+        fileNameProperty.setDirectory(directory);
+        fileNameProperty.setFullFileName(fullFileName);
+        fileNameProperty.setName(fileName);
+
+
         String imageExtensionConfig = Config.getValue(FILE.IMAGE_EXTENSION);
         if (imageExtensionConfig == null) {
-            return extension;
+            imageExtensionConfig = CONSTANT.IMAGE_EXTENSION;
         }
         String[] imageExtension = imageExtensionConfig
                 .split("\\|");
         // jpeg 或者是其他格式都转换成jpg
-        if (EXTENSION.JPEG.equalsIgnoreCase(extension)
-                || !StringUtility.existInArray(imageExtension, extension)) {
+        if (EXTENSION.JPEG.equalsIgnoreCase(extension)) {
             extension = EXTENSION.JPG;
         }
-        return extension;
-    }
-
-    public String getFileNameWithExtension(String fileUrl) {
-        // 获取客户端文件名 http://img.zhuaququ.com/0/0.100.jpg?date=new date()
-        int fileNameStartIndex = fileUrl.lastIndexOf('/') + DIGIT.ONE;
-        return fileUrl.substring(fileNameStartIndex);
-    }
-
-    /**
-     * 获取文件名 不包含扩展名
-     *
-     * @param fullFilePath
-     * @return
-     */
-    public String getFileName(String fullFilePath) {
-        // 获取客户端文件名 http://img.zhuaququ.com/0/0.100.jpg?date=new date()
-        int fileNameStartIndex = fullFilePath.lastIndexOf('/') + DIGIT.ONE;
-        int fileNameEndIndex = fullFilePath.lastIndexOf('.');
-        return fullFilePath.substring(fileNameStartIndex,
-                fileNameEndIndex);
-    }
-
-    public String getDirectory(String fullFilePath) {
-        int index = fullFilePath.lastIndexOf(File.separator);
-        return fullFilePath.substring(DIGIT.ZERO, index + DIGIT.ONE);
+        fileNameProperty.setExtension(extension);
+        fileNameProperty.setImage(StringUtility.existInArray(imageExtension, extension));
+        return fileNameProperty;
     }
 
     /**
@@ -507,8 +490,9 @@ public class FileUtility {
      * @return
      */
     public String getPhysicalPath(String filePath, String size) {
-        String fileId = this.getFileName(filePath);
-        String extension = this.getImageExtension(filePath);
+        FileNameProperty fileNameProperty= this.getFileNameProperty(filePath);
+        String fileId = fileNameProperty.getName();
+        String extension = fileNameProperty.getExtension();
         return this.getShufflePath(Integer.valueOf(fileId), extension, false,
                 size);
     }
@@ -563,13 +547,13 @@ public class FileUtility {
      * 删除文件
      */
     public void deleteByFileId(Long fileId, String clientFileName) {
-        String extension = this.getExtension(clientFileName);
-        Boolean isImage = this.isImage(extension);
+        FileNameProperty fileNameProperty=this.getFileNameProperty(clientFileName);
+        String extension = fileNameProperty.getExtension();
+        Boolean isImage = fileNameProperty.isImage();
         if (isImage) {
-            String imageExtension = this.getImageExtension(clientFileName);
             String imageFullPath = FileUtility.getInstance().getShufflePath(
                     fileId,
-                    imageExtension, false, FILE.SIZE.ORIGIN);
+                    extension, false, FILE.SIZE.ORIGIN);
             File origin = new File(imageFullPath);
             if (origin.exists()) {
                 origin.delete();

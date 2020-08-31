@@ -347,7 +347,7 @@ public class HttpClient {
         int remaining1 = hashcode % 1000;
         int div = hashcode / 1000;
         int remaining2 = div % 1000;
-        String extension = FileUtility.getInstance().getExtension(url);
+        String extension = FileUtility.getInstance().getFileNameProperty(url).getExtension();
         if (!EXTENSION.JPG.equalsIgnoreCase(extension) && !EXTENSION.PNG.equalsIgnoreCase(extension)
             && !EXTENSION.GIF.equalsIgnoreCase(extension)) {
             extension = ".jpg";

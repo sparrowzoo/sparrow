@@ -28,40 +28,53 @@ public class LockConfig {
 
     /**
      * 锁构造
-     * @param absolute 是否绝对时间
-     * @param lockTime 锁定时间
-     * @param maxTimes 锁定时间内最大操作次数
+     *
+     * @param absolute           是否绝对时间
+     * @param lockTime           锁定时间
+     * @param maxTimes           锁定时间内最大操作次数
      * @param isContinueLockTime 是否顺延时间
      * @param containOperationId key是否包含operation id
      */
-    private LockConfig(Boolean absolute,int lockTime, int maxTimes,
-        boolean isContinueLockTime, boolean containOperationId,DATE_TIME_UNIT dateTimeUnit) {
+    private LockConfig(Boolean absolute, int lockTime, int maxTimes,
+                       boolean isContinueLockTime, boolean containOperationId, DATE_TIME_UNIT dateTimeUnit) {
         this.absolute = absolute;
-        this.lockTime=lockTime;
-        this.maxTimes=maxTimes;
-        this.isContinueLockTime=isContinueLockTime;
-        this.containOperationId=containOperationId;
-        this.dateTimeUnit=dateTimeUnit;
+        this.lockTime = lockTime;
+        this.maxTimes = maxTimes;
+        this.isContinueLockTime = isContinueLockTime;
+        this.containOperationId = containOperationId;
+        this.dateTimeUnit = dateTimeUnit;
     }
 
+    /**
+     * 获取相对过期锁
+     * @param lockTime
+     * @param maxTimes
+     * @param isContinueLockTime 允许延长过期时间
+     * @param containOperationId
+     * @return
+     */
     public static LockConfig getRelativeLock(int lockTime, int maxTimes,
-        boolean isContinueLockTime, boolean containOperationId){
-        return new LockConfig(false,lockTime,maxTimes,isContinueLockTime,containOperationId,null);
+                                             boolean isContinueLockTime, boolean containOperationId) {
+        return new LockConfig(false, lockTime, maxTimes, isContinueLockTime, containOperationId, null);
     }
 
     /**
      * 绝对时间构照 每次必须new生成，因为不允许为单例出现，线程不安全
-     *
-     * hash锁
-     *
-     * lockTime=1
+     * <p>
+     * isContinueLockTime 不延长过期时间
      *
      * @param maxTimes
      */
     public static LockConfig getAbsoluteLock(DATE_TIME_UNIT dateTimeUnit, int maxTimes) {
-        return new LockConfig(true,1,maxTimes,false,true,dateTimeUnit);
+        return new LockConfig(true, 1, maxTimes, false, true, dateTimeUnit);
     }
 
+    /**
+     * 是否绝对时间
+     * 举例说明...
+     * 过期时间为当天,当天的最大时间减去当前时间，即剩余绝对过期时间
+     * 相对过期时间为24小时(1天)
+     */
     private boolean absolute;
     /**
      * 锁定时间
@@ -94,9 +107,9 @@ public class LockConfig {
     }
 
     public long getAbsoluteLockTime() {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        return DateTimeUtility.ceiling(calendar,this.dateTimeUnit);
+        return DateTimeUtility.ceiling(calendar, this.dateTimeUnit);
     }
 
     public int getLockTime() {

@@ -53,7 +53,7 @@ public class ExcelUtility {
         }
 
         Workbook workbook = null;
-        String extension = FileUtility.getInstance().getExtension(fullFileName);
+        String extension = FileUtility.getInstance().getFileNameProperty(fullFileName).getExtension();
         if (EXTENSION.EXCEL2003.equals(extension)) {
             try {
                 workbook = new HSSFWorkbook(fin);

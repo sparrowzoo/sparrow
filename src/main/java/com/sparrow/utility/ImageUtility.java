@@ -55,7 +55,7 @@ public class ImageUtility {
                                      int width, int height, String waterImagePath, boolean fillWhite)
             throws Exception {
         // 目标图扩展名
-        String extension = FileUtility.getInstance().getExtension(srcImagePath);
+        String extension = FileUtility.getInstance().getFileNameProperty(srcImagePath).getExtension();
         // 如果为gif图则直接保存
         if (EXTENSION.GIF.equalsIgnoreCase(extension)) {
             if (descImagePath.contains(FILE.SIZE.BIG)) {
@@ -72,7 +72,7 @@ public class ImageUtility {
             Boolean result = descDirectory.mkdirs();
         }
         // 目标图文件对象
-        Asserts.isTrue(!srcImagePath.equals(descImagePath), SPARROW_ERROR.UPLOAD_SRC_DESC_PATH_REPEAT);
+        Asserts.isTrue(srcImagePath.equals(descImagePath), SPARROW_ERROR.UPLOAD_SRC_DESC_PATH_REPEAT);
         OutputStream outputStream = new FileOutputStream(new File(descImagePath));
         InputStream inputStream = new FileInputStream(new File(srcImagePath));
         BufferedImage srcImage = ImageIO.read(inputStream);
@@ -83,7 +83,7 @@ public class ImageUtility {
                                      int width, int height, String waterImagePath, boolean fillWhite)
             throws IOException {
         BufferedImage srcImage = ImageIO.read(new FileInputStream(new File(srcImagePath)));
-        makeThumbnail(srcImage, FileUtility.getInstance().getImageExtension(srcImagePath), descImage, width, height, waterImagePath, fillWhite);
+        makeThumbnail(srcImage, FileUtility.getInstance().getFileNameProperty(srcImagePath).getExtension(), descImage, width, height, waterImagePath, fillWhite);
     }
 
     public static void makeThumbnail(InputStream srcImage, String extension, OutputStream descImage,
@@ -291,7 +291,7 @@ public class ImageUtility {
     public static void saveSubImage(String imagePath, Rectangle subImageBounds,
                                     String subImageFilePath) throws IOException {
         BufferedImage subImage = getSubImage(imagePath, subImageBounds);
-        String extension = FileUtility.getInstance().getImageExtension(subImageFilePath).substring(1);
+        String extension = FileUtility.getInstance().getFileNameProperty(subImageFilePath).getExtensionWithoutDot();
         ImageIO.write(subImage, extension, new FileOutputStream(new File(subImageFilePath)));
         subImage.flush();
         subImage.flush();
@@ -385,7 +385,7 @@ public class ImageUtility {
                 continue;
             }
             for (List<String> innerImageGroup : innerImageGroupList) {
-                imageIdList.add(Long.valueOf(FileUtility.getInstance().getFileName(innerImageGroup.get(0))));
+                imageIdList.add(Long.valueOf(FileUtility.getInstance().getFileNameProperty(innerImageGroup.get(0)).getName()));
             }
         }
         return imageIdList;

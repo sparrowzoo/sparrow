@@ -87,13 +87,13 @@ public class KEY_USER {
     static {
         // 5分钟不能超10次 不顺延
         LOCK_CONFIG.put(LOCK_PUBLISH, LockConfig.getRelativeLock(5 * 60, 10, false, false));
-        // 30分钟之内不超过5次//todo 上线前要修改
-        LOCK_CONFIG.put(LOCK_LOGIN, LockConfig.getRelativeLock(30 * 60, 100000,
-            true, false));
+        // 30分钟之内不超过5次
+        LOCK_CONFIG.put(LOCK_LOGIN, LockConfig.getRelativeLock(30 * 60, 5,
+            false, false));
         // 24小时内登录一次加一次积分
         LOCK_CONFIG.put(LOCK_LOGIN_CENT, LockConfig.getRelativeLock(24 * 60 * 60, 1, false, false));
         // 30分钟之内不超过5次
-        LOCK_CONFIG.put(LOCK_FIND_PASSWORD, LockConfig.getRelativeLock(30 * 60, 5, true, false));
+        LOCK_CONFIG.put(LOCK_FIND_PASSWORD, LockConfig.getRelativeLock(30 * 60, 5, false, false));
         // 12小时内不超过20次
         LOCK_CONFIG.put(LOCK_REGISTER, LockConfig.getRelativeLock(12 * 60 * 60, 20, false, false));
         // 1天内只允许1 次
