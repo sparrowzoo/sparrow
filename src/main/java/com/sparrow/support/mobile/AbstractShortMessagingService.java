@@ -60,7 +60,7 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
      * @return 是否验证成功
      */
     @Override public Boolean validate(String validateCode, MobileShortMessaging shortMessaging) throws BusinessException {
-        if (Config.getBooleanValue(CONFIG.DEBUG)) {
+        if (Config.getBooleanValue(CONFIG.DEBUG,false)) {
             return true;
         }
         if (StringUtility.isNullOrEmpty(validateCode)) {

@@ -397,6 +397,12 @@ public class FileUtility {
         return Math.ceil(kb / DIGIT.K / DIGIT.K * DIGIT.HUNDRED) / DIGIT.HUNDRED + "GB";
     }
 
+    /**
+     * 兼容 http://www.sparrozoo.com/bmiddle/003aGgFyzy6IXdCe80y52
+     *
+     * @param fullFilePath
+     * @return
+     */
     public FileNameProperty getFileNameProperty(String fullFilePath) {
         FileNameProperty fileNameProperty = new FileNameProperty();
         int lastFileSeparatorIndex = fullFilePath.lastIndexOf(File.separator);
@@ -405,6 +411,9 @@ public class FileUtility {
         }
         String directory = fullFilePath.substring(DIGIT.ZERO, lastFileSeparatorIndex + DIGIT.ONE);
         int fileNameEndIndex = fullFilePath.lastIndexOf('.');
+        if (fileNameEndIndex < lastFileSeparatorIndex) {
+            return fileNameProperty;
+        }
         String fileName = fullFilePath.substring(lastFileSeparatorIndex + DIGIT.ONE,
                 fileNameEndIndex);
         String extension = fullFilePath.substring(fileNameEndIndex)
@@ -490,7 +499,7 @@ public class FileUtility {
      * @return
      */
     public String getPhysicalPath(String filePath, String size) {
-        FileNameProperty fileNameProperty= this.getFileNameProperty(filePath);
+        FileNameProperty fileNameProperty = this.getFileNameProperty(filePath);
         String fileId = fileNameProperty.getName();
         String extension = fileNameProperty.getExtension();
         return this.getShufflePath(Integer.valueOf(fileId), extension, false,
@@ -547,7 +556,7 @@ public class FileUtility {
      * 删除文件
      */
     public void deleteByFileId(Long fileId, String clientFileName) {
-        FileNameProperty fileNameProperty=this.getFileNameProperty(clientFileName);
+        FileNameProperty fileNameProperty = this.getFileNameProperty(clientFileName);
         String extension = fileNameProperty.getExtension();
         Boolean isImage = fileNameProperty.isImage();
         if (isImage) {

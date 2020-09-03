@@ -23,6 +23,7 @@ import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
+
 import java.util.Enumeration;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -48,8 +49,13 @@ public class ServletUtility {
 
 
     public String assembleActualUrl(String url) {
-        if(!url.startsWith(SYMBOL.SLASH)){
-            url=SYMBOL.SLASH+url;
+        //rootPath is null when contain init ...
+        String rootPath = Config.getValue(CONFIG.ROOT_PATH);
+        if (rootPath != null && url.startsWith(rootPath)) {
+            url = url.substring(rootPath.length());
+        }
+        if (!url.startsWith(SYMBOL.SLASH)) {
+            url = SYMBOL.SLASH + url;
         }
         String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
         String pagePrefix = Config.getValue(CONFIG.DEFAULT_PAGE_PREFIX, "/template");
@@ -87,13 +93,13 @@ public class ServletUtility {
             website = website.substring(0, website.indexOf("."));
             Config.resetKey(CONFIG.WEBSITE, website);
 
-            String rootDomain= Config.getValue(CONFIG.ROOT_DOMAIN);
+            String rootDomain = Config.getValue(CONFIG.ROOT_DOMAIN);
             if (rootDomain == null) {
-                Config.resetKey(CONFIG.ROOT_DOMAIN,serverName.substring(serverName.indexOf(".")));
+                Config.resetKey(CONFIG.ROOT_DOMAIN, serverName.substring(serverName.indexOf(".")));
             }
 
-            String domain=Config.getValue(CONFIG.DOMAIN);
-            if (domain== null) {
+            String domain = Config.getValue(CONFIG.DOMAIN);
+            if (domain == null) {
                 Config.resetKey(CONFIG.DOMAIN,
                         serverName);
             }

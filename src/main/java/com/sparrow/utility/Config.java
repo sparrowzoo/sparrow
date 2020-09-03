@@ -77,7 +77,7 @@ public class Config {
         if (internationalizationMap == null) {
             return defaultOrEmpty(defaultValue);
         }
-        String value = internationalizationMap.get(key);
+        String value = internationalizationMap.get(key.toLowerCase());
         if (value == null) {
             return defaultOrEmpty(defaultValue);
         }
@@ -211,6 +211,14 @@ public class Config {
     public static boolean getBooleanValue(String config) {
         String value = getValue(config);
         return !StringUtility.isNullOrEmpty(value) && Boolean.TRUE.toString().equalsIgnoreCase(value);
+    }
+
+    public static boolean getBooleanValue(String config, boolean defaultValue) {
+        String value = getValue(config);
+        if (StringUtility.isNullOrEmpty(value)) {
+            return defaultValue;
+        }
+        return Boolean.TRUE.toString().equalsIgnoreCase(value);
     }
 
     public static Integer getIntegerValue(String config) {
