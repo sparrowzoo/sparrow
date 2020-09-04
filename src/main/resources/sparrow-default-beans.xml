@@ -16,4 +16,8 @@
         <property name="dataSourceFactory" ref="dataSourceFactory"/>
     </bean>
     <bean name="criteriaProcessor" class="com.sparrow.orm.query.sql.impl.criteria.processor.SqlCriteriaProcessorImpl"/>
+    <bean name="imageExtractorRegistry" class="com.sparrow.image.ImageExtractorRegistry"/>
+    <bean name="htmlImageExtractor" class="com.sparrow.image.HtmlImageExtractor">
+        <property name="imageExtractorRegistry"  ref="imageExtractorRegistry"/>
+    </bean>
 </beans>

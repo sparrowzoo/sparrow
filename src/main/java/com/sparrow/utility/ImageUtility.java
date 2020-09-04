@@ -24,9 +24,11 @@ import com.sparrow.constant.SPARROW_ERROR;
 import com.sparrow.core.TypeConverter;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.POJO;
 
 import com.sparrow.protocol.constant.EXTENSION;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -52,8 +54,7 @@ public class ImageUtility {
      * @throws IOException
      */
     public static void makeThumbnail(String srcImagePath, String descImagePath,
-                                     int width, int height, String waterImagePath, boolean fillWhite)
-            throws Exception {
+                                     int width, int height, String waterImagePath, boolean fillWhite) throws BusinessException {
         // 目标图扩展名
         String extension = FileUtility.getInstance().getFileNameProperty(srcImagePath).getExtension();
         // 如果为gif图则直接保存
@@ -73,10 +74,23 @@ public class ImageUtility {
         }
         // 目标图文件对象
         Asserts.isTrue(srcImagePath.equals(descImagePath), SPARROW_ERROR.UPLOAD_SRC_DESC_PATH_REPEAT);
-        OutputStream outputStream = new FileOutputStream(new File(descImagePath));
-        InputStream inputStream = new FileInputStream(new File(srcImagePath));
-        BufferedImage srcImage = ImageIO.read(inputStream);
-        makeThumbnail(srcImage, extension, outputStream, width, height, waterImagePath, fillWhite);
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            outputStream = new FileOutputStream(new File(descImagePath));
+            inputStream = new FileInputStream(new File(srcImagePath));
+        } catch (FileNotFoundException e) {
+            throw new BusinessException(SPARROW_ERROR.FILE_NOT_FOUND);
+        }
+        try {
+            BufferedImage srcImage = ImageIO.read(inputStream);
+            if(srcImage==null){
+                throw new BusinessException(SPARROW_ERROR.FILE_CAN_NOT_READ);
+            }
+            makeThumbnail(srcImage, extension, outputStream, width, height, waterImagePath, fillWhite);
+        } catch (IOException e) {
+            throw new BusinessException(SPARROW_ERROR.FILE_CAN_NOT_READ);
+        }
     }
 
     public static void makeThumbnail(String srcImagePath, OutputStream descImage,

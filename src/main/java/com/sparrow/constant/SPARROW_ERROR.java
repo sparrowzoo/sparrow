@@ -132,9 +132,15 @@ public enum SPARROW_ERROR implements ErrorSupport {
     UPLOAD_FILE_TYPE_ERROR(false, SPARROW_MODULE.UPLOAD, "04", "upload file type error"),
     UPLOAD_SRC_DESC_PATH_REPEAT(false, SPARROW_MODULE.UPLOAD, "05", "upload src desc  path repeat"),
 
+    FILE_NOT_FOUND(false, SPARROW_MODULE.ATTACH, "01", "file not found"),
+    FILE_CAN_NOT_READ(false, SPARROW_MODULE.ATTACH, "02", "io error file can't read"),
+    IMAGE_EXTENSION_NOT_FOUND(true,SPARROW_MODULE.ATTACH, "03", "[%s] image extension  not found "),
+
     //活动
     ACTIVITY_SCAN_TOKEN_TIME_OUT(false, SPARROW_MODULE.ACTIVITY, "01", "activity scan token time out"),
+
     ACTIVITY_TIMES_OUT(false, SPARROW_MODULE.ACTIVITY, "02", "activity time out"),
+
     ACTIVITY_RULE_GIFT_TIMES_OUT(false, SPARROW_MODULE.ACTIVITY, "03", "activity gift time out");
 
     private boolean system;
