@@ -114,7 +114,6 @@ public class CONFIG {
     public static final String LUCENCE_IDF_KEYWORDS_PATH = "lucence_idf_keywords_path";
 
     public static final String CMS_PAGE_CHAR_COUNT = "cms_page_char_count";
-    public static final String CMS_EDITOR_NEW_PAGE_URL = "cms_editor_new_page_url";
 
     public static final String FORUM_CODE_CMS = "forum_code_cms";
     public static final String FORUM_CODE_CMS_HYPER = "forum_code_cms_hyper";

@@ -20,21 +20,23 @@ package com.sparrow.enums;
 /**
  * @author harry
  */
-public enum IMAGE_CONDITION {
+
+public enum RESOURCE_TYPE {
     /**
-     * 所有帖，包括图文
+     * 空类别
      */
-    ALL,
+    NULL,
+
     /**
-     * 显示封面图效果
+     * 系统菜单(后台管理的版块)
      */
-    COVER,
+    MENU,
     /**
-     * 只显示图片
+     * 系统菜单(后台管理的页面)
      */
-    IMAGE,
+    PAGE,
     /**
-     * 不显示图片
+     * 事件(后台操作的url)
      */
-    NONE
+    EVENT
 }

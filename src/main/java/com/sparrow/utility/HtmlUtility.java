@@ -19,8 +19,11 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.REGEX;
 
+import com.sparrow.protocol.constant.OPEN_TYPE;
 import com.sparrow.protocol.constant.magic.ESCAPED;
 import com.sparrow.protocol.constant.magic.SYMBOL;
+import com.sparrow.protocol.dto.SimpleItemDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +72,7 @@ public class HtmlUtility {
     }
 
     public static String filterHTML(String sourceHTML) {
-        String result= filterHTML(sourceHTML, "</p><p>");
+        String result = filterHTML(sourceHTML, "</p><p>");
         result = result.replaceAll("(<p>)+", "<p>");
         result = result.replaceAll("(<\\/p>)+", "</p>");
         result = result.replaceAll("(<p><\\/p>)*", "");
@@ -145,7 +148,7 @@ public class HtmlUtility {
                 }
                 // 当前字符不是空
                 if (currentChar != '\n' && currentChar != '\r'
-                    && currentChar != ' ' && currentChar != '\t') {
+                        && currentChar != ' ' && currentChar != '\t') {
                     desc.append(currentChar);
                 }
             }
@@ -186,7 +189,7 @@ public class HtmlUtility {
                     s = ESCAPED.GREAT_THEN;
                     break;
                 case '"':
-                    s =ESCAPED.DOUBLE_QUOTES;
+                    s = ESCAPED.DOUBLE_QUOTES;
                     break;
                 //case ' ':
                 //    s = "&nbsp;";
@@ -200,10 +203,21 @@ public class HtmlUtility {
 
     public static String decode(String html) {
         html = html.replace(ESCAPED.AND, SYMBOL.AND);
-        html = html.replace(ESCAPED.LESS_THEN,SYMBOL.LESS_THEN);
-        html = html.replace(ESCAPED.GREAT_THEN,SYMBOL.GREATER_THAN);
-        html = html.replace(ESCAPED.DOUBLE_QUOTES,SYMBOL.DOUBLE_QUOTES);
-        html = html.replace(ESCAPED.NO_BREAK_SPACE,SYMBOL.BLANK);
+        html = html.replace(ESCAPED.LESS_THEN, SYMBOL.LESS_THEN);
+        html = html.replace(ESCAPED.GREAT_THEN, SYMBOL.GREATER_THAN);
+        html = html.replace(ESCAPED.DOUBLE_QUOTES, SYMBOL.DOUBLE_QUOTES);
+        html = html.replace(ESCAPED.NO_BREAK_SPACE, SYMBOL.BLANK);
         return html;
+    }
+
+    public static String assembleHyperLink(SimpleItemDTO simpleItem, String openType) {
+        String title = simpleItem.getTitle();
+        if (!StringUtility.isNullOrEmpty(simpleItem.getCoverImage())) {
+            title = "<img title='" + title + "' src='" + simpleItem.getCoverImage()
+                    + "'/>";
+        }
+        return String.format("<a href=\"%1$s\" target=\"%2$s\">%3$s</a>",
+                simpleItem.getUrl() == null ? "" : simpleItem.getUrl().trim(), openType,
+                title);
     }
 }

@@ -266,8 +266,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
     @Override
     public Field getUniqueField(String unique) {
-        unique = unique.toLowerCase();
-        if (unique.equals(CONFIG_KEY_DB.ORM_PRIMARY_KEY_UNIQUE.toLowerCase())) {
+        if (unique.equalsIgnoreCase(CONFIG_KEY_DB.ORM_PRIMARY_KEY_UNIQUE)) {
             return this.primary;
         } else {
             return this.uniqueFieldMap.get(unique);

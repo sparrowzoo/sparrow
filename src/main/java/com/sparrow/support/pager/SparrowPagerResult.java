@@ -10,21 +10,21 @@ import java.util.List;
 
 public class SparrowPagerResult<T> extends PagerResult<T> {
 
-    private String indexPageFormat=PAGER.ACTION_PAGE_FORMAT;
-    private String pageFormat=PAGER.ACTION_PAGE_FORMAT;
-    private Integer pageNumberCount =5;
+    private String indexPageFormat = PAGER.ACTION_PAGE_FORMAT;
+    private String pageFormat = PAGER.ACTION_PAGE_FORMAT;
+    private Integer pageNumberCount = 5;
     private boolean simple;
     private Integer pageCount;
 
     private String html;
 
     public SparrowPagerResult(PagerResult pagerResult) {
-        this(pagerResult.getPageSize(),pagerResult.getCurrentPageIndex(), pagerResult.getRecordCount(), pagerResult.getList());
+        this(pagerResult.getPageSize(), pagerResult.getCurrentPageIndex(), pagerResult.getRecordCount(), pagerResult.getList());
     }
 
 
-    public SparrowPagerResult(Integer pageSize,Integer currentPageIndex, Long recordCount, List<T> list) {
-        super(pageSize,currentPageIndex);
+    public SparrowPagerResult(Integer pageSize, Integer currentPageIndex, Long recordCount, List<T> list) {
+        super(pageSize, currentPageIndex);
         super.setRecordCount(recordCount);
         super.setList(list);
         this.pageCount = (int) Math.ceil(this.recordCount / (double) this.pageSize);
@@ -114,10 +114,10 @@ public class SparrowPagerResult<T> extends PagerResult<T> {
                     + disablePageNumStyle + ">上一页</a>\n");
         }
 
-        int remainderOfPage=this.currentPageIndex % pageNumberCount;
-        int beginPageIndex = this.currentPageIndex-remainderOfPage + 1;
+        int remainderOfPage = this.currentPageIndex % pageNumberCount;
+        int beginPageIndex = this.currentPageIndex - remainderOfPage + 1;
         //当前只显示5个页码
-        int endPageIndex = beginPageIndex + pageNumberCount-1;
+        int endPageIndex = beginPageIndex + pageNumberCount - 1;
         for (Integer i = beginPageIndex; i <= endPageIndex; i++) {
             if (i > pageCount) {
                 break;

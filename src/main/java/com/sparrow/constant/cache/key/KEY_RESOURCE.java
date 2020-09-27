@@ -15,27 +15,23 @@
  * limitations under the License.
  */
 
-package com.sparrow.enums;
+package com.sparrow.constant.cache.key;
 
-/**
- * @author harry
- */
+import com.sparrow.constant.SPARROW_MODULE;
+import com.sparrow.constant.cache.KEY;
 
-public enum ORDER_BY {
+public class KEY_RESOURCE {
+
     /**
-     * 最新
+     * 所有版块
      */
-    NEWEST,
+    public static final KEY.Business ALL = new KEY.Business(SPARROW_MODULE.FORUM, "ALL");
     /**
-     * 最热
+     * url与编码对应关系
      */
-    HOTTEST,
+    public static final KEY.Business ACCESS_URL_CODE_PAIR = new KEY.Business(SPARROW_MODULE.FORUM, "ACCESS", "URL", "CODE", "PAIR");
     /**
-     * 随机
+     * id与编码对应关系
      */
-    RANDOM,
-    /**
-     * 排序号
-     */
-    ORDER_NO
+    public static final KEY.Business ID_CODE_PAIR = new KEY.Business(SPARROW_MODULE.FORUM, "ID", "CODE", "PAIR");
 }

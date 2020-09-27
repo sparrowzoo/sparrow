@@ -34,6 +34,11 @@ public class KEY_USER {
      */
     public static final KEY.Business PERMISSION = new KEY.Business(SPARROW_MODULE.USER, "PERMISSION");
 
+    /**
+     * 用户权限码
+     */
+    public static final KEY.Business BACKEND_PERMISSION = new KEY.Business(SPARROW_MODULE.USER, "BACKEND_PERMISSION");
+
 
     /**
      * attention list

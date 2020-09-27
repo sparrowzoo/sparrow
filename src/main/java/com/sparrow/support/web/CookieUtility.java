@@ -44,6 +44,16 @@ public class CookieUtility {
 
     private CacheClient cacheClient;
 
+    private KEY.Business permissionBusiness;
+
+    public void setBackend(Boolean backend) {
+        if (backend == null||!backend) {
+            this.permissionBusiness = KEY_USER.PERMISSION;
+            return;
+        }
+        this.permissionBusiness = KEY_USER.BACKEND_PERMISSION;
+    }
+
     public void setCacheClient(CacheClient cacheClient) {
         this.cacheClient = cacheClient;
     }
@@ -93,7 +103,7 @@ public class CookieUtility {
     public LoginToken getUser(HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
         String permission;
-        KEY permissionKey = new KEY.Builder().business(KEY_USER.PERMISSION).businessId(sessionId).build();
+        KEY permissionKey = new KEY.Builder().business(permissionBusiness).businessId(sessionId).build();
 
         try {
             //如果支持redis,用户量较大时侯jvm 存储有压力，nginx ip_hash 配置

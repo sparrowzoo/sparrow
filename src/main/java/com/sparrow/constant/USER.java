@@ -25,6 +25,7 @@ package com.sparrow.constant;
  */
 public class USER {
     public static final String PERMISSION="PERMISSION";
+    public static final String BACKEND_PERMISSION="BACKEND_PERMISSION";
     /**
      * 游客ID
      */
