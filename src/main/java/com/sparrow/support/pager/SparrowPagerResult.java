@@ -8,7 +8,7 @@ import com.sparrow.utility.StringUtility;
 
 import java.util.List;
 
-public class SparrowPagerResult<T> extends PagerResult<T> {
+public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
 
     private String indexPageFormat = PAGER.ACTION_PAGE_FORMAT;
     private String pageFormat = PAGER.ACTION_PAGE_FORMAT;

@@ -145,14 +145,14 @@ public enum SPARROW_ERROR implements ErrorSupport {
 
     private boolean system;
     private ModuleSupport module;
-    private int code;
+    private String code;
     private String message;
 
     SPARROW_ERROR(boolean system, ModuleSupport module, String code, String message) {
         this.system = system;
         this.message = message;
         this.module = module;
-        this.code = Integer.valueOf((system ? 0 : 1) + module.code() + code);
+        this.code = (system ? 0 : 1) + module.code() + code;
     }
 
     @Override
@@ -166,7 +166,7 @@ public enum SPARROW_ERROR implements ErrorSupport {
     }
 
     @Override
-    public int getCode() {
+    public String getCode() {
         return this.code;
     }
 

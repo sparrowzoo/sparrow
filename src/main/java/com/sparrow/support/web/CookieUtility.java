@@ -44,7 +44,7 @@ public class CookieUtility {
 
     private CacheClient cacheClient;
 
-    private KEY.Business permissionBusiness;
+    private KEY.Business permissionBusiness= KEY_USER.PERMISSION;
 
     public void setBackend(Boolean backend) {
         if (backend == null||!backend) {

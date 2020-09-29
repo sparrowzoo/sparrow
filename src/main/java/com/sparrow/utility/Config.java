@@ -54,11 +54,7 @@ public class Config {
     }
 
     public static String getLanguageValue(String key, String language) {
-        return getLanguageValue(key, language, SYMBOL.EMPTY);
-    }
-
-    private static String defaultOrEmpty(String defaultValue) {
-        return StringUtility.isNullOrEmpty(defaultValue) ? SYMBOL.EMPTY : defaultValue;
+        return getLanguageValue(key, language,null);
     }
 
     public static String getLanguageValue(String key, String language, String defaultValue) {
@@ -69,24 +65,21 @@ public class Config {
         }
 
         if (internationalization == null) {
-            return defaultOrEmpty(defaultValue);
+            return defaultValue;
         }
 
         Map<String, String> internationalizationMap = internationalization
                 .get(language);
         if (internationalizationMap == null) {
-            return defaultOrEmpty(defaultValue);
+            return defaultValue;
         }
         String value = internationalizationMap.get(key.toLowerCase());
         if (value == null) {
-            return defaultOrEmpty(defaultValue);
+            return defaultValue;
         }
         String rootPath = Config.getValue(CONFIG.ROOT_PATH);
         if (!StringUtility.isNullOrEmpty(rootPath) && value.contains(SYMBOL.DOLLAR + CONFIG.ROOT_PATH)) {
             value = value.replace(SYMBOL.DOLLAR + CONFIG.ROOT_PATH, rootPath);
-        }
-        if (StringUtility.isNullOrEmpty(value)) {
-            return defaultValue;
         }
         return value;
     }

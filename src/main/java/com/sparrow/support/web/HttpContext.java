@@ -17,6 +17,9 @@
 
 package com.sparrow.support.web;
 
+import com.sparrow.core.Pair;
+import com.sparrow.protocol.constant.CONSTANT;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -49,9 +52,14 @@ public class HttpContext {
 
 
     public void remove() {
+        Map<String, Object> values = this.holder.get();
+        if (values != null) {
+            for (String key : values.keySet()) {
+                this.request.get().setAttribute(key, values.get(key));
+            }
+        }
         this.holder.remove();
     }
-
 
 
     public Object get(String key) {
@@ -103,7 +111,7 @@ public class HttpContext {
         PrintWriter out = null;
         try {
             out = response.get().getWriter();
-        out.println(script);
+            out.println(script);
         } catch (IOException ignore) {
         }
     }
