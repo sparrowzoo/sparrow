@@ -103,7 +103,7 @@ public class CONFIG {
         {
             put(LOGIN_TYPE.LOGIN.ordinal(), "login_url");
             put(LOGIN_TYPE.LOGIN_IFRAME.ordinal(), "frame_login_url");
-            put(LOGIN_TYPE.MANAGER_LOGIN.ordinal(), "manager_login_url");
+            put(LOGIN_TYPE.ADMINISTRATOR_LOGIN.ordinal(), "manager_login_url");
             put(LOGIN_TYPE.DIALOG_LOGIN.ordinal(), "dialog_login_url");
         }
     };
