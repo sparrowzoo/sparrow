@@ -107,9 +107,6 @@ public class LoginParser implements Serializable {
 
 
     public static String getPermission(LoginToken login) {
-        if (login.getUserName().equalsIgnoreCase(USER.ADMIN)) {
-            login.setUserId(USER.ADMIN_ID);
-        }
         String userInfo = String.format(
                 "id=%1$s&name=%2$s&login=%3$s&expireAt=%4$s&cent=%5$s&avatar=%6$s&deviceId=%7$s&activate=%8$s",
                 login.getUserId(),

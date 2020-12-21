@@ -8,6 +8,7 @@ import com.sparrow.container.ContainerAware;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.Downloader;
 import com.sparrow.protocol.constant.EXTENSION;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.protocol.dto.ImageDTO;
 import com.sparrow.support.file.FileNameProperty;
 import com.sparrow.utility.*;
@@ -52,7 +53,7 @@ public abstract class AbstractImageExtractor implements ImageExtractor, Containe
             FileNameProperty fileNameProperty = FileUtility.getInstance().getFileNameProperty(imageUrl);
             if (!StringUtility.isNullOrEmpty(imageUrl)) {
                 boolean inner = false;
-                Long fileId = 0L;
+                String fileId =null;
                 String extension = fileNameProperty.getExtension();
                 //非站内资源引用img1.sparrowzoo.net
                 //非资源文件r.sparrowzoo.net
@@ -66,7 +67,7 @@ public abstract class AbstractImageExtractor implements ImageExtractor, Containe
                         throw new BusinessException(SPARROW_ERROR.IMAGE_EXTENSION_NOT_FOUND, Collections.singletonList(imageUrl));
                     }
                 } else {
-                    fileId = Long.valueOf(fileNameProperty.getName());
+                    fileId =fileNameProperty.getName();
                     inner = true;
                 }
                 String originImgHtml = imageMatcher.group();

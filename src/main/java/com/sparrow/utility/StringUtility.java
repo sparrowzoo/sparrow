@@ -19,6 +19,8 @@ package com.sparrow.utility;
 
 import com.sparrow.constant.CONFIG;
 import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
+import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.CHAR_SYMBOL;
@@ -122,6 +124,10 @@ public class StringUtility {
             return str;
         }
         return subStringByByte(str, len, "...");
+    }
+
+    public static String json(POJO pojo) {
+        return JsonFactory.getProvider().toString(pojo);
     }
 
     /**

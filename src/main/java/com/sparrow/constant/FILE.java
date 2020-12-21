@@ -58,9 +58,13 @@ public class FILE {
         public static final String SMALL = "small";
     }
 
+    /**
+     * upload file path
+     * file_upload 代表上传的路径，不需要多站点打散
+     */
     public class PATH {
         public static final String IMG_URL = "img_url";
         public static final String IMG_UNC = "img_unc";
-        public static final String FILE_UNC = "file_unc";
+        public static final String FILE_UPLOAD = "file_upload";
     }
 }

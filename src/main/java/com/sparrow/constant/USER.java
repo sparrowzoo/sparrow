@@ -31,10 +31,6 @@ public class USER {
      */
     public static final Long VISITOR_ID = 0L;
     /**
-     * 管理员ID 第一个用户就是admin
-     */
-    public static final Long ADMIN_ID = 1L;
-    /**
      * 系统管理员
      */
     public static final String ADMIN = "admin";

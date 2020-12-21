@@ -38,6 +38,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.zip.CRC32;
 import java.util.zip.ZipOutputStream;
 
 import com.sparrow.support.file.FileNameProperty;
@@ -443,43 +444,43 @@ public class FileUtility {
     /**
      * 通过一数字ID获取文件打散路径
      *
-     * @param id
+     * @param fileUuid
      * @param extension
      * @param isWebPath
      * @param size
      * @return
      */
-    public String getShufflePath(long id, String extension, boolean isWebPath,
+    public String getShufflePath(String fileUuid, String extension, boolean isWebPath,
                                  String size) {
+        CRC32 crc = new CRC32();
+        crc.update(fileUuid.getBytes());
+        Long id = crc.getValue();
         boolean isImage = this.isImage(extension);
-        long remaining = id % DIGIT.TEN;
+        long remaining = id % DIGIT.TWELVE;
         long remaining1 = id % DIGIT.THOUSAND;
         long div = id / DIGIT.THOUSAND;
         long remaining2 = div % DIGIT.THOUSAND;
         String path;
         if (isImage) {
             if (isWebPath) {
+                //img url 中存在参数
+                //img_url=http://img%1$s/sparrowzoo.net/%2$s/%3$s/%4$s/%5$s%6$s
+                //http://img1/sparrowzoo.net/1/big/10/1000/uuid.jpg
                 path = Config.getValue(FILE.PATH.IMG_URL)
                         + "/%2$s/%3$s/%4$s/%5$s%6$s";
-            } else {
-                path = Config.getValue(FILE.PATH.IMG_UNC)
-                        + "/%2$s/%3$s/%4$s/%5$s%6$s";
+                return String.format(path, remaining, size, remaining2, remaining1,
+                        fileUuid, extension);
             }
-            return String.format(path, remaining, size, remaining2, remaining1,
-                    id, extension);
+            //img_unc_0=D:/workspace/sparrow/img0 参数在key中定义
+            String imgUnc = Config.getValue(FILE.PATH.IMG_UNC + "_" + remaining);
+            path = imgUnc
+                    + "/%1$s/%2$s/%3$s/%4$s%5$s";
+            return String.format(path, size, remaining2, remaining1,
+                    fileUuid, extension);
         }
-        path = Config.getValue(FILE.PATH.FILE_UNC)
+        path = Config.getValue(FILE.PATH.FILE_UPLOAD)
                 + "/%1$s/%2$s/%3$s%4$s";
-        return String.format(path, remaining2, remaining1, id, extension);
-    }
-
-    public String getShufflePath(String uuid) {
-        int id = Math.abs(uuid.hashCode());
-        long remaining = id % DIGIT.TEN;
-        long remaining1 = id % DIGIT.THOUSAND;
-        long div = id / DIGIT.THOUSAND;
-        long remaining2 = div % DIGIT.THOUSAND;
-        return String.format("%1$s/%2$s/%3$s/%4$s", remaining, remaining2, remaining1, uuid);
+        return String.format(path, remaining2, remaining1, fileUuid, extension);
     }
 
     public boolean isImage(String extension) {
@@ -502,7 +503,7 @@ public class FileUtility {
         FileNameProperty fileNameProperty = this.getFileNameProperty(filePath);
         String fileId = fileNameProperty.getName();
         String extension = fileNameProperty.getExtension();
-        return this.getShufflePath(Integer.valueOf(fileId), extension, false,
+        return this.getShufflePath(fileId, extension, false,
                 size);
     }
 
@@ -555,13 +556,13 @@ public class FileUtility {
     /**
      * 删除文件
      */
-    public void deleteByFileId(Long fileId, String clientFileName) {
+    public void deleteByFileId(String fileUuid, String clientFileName) {
         FileNameProperty fileNameProperty = this.getFileNameProperty(clientFileName);
         String extension = fileNameProperty.getExtension();
         Boolean isImage = fileNameProperty.isImage();
         if (isImage) {
             String imageFullPath = FileUtility.getInstance().getShufflePath(
-                    fileId,
+                    fileUuid,
                     extension, false, FILE.SIZE.ORIGIN);
             File origin = new File(imageFullPath);
             if (origin.exists()) {
@@ -588,7 +589,7 @@ public class FileUtility {
             return;
         }
         String attachFileFullName = FileUtility.getInstance().getShufflePath(
-                fileId, extension, false, FILE.SIZE.ATTACH);
+                fileUuid, extension, false, FILE.SIZE.ATTACH);
         File origin = new File(attachFileFullName);
         if (origin.exists()) {
             origin.delete();

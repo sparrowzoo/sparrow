@@ -2,28 +2,25 @@ package com.sparrow.orm;
 
 import com.sparrow.cg.PropertyNamer;
 import com.sparrow.constant.CONFIG_KEY_DB;
+import com.sparrow.enums.ORM_ENTITY_META_DATA;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.enums.ORM_ENTITY_META_DATA;
 import com.sparrow.protocol.db.Hash;
-import com.sparrow.protocol.db.MethodOrder;
 import com.sparrow.protocol.db.Split;
 import com.sparrow.protocol.enums.DATABASE_SPLIT_STRATEGY;
 import com.sparrow.protocol.enums.HashType;
 import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
-
-import java.lang.reflect.Method;
-import java.util.*;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.*;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractEntityManagerAdapter implements EntityManager {
     protected static Logger logger = LoggerFactory.getLogger(AbstractEntityManagerAdapter.class);
@@ -71,16 +68,13 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         StringBuilder insertParameter = new StringBuilder();
         StringBuilder updateSQL = new StringBuilder("update ");
         StringBuilder createDDLField = new StringBuilder();
-        boolean isSplitTable = initTable(clazz);
-        StringBuilder splitTableName = new StringBuilder(this.dialectTableName);
-        if (isSplitTable) {
-            splitTableName.insert(this.dialectTableName.length() - 1, CONSTANT.TABLE_SUFFIX);
-        }
-        updateSQL.append(splitTableName);
-        insertSQL.append(splitTableName);
+        initTable(clazz);
+
+        updateSQL.append(this.dialectTableName);
+        insertSQL.append(this.dialectTableName);
 
 
-        String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", splitTableName);
+        String createDDLHeader = String.format("DROP TABLE IF EXISTS %1$s;\nCREATE TABLE %1$s (\n", this.dialectTableName);
         String primaryCreateDDL = "";
         insertSQL.append("(");
         updateSQL.append(" set ");
@@ -101,6 +95,13 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
             Field field = new Field(propertyName, method.getReturnType(), column, hash, generatedValue, id);
             fields.add(field);
 
+            if (hash != null) {
+                this.hashFieldList.add(field);
+                if (!field.isPersistence()) {
+                    continue;
+                }
+            }
+
             if (column == null) {
                 continue;
             }
@@ -117,12 +118,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
                 //todo AUTO_INCREMENT
                 primaryCreateDDL = String.format(" `%s` %s NOT NULL ,\n", column.name(), column.columnDefinition());
             }
-            if (hash != null) {
-                this.hashFieldList.add(field);
-                if (!field.isPersistence()) {
-                    continue;
-                }
-            }
+
 
             this.columnPropertyMap.put(column.name(), propertyName);
             String fieldName = dialect.getOpenQuote() + column.name()
@@ -138,7 +134,10 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
             // updateSQL
             if (field.isPrimary()) {
                 this.primary = field;
-            } else if (column.updatable()) {
+                continue;
+            }
+
+            if (column.updatable()) {
                 updateSQL.append(fieldName + SYMBOL.EQUAL);
                 updateSQL.append(this.parsePropertyParameter(column.name(), propertyName));
                 updateSQL.append(",");
@@ -152,7 +151,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
         updateSQL.deleteCharAt(updateSQL.length() - 1).append(
                 " where " + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName()));
-        String deleteSQL = "delete from " + this.getDialectTableName() + " where "
+        String deleteSQL = "delete from " + this.dialectTableName + " where "
                 + this.primary.getColumnName() + "=" + this.parsePropertyParameter(this.primary.getColumnName(), this.primary.getName());
 
         createDDLField.append(String.format("PRIMARY KEY (`%s`)\n", this.primary.getColumnName()));
@@ -191,26 +190,25 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         this.tableName = table.name();
         this.schema = table.schema();
         this.dialect = Dialect.getInstance(schema);
-        //`table-name`
-        this.dialectTableName = String.format("%s%s%s", dialect.getOpenQuote(), tableName, dialect.getCloseQuote());
-
         if (split == null) {
+            //`table-name`
+            this.dialectTableName = String.format("%s%s%s", dialect.getOpenQuote(), tableName, dialect.getCloseQuote());
             return false;
         }
+        this.dialectTableName = String.format("%s%s%s%s", dialect.getOpenQuote(), tableName, CONSTANT.TABLE_SUFFIX, dialect.getCloseQuote());
         // 分表的桶数
         int bucketCount;
-        if (split.table_bucket_count() <= 1) {
-            return false;
+        if (split.table_bucket_count() > 1) {
+            bucketCount = split.table_bucket_count();
+            String bucketCountConfigKey = this.simpleClassName.toLowerCase() + "." + ORM_ENTITY_META_DATA.TABLE_BUCKET_COUNT.toString().toLowerCase();
+            Object configBucketCount = Config.getValue(bucketCountConfigKey);
+            if (configBucketCount != null) {
+                bucketCount = Integer.valueOf(configBucketCount.toString());
+            }
+            this.tableBucketCount = bucketCount;
+            this.databaseSplitMaxId = split.database_max_id();
+            this.databaseSplitStrategy = split.strategy();
         }
-        bucketCount = split.table_bucket_count();
-        String bucketCountConfigKey = this.simpleClassName + "." + ORM_ENTITY_META_DATA.TABLE_BUCKET_COUNT.toString().toLowerCase();
-        Object configBucketCount = Config.getValue(bucketCountConfigKey);
-        if (configBucketCount != null) {
-            bucketCount = Integer.valueOf(configBucketCount.toString());
-        }
-        this.tableBucketCount = bucketCount;
-        this.databaseSplitMaxId = split.database_max_id();
-        this.databaseSplitStrategy = split.strategy();
         return true;
     }
 
