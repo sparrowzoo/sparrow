@@ -17,10 +17,9 @@
 
 package com.sparrow.support.lucence;
 
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.core.Pair;
 import com.sparrow.support.MapValueComparator;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.RegexUtility;
 import com.sparrow.utility.StringUtility;
@@ -54,9 +53,9 @@ public class KeyAnalyzer {
     private String lucenceIdfKeywordsPath = null;
 
     public KeyAnalyzer() {
-        lucenceIdfKeywordsPath = Config.getValue(CONFIG.LUCENCE_IDF_KEYWORDS_PATH);
-        lucenceEnableKeywordsPath = Config.getValue(CONFIG.LUCENCE_ENABLE_KEYWORDS_PATH);
-        lucenceDisableKeywordsPath = Config.getValue(CONFIG.LUCENCE_DISABLE_KEYWORDS_PATH);
+        lucenceIdfKeywordsPath = com.sparrow.utility.Config.getValue(Config.LUCENCE_IDF_KEYWORDS_PATH);
+        lucenceEnableKeywordsPath = com.sparrow.utility.Config.getValue(Config.LUCENCE_ENABLE_KEYWORDS_PATH);
+        lucenceDisableKeywordsPath = com.sparrow.utility.Config.getValue(Config.LUCENCE_DISABLE_KEYWORDS_PATH);
     }
 
     //某一特定词语的IDF，可以由总文件数目除以包含该词语之文件的数目，再将得到的商取对数得到

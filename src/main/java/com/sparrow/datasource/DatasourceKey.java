@@ -17,11 +17,10 @@
 
 package com.sparrow.datasource;
 
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Pair;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
 /**
@@ -62,7 +61,7 @@ public class DatasourceKey {
         if (this.schema != null) {
             return this.schema;
         }
-        String schema = Config.getValue(CONFIG.DEFAULT_DATA_SOURCE_KEY);
+        String schema = com.sparrow.utility.Config.getValue(Config.DEFAULT_DATA_SOURCE_KEY);
         if (StringUtility.isNullOrEmpty(schema)) {
             schema = CONSTANT.SPARROW;
         }

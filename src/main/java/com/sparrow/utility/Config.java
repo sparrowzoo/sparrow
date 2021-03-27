@@ -17,8 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CACHE_KEY;
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.CacheKey;
 import com.sparrow.core.cache.Cache;
 import com.sparrow.core.cache.StrongDurationCache;
 import com.sparrow.protocol.constant.CONSTANT;
@@ -44,12 +43,12 @@ public class Config {
     private static Cache<String, Map<String, String>> internationalization;
 
     static {
-        configCache = new StrongDurationCache<>(CACHE_KEY.CONFIG_FILE);
-        internationalization = new StrongDurationCache<>(CACHE_KEY.INTERNATIONALIZATION);
+        configCache = new StrongDurationCache<>(CacheKey.CONFIG_FILE);
+        internationalization = new StrongDurationCache<>(CacheKey.INTERNATIONALIZATION);
     }
 
     public static String getLanguageValue(String propertiesKey) {
-        String language = getValue(CONFIG.LANGUAGE);
+        String language = getValue(com.sparrow.constant.Config.LANGUAGE);
         return getLanguageValue(propertiesKey, language);
     }
 
@@ -59,7 +58,7 @@ public class Config {
 
     public static String getLanguageValue(String key, String language, String defaultValue) {
         if (StringUtility.isNullOrEmpty(language)) {
-            language = getValue(CONFIG.LANGUAGE);
+            language = getValue(com.sparrow.constant.Config.LANGUAGE);
         } else {
             language = language.toLowerCase();
         }
@@ -77,9 +76,9 @@ public class Config {
         if (value == null) {
             return defaultValue;
         }
-        String rootPath = Config.getValue(CONFIG.ROOT_PATH);
-        if (!StringUtility.isNullOrEmpty(rootPath) && value.contains(SYMBOL.DOLLAR + CONFIG.ROOT_PATH)) {
-            value = value.replace(SYMBOL.DOLLAR + CONFIG.ROOT_PATH, rootPath);
+        String rootPath = com.sparrow.utility.Config.getValue(com.sparrow.constant.Config.ROOT_PATH);
+        if (!StringUtility.isNullOrEmpty(rootPath) && value.contains(SYMBOL.DOLLAR + com.sparrow.constant.Config.ROOT_PATH)) {
+            value = value.replace(SYMBOL.DOLLAR + com.sparrow.constant.Config.ROOT_PATH, rootPath);
         }
         return value;
     }
@@ -157,21 +156,21 @@ public class Config {
             return;
         }
         configCache.putAll(systemMessage);
-        if (systemMessage.get(CONFIG.RESOURCE_PHYSICAL_PATH) != null) {
-            CONSTANT.REPLACE_MAP.put("$physical_resource", systemMessage.get(CONFIG.RESOURCE_PHYSICAL_PATH));
+        if (systemMessage.get(com.sparrow.constant.Config.RESOURCE_PHYSICAL_PATH) != null) {
+            CONSTANT.REPLACE_MAP.put("$physical_resource", systemMessage.get(com.sparrow.constant.Config.RESOURCE_PHYSICAL_PATH));
         }
-        if (systemMessage.get(CONFIG.RESOURCE) != null) {
-            CONSTANT.REPLACE_MAP.put("$resource", systemMessage.get(CONFIG.RESOURCE));
+        if (systemMessage.get(com.sparrow.constant.Config.RESOURCE) != null) {
+            CONSTANT.REPLACE_MAP.put("$resource", systemMessage.get(com.sparrow.constant.Config.RESOURCE));
         }
-        if (systemMessage.get(CONFIG.IMAGE_WEBSITE) != null) {
-            CONSTANT.REPLACE_MAP.put("$image_website", systemMessage.get(CONFIG.IMAGE_WEBSITE));
+        if (systemMessage.get(com.sparrow.constant.Config.IMAGE_WEBSITE) != null) {
+            CONSTANT.REPLACE_MAP.put("$image_website", systemMessage.get(com.sparrow.constant.Config.IMAGE_WEBSITE));
         }
         logger.info("==========system config init============");
     }
 
     public static void initInternationalization(String language) {
         if (StringUtility.isNullOrEmpty(language)) {
-            language = getValue(CONFIG.LANGUAGE);
+            language = getValue(com.sparrow.constant.Config.LANGUAGE);
         }
         Map<String, String> properties = loadFromClassesPath("/messages_"
                 + language
@@ -215,7 +214,7 @@ public class Config {
     }
 
     public static Integer getIntegerValue(String config) {
-        String value = Config.getValue(config);
+        String value = com.sparrow.utility.Config.getValue(config);
         if (StringUtility.isNullOrEmpty(value)) {
             return 0;
         }

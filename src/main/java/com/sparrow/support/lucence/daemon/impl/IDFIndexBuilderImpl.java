@@ -18,9 +18,8 @@
 package com.sparrow.support.lucence.daemon.impl;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.support.lucence.IndexManager;
-import com.sparrow.utility.Config;
 import org.apache.lucene.index.IndexReader;
 
 import java.util.Calendar;
@@ -51,9 +50,9 @@ public class IDFIndexBuilderImpl implements Runnable {
 
     static {
         //可以设置为本地lucence索引
-        idfIndexPath = Config
-                .getValue(CONFIG.LUCENCE_INDEX_PATH_FOR_SEARCH);
-        idfWordPath = Config.getValue(CONFIG.LUCENCE_IDF_KEYWORDS_PATH);
+        idfIndexPath = com.sparrow.utility.Config
+                .getValue(Config.LUCENCE_INDEX_PATH_FOR_SEARCH);
+        idfWordPath = com.sparrow.utility.Config.getValue(Config.LUCENCE_IDF_KEYWORDS_PATH);
     }
 
     @Override

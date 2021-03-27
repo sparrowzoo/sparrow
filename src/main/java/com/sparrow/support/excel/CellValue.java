@@ -17,7 +17,7 @@
 
 package com.sparrow.support.excel;
 
-import com.sparrow.enums.DATA_TYPE;
+import com.sparrow.enums.DataType;
 
 /**
  * created by harry on 2016/3/12. 单元格值(供应用层使用，可以直接入库操作)
@@ -25,17 +25,17 @@ import com.sparrow.enums.DATA_TYPE;
  * @author harry
  */
 public class CellValue {
-    private DATA_TYPE dataType;
+    private DataType dataType;
     private Object value;
     private String excelTitle;
 
-    CellValue(DATA_TYPE dataType, Object content, String excelTitle) {
+    CellValue(DataType dataType, Object content, String excelTitle) {
         this.dataType = dataType;
         this.value = content;
         this.excelTitle = excelTitle;
     }
 
-    public DATA_TYPE getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 

@@ -17,7 +17,7 @@
 
 package com.sparrow.support.excel;
 
-import com.sparrow.enums.DATA_TYPE;
+import com.sparrow.enums.DataType;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.support.excel.exception.TemplateCellValidateException;
 import com.sparrow.support.excel.exception.TemplateFieldNotMatchException;
@@ -76,7 +76,7 @@ public class ExcelUtility {
         for (int i = 0; i < excelRow.getLastCellNum(); i++) {
             Cell cell = excelRow.getCell(i);
             if (cell != null) {
-                line.add(readCell(cell, DATA_TYPE.STRING));
+                line.add(readCell(cell, DataType.STRING));
             } else {
                 line.add("");
             }
@@ -84,7 +84,7 @@ public class ExcelUtility {
         return line;
     }
 
-    public static String readCell(Cell cell, DATA_TYPE dataType) {
+    public static String readCell(Cell cell, DataType dataType) {
         switch (cell.getCellType()) {
             case Cell.CELL_TYPE_STRING:
                 return cell.getStringCellValue();
@@ -93,7 +93,7 @@ public class ExcelUtility {
             case Cell.CELL_TYPE_BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case Cell.CELL_TYPE_NUMERIC:
-                if (DATA_TYPE.STRING == dataType) {
+                if (DataType.STRING == dataType) {
                     cell.setCellType(Cell.CELL_TYPE_STRING);
                     return cell.getStringCellValue();
                 } else {

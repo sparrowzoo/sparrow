@@ -17,14 +17,12 @@
 
 package com.sparrow.support;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
-import com.sparrow.constant.USER;
+import com.sparrow.constant.Config;
+import com.sparrow.constant.ConfigKeyLanguage;
+import com.sparrow.constant.User;
 import com.sparrow.cryptogram.Hmac;
 import com.sparrow.cryptogram.ThreeDES;
 import com.sparrow.protocol.LoginToken;
-import com.sparrow.protocol.constant.CLIENT_INFORMATION;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +39,11 @@ public class LoginParser implements Serializable {
     public static LoginToken parse(String permission, String deviceId) {
         // 第一次请求时没有session id
         LoginToken login = new LoginToken();
-        login.setUserId(USER.VISITOR_ID);
-        login.setUserName(Config.getLanguageValue(
-                CONFIG_KEY_LANGUAGE.USER_VISITOR,
-                Config.getValue(CONFIG.LANGUAGE)));
-        login.setAvatar(Config.getValue(CONFIG.DEFAULT_AVATAR));
+        login.setUserId(User.VISITOR_ID);
+        login.setUserName(com.sparrow.utility.Config.getLanguageValue(
+                ConfigKeyLanguage.USER_VISITOR,
+                com.sparrow.utility.Config.getValue(Config.LANGUAGE)));
+        login.setAvatar(com.sparrow.utility.Config.getValue(Config.DEFAULT_AVATAR));
         if (StringUtility.isNullOrEmpty(permission)) {
             return login;
         }
@@ -77,11 +75,11 @@ public class LoginParser implements Serializable {
             }
 
             String signature = ThreeDES.getInstance().decrypt(
-                    Config.getValue(USER.PASSWORD_3DAS_SECRET_KEY),
+                    com.sparrow.utility.Config.getValue(User.PASSWORD_3DAS_SECRET_KEY),
                     permission.substring(permissionIndex
                             + searchPermission.length()));
             String newSignature = Hmac.getInstance().getSHA1Base64(userInfo,
-                    Config.getValue(USER.PASSWORD_SHA1_SECRET_KEY));
+                    com.sparrow.utility.Config.getValue(User.PASSWORD_SHA1_SECRET_KEY));
 
             //签名不一致
             if (signature == null || !signature.equals(newSignature)) {
@@ -118,11 +116,11 @@ public class LoginParser implements Serializable {
                 login.getDeviceId(),
                 login.getActivate());
         String signature = Hmac.getInstance().getSHA1Base64(userInfo,
-                Config.getValue(USER.PASSWORD_SHA1_SECRET_KEY));
+                com.sparrow.utility.Config.getValue(User.PASSWORD_SHA1_SECRET_KEY));
         return userInfo
                 + "&permission="
                 + ThreeDES.getInstance().encrypt(
-                Config.getValue(USER.PASSWORD_3DAS_SECRET_KEY),
+                com.sparrow.utility.Config.getValue(User.PASSWORD_3DAS_SECRET_KEY),
                 signature);
     }
 }

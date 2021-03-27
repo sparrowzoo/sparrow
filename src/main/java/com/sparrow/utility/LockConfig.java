@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.enums.DATE_TIME_UNIT;
+import com.sparrow.enums.DateTimeUnit;
 
 import java.util.Calendar;
 
@@ -36,7 +36,7 @@ public class LockConfig {
      * @param containOperationId key是否包含operation id
      */
     private LockConfig(Boolean absolute, int lockTime, int maxTimes,
-                       boolean isContinueLockTime, boolean containOperationId, DATE_TIME_UNIT dateTimeUnit) {
+                       boolean isContinueLockTime, boolean containOperationId, DateTimeUnit dateTimeUnit) {
         this.absolute = absolute;
         this.lockTime = lockTime;
         this.maxTimes = maxTimes;
@@ -65,7 +65,7 @@ public class LockConfig {
      *
      * @param maxTimes
      */
-    public static LockConfig getAbsoluteLock(DATE_TIME_UNIT dateTimeUnit, int maxTimes) {
+    public static LockConfig getAbsoluteLock(DateTimeUnit dateTimeUnit, int maxTimes) {
         return new LockConfig(true, 1, maxTimes, false, true, dateTimeUnit);
     }
 
@@ -84,7 +84,7 @@ public class LockConfig {
     /**
      * 锁过期时间
      */
-    private DATE_TIME_UNIT dateTimeUnit;
+    private DateTimeUnit dateTimeUnit;
     /**
      * 锁定时间内最多操作次数
      */
@@ -136,11 +136,11 @@ public class LockConfig {
         this.isContinueLockTime = isContinueLockTime;
     }
 
-    public DATE_TIME_UNIT getDateTimeUnit() {
+    public DateTimeUnit getDateTimeUnit() {
         return dateTimeUnit;
     }
 
-    public void setDateTimeUnit(DATE_TIME_UNIT dateTimeUnit) {
+    public void setDateTimeUnit(DateTimeUnit dateTimeUnit) {
         this.dateTimeUnit = dateTimeUnit;
     }
 

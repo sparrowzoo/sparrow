@@ -1,14 +1,13 @@
 package com.sparrow.image;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.REGEX;
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.Config;
+import com.sparrow.constant.Regex;
+import com.sparrow.constant.SparrowError;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerAware;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.Downloader;
 import com.sparrow.protocol.constant.EXTENSION;
-import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.protocol.dto.ImageDTO;
 import com.sparrow.support.file.FileNameProperty;
 import com.sparrow.utility.*;
@@ -46,7 +45,7 @@ public abstract class AbstractImageExtractor implements ImageExtractor, Containe
 
     public List<ImageDTO> extractImage(String content, Long authorId, Downloader downloader) throws BusinessException {
         Matcher imageMatcher = Pattern.compile(this.getImageRegexMark(),
-                REGEX.OPTION).matcher(content);
+                Regex.OPTION).matcher(content);
         List<ImageDTO> images = new ArrayList<>();
         while (imageMatcher.find()) {
             String imageUrl = this.getImageUrl(imageMatcher);
@@ -57,14 +56,14 @@ public abstract class AbstractImageExtractor implements ImageExtractor, Containe
                 String extension = fileNameProperty.getExtension();
                 //非站内资源引用img1.sparrowzoo.net
                 //非资源文件r.sparrowzoo.net
-                if (!RegexUtility.matches(imageUrl, REGEX.URL_INNER_IMAGE.pattern()) &&
-                        !imageUrl.startsWith(Config.getValue(CONFIG.RESOURCE))) {
+                if (!RegexUtility.matches(imageUrl, Regex.URL_INNER_IMAGE.pattern()) &&
+                        !imageUrl.startsWith(com.sparrow.utility.Config.getValue(Config.RESOURCE))) {
                     fileId = downloader.downloadImage(imageUrl, authorId);
                     if (extension == null) {
                         extension = EXTENSION.PNG;
                     }
                     if (fileId == null) {
-                        throw new BusinessException(SPARROW_ERROR.IMAGE_EXTENSION_NOT_FOUND, Collections.singletonList(imageUrl));
+                        throw new BusinessException(SparrowError.IMAGE_EXTENSION_NOT_FOUND, Collections.singletonList(imageUrl));
                     }
                 } else {
                     fileId =fileNameProperty.getName();

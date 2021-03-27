@@ -1,8 +1,8 @@
 package com.sparrow.orm;
 
 import com.sparrow.cg.PropertyNamer;
-import com.sparrow.constant.CONFIG_KEY_DB;
-import com.sparrow.enums.ORM_ENTITY_META_DATA;
+import com.sparrow.constant.ConfigKeyDB;
+import com.sparrow.enums.OrmEntityMetadata;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.protocol.db.Hash;
@@ -200,7 +200,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
         int bucketCount;
         if (split.table_bucket_count() > 1) {
             bucketCount = split.table_bucket_count();
-            String bucketCountConfigKey = this.simpleClassName.toLowerCase() + "." + ORM_ENTITY_META_DATA.TABLE_BUCKET_COUNT.toString().toLowerCase();
+            String bucketCountConfigKey = this.simpleClassName.toLowerCase() + "." + OrmEntityMetadata.TABLE_BUCKET_COUNT.toString().toLowerCase();
             Object configBucketCount = Config.getValue(bucketCountConfigKey);
             if (configBucketCount != null) {
                 bucketCount = Integer.valueOf(configBucketCount.toString());
@@ -264,7 +264,7 @@ public abstract class AbstractEntityManagerAdapter implements EntityManager {
 
     @Override
     public Field getUniqueField(String unique) {
-        if (unique.equalsIgnoreCase(CONFIG_KEY_DB.ORM_PRIMARY_KEY_UNIQUE)) {
+        if (unique.equalsIgnoreCase(ConfigKeyDB.ORM_PRIMARY_KEY_UNIQUE)) {
             return this.primary;
         } else {
             return this.uniqueFieldMap.get(unique);

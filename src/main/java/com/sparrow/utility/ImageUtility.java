@@ -18,9 +18,9 @@
 package com.sparrow.utility;
 
 import com.sparrow.cg.MethodAccessor;
-import com.sparrow.constant.FILE;
-import com.sparrow.constant.REGEX;
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.File;
+import com.sparrow.constant.Regex;
+import com.sparrow.constant.SparrowError;
 import com.sparrow.core.TypeConverter;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.exception.Asserts;
@@ -59,7 +59,7 @@ public class ImageUtility {
         String extension = FileUtility.getInstance().getFileNameProperty(srcImagePath).getExtension();
         // 如果为gif图则直接保存
         if (EXTENSION.GIF.equalsIgnoreCase(extension)) {
-            if (descImagePath.contains(FILE.SIZE.BIG)) {
+            if (descImagePath.contains(File.SIZE.BIG)) {
                 FileUtility.getInstance().copy(srcImagePath, descImagePath);
             }
             return;
@@ -68,35 +68,35 @@ public class ImageUtility {
         String descDirectoryPath = descImagePath.substring(0,
                 descImagePath.lastIndexOf('/') + 1);
         // 判断并创建原图路径
-        File descDirectory = new File(descDirectoryPath);
+        java.io.File descDirectory = new java.io.File(descDirectoryPath);
         if (!descDirectory.exists()) {
             Boolean result = descDirectory.mkdirs();
         }
         // 目标图文件对象
-        Asserts.isTrue(srcImagePath.equals(descImagePath), SPARROW_ERROR.UPLOAD_SRC_DESC_PATH_REPEAT);
+        Asserts.isTrue(srcImagePath.equals(descImagePath), SparrowError.UPLOAD_SRC_DESC_PATH_REPEAT);
         OutputStream outputStream = null;
         InputStream inputStream = null;
         try {
-            outputStream = new FileOutputStream(new File(descImagePath));
-            inputStream = new FileInputStream(new File(srcImagePath));
+            outputStream = new FileOutputStream(new java.io.File(descImagePath));
+            inputStream = new FileInputStream(new java.io.File(srcImagePath));
         } catch (FileNotFoundException e) {
-            throw new BusinessException(SPARROW_ERROR.FILE_NOT_FOUND);
+            throw new BusinessException(SparrowError.FILE_NOT_FOUND);
         }
         try {
             BufferedImage srcImage = ImageIO.read(inputStream);
             if(srcImage==null){
-                throw new BusinessException(SPARROW_ERROR.FILE_CAN_NOT_READ);
+                throw new BusinessException(SparrowError.FILE_CAN_NOT_READ);
             }
             makeThumbnail(srcImage, extension, outputStream, width, height, waterImagePath, fillWhite);
         } catch (IOException e) {
-            throw new BusinessException(SPARROW_ERROR.FILE_CAN_NOT_READ);
+            throw new BusinessException(SparrowError.FILE_CAN_NOT_READ);
         }
     }
 
     public static void makeThumbnail(String srcImagePath, OutputStream descImage,
                                      int width, int height, String waterImagePath, boolean fillWhite)
             throws IOException {
-        BufferedImage srcImage = ImageIO.read(new FileInputStream(new File(srcImagePath)));
+        BufferedImage srcImage = ImageIO.read(new FileInputStream(new java.io.File(srcImagePath)));
         makeThumbnail(srcImage, FileUtility.getInstance().getFileNameProperty(srcImagePath).getExtension(), descImage, width, height, waterImagePath, fillWhite);
     }
 
@@ -109,7 +109,7 @@ public class ImageUtility {
     public static void makeThumbnail(BufferedImage srcImage, String extension, String descImagePath,
                                      int width, int height, String waterImagePath, boolean fillWhite)
             throws IOException {
-        OutputStream outputStream = new FileOutputStream(new File(descImagePath));
+        OutputStream outputStream = new FileOutputStream(new java.io.File(descImagePath));
         makeThumbnail(srcImage, extension, outputStream, width, height, waterImagePath, fillWhite);
     }
 
@@ -266,7 +266,7 @@ public class ImageUtility {
         if (!StringUtility.isNullOrEmpty(waterImagePath)
                 && descImageBuffer.getWidth() >= 300
                 && descImageBuffer.getHeight() >= 200) {
-            File waterFile = new File(waterImagePath);
+            java.io.File waterFile = new java.io.File(waterImagePath);
             if (waterFile.exists()) {
                 InputStream water = new FileInputStream(waterFile);
                 BufferedImage waterImage = ImageIO.read(water);
@@ -306,13 +306,13 @@ public class ImageUtility {
                                     String subImageFilePath) throws IOException {
         BufferedImage subImage = getSubImage(imagePath, subImageBounds);
         String extension = FileUtility.getInstance().getFileNameProperty(subImageFilePath).getExtensionWithoutDot();
-        ImageIO.write(subImage, extension, new FileOutputStream(new File(subImageFilePath)));
+        ImageIO.write(subImage, extension, new FileOutputStream(new java.io.File(subImageFilePath)));
         subImage.flush();
         subImage.flush();
     }
 
     public static BufferedImage getSubImage(String imagePath, Rectangle subImageBounds) throws IOException {
-        File file = new File(imagePath);
+        java.io.File file = new java.io.File(imagePath);
         InputStream in = new FileInputStream(file);
         BufferedImage image = ImageIO.read(in);
         if (subImageBounds.x < 0 || subImageBounds.y < 0
@@ -330,7 +330,7 @@ public class ImageUtility {
     public static BufferedImage reduceSize(String srcImageFileName) {
 
         // 源图文件对象
-        File srcFile = new File(srcImageFileName);
+        java.io.File srcFile = new java.io.File(srcImageFileName);
         // 原图缓存区
         BufferedImage srcImage = null;
         try {
@@ -371,7 +371,7 @@ public class ImageUtility {
                 .get(String
                         .format("http://stu.baidu.com/i?objurl=%1$s&filename=&rt=1&rn=%2$s&ftn=indexstu&ct=1&stt=0&tn=baiduimage",
                                 JSUtility.encodeURIComponent(imageUrl), n));
-        Matcher imageMatcher = REGEX.BAIDU_IMAGE_SEARCH.matcher(
+        Matcher imageMatcher = Regex.BAIDU_IMAGE_SEARCH.matcher(
                 result);
         if (imageMatcher.find()) {
             return imageMatcher.group(1);
@@ -394,7 +394,7 @@ public class ImageUtility {
             if (!(value instanceof String)) {
                 continue;
             }
-            List<List<String>> innerImageGroupList = RegexUtility.multiGroups(value.toString(), REGEX.URL_INNER_IMAGE.pattern());
+            List<List<String>> innerImageGroupList = RegexUtility.multiGroups(value.toString(), Regex.URL_INNER_IMAGE.pattern());
             if (innerImageGroupList.size() == 0) {
                 continue;
             }

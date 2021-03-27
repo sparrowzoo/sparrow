@@ -17,8 +17,8 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
+import com.sparrow.constant.Config;
+import com.sparrow.constant.ConfigKeyLanguage;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.constant.CONSTANT;
@@ -273,7 +273,7 @@ public class StringUtility {
      */
     public static String getOnlineQQ(String qq) {
         return "<a target=blank href=\"http://wpa.qq.com/msgrd?V=1&Uin={0}&Exe=QQ&Site="
-                + Config.getLanguageValue(CONFIG_KEY_LANGUAGE.WEBSITE_NAME,
+                + com.sparrow.utility.Config.getLanguageValue(ConfigKeyLanguage.WEBSITE_NAME,
                 "zh_cn")
                 + "&Menu=No\"><img border=\"0\" src=\"http://wpa.qq.com/pa?p=1:"
                 + qq + ":1\" alt=\"给我发消息\"></a>";
@@ -575,7 +575,7 @@ public class StringUtility {
         if (source.equalsIgnoreCase(target)) {
             return true;
         }
-        String rootPath = Config.getValue(CONFIG.ROOT_PATH);
+        String rootPath = com.sparrow.utility.Config.getValue(Config.ROOT_PATH);
         if (source.startsWith(rootPath)) {
             source = source.substring(rootPath.length());
         }
@@ -589,7 +589,7 @@ public class StringUtility {
             target = subString(target, SYMBOL.QUESTION_MARK);
         }
 
-        String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
+        String extension = com.sparrow.utility.Config.getValue(Config.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
         if (source.endsWith(extension)) {
             source = source.replace(extension, SYMBOL.EMPTY);
         }

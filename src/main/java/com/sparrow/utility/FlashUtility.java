@@ -20,7 +20,7 @@ package com.sparrow.utility;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.sparrow.constant.*;
-import com.sparrow.constant.FILE.SIZE;
+import com.sparrow.constant.File.SIZE;
 import com.sparrow.protocol.constant.magic.DIGIT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +44,15 @@ public class FlashUtility {
 
     // http://player.youku.com/player.php/Type/Folder/Fid/17354925/Ob/1/Pt/0/sid/XMzgwODczNDY4/v.swf
     private final Pattern youkuPatter = Pattern.compile(this.youku,
-        REGEX.OPTION);
+        Regex.OPTION);
 
     // http://share.vrs.sohu.com/637677/v.swf&autoplay=false
-    private final Pattern sohuPatter = Pattern.compile(this.sohu, REGEX.OPTION);
+    private final Pattern sohuPatter = Pattern.compile(this.sohu, Regex.OPTION);
 
     private final Pattern youkuPic = Pattern.compile("\"logo\":\"(.*?)\"",
-        REGEX.OPTION);
+        Regex.OPTION);
     private final Pattern sohuPic = Pattern.compile("\"coverImg\":\"(.*?)\"",
-        REGEX.OPTION);
+        Regex.OPTION);
 
     public String getThumbnailUrl(String swfSrc) {
         // flash API
@@ -110,7 +110,7 @@ public class FlashUtility {
             + ".jpg";
 
         if (size.equals(SIZE.SMALL)) {
-            thumbnail = thumbnail.replace(FILE.SIZE.BIG, FILE.SIZE.SMALL);
+            thumbnail = thumbnail.replace(File.SIZE.BIG, File.SIZE.SMALL);
         }
         return String
             .format("<div class=\"flash\"><img onload=\"init_play(this,'%2$s');\" src=\"%1$s\"/></div>",

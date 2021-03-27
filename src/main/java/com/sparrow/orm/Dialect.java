@@ -17,10 +17,8 @@
 
 package com.sparrow.orm;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.enums.DIALECT;
+import com.sparrow.constant.Config;
 import com.sparrow.support.EnvironmentSupport;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
 import java.io.IOException;
@@ -33,7 +31,7 @@ import java.util.Properties;
  */
 public class Dialect {
 
-    private DIALECT dialect;
+    private com.sparrow.enums.Dialect dialect;
 
     private static Map<String, Dialect> dialectMap = new HashMap<String, Dialect>();
 
@@ -50,7 +48,7 @@ public class Dialect {
             return dialectMap.get(schema);
         }
         if (StringUtility.isNullOrEmpty(schema)) {
-            schema = Config.getValue(CONFIG.DEFAULT_DATA_SOURCE_KEY);
+            schema = com.sparrow.utility.Config.getValue(Config.DEFAULT_DATA_SOURCE_KEY);
         }
         if (StringUtility.isNullOrEmpty(schema)) {
             schema = "sparrow";
@@ -67,12 +65,12 @@ public class Dialect {
         if (StringUtility.isNullOrEmpty(dialect)) {
             dialect = "MYSQL";
         }
-        Dialect d = new Dialect(DIALECT.valueOf(dialect.toUpperCase()));
+        Dialect d = new Dialect(com.sparrow.enums.Dialect.valueOf(dialect.toUpperCase()));
         dialectMap.put(schema, d);
         return d;
     }
 
-    private Dialect(DIALECT dialect) {
+    private Dialect(com.sparrow.enums.Dialect dialect) {
         this.dialect = dialect;
     }
 
@@ -100,7 +98,7 @@ public class Dialect {
         return null;
     }
 
-    public DIALECT getDialect() {
+    public com.sparrow.enums.Dialect getDialect() {
         return dialect;
     }
 }

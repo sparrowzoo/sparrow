@@ -17,11 +17,10 @@
 
 package com.sparrow.support.web;
 
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
 import java.util.Enumeration;
@@ -50,15 +49,15 @@ public class ServletUtility {
 
     public String assembleActualUrl(String url) {
         //rootPath is null when contain init ...
-        String rootPath = Config.getValue(CONFIG.ROOT_PATH);
+        String rootPath = com.sparrow.utility.Config.getValue(Config.ROOT_PATH);
         if (rootPath != null && url.startsWith(rootPath)) {
             url = url.substring(rootPath.length());
         }
         if (!url.startsWith(SYMBOL.SLASH)) {
             url = SYMBOL.SLASH + url;
         }
-        String extension = Config.getValue(CONFIG.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
-        String pagePrefix = Config.getValue(CONFIG.DEFAULT_PAGE_PREFIX, "/template");
+        String extension = com.sparrow.utility.Config.getValue(Config.DEFAULT_PAGE_EXTENSION, EXTENSION.JSP);
+        String pagePrefix = com.sparrow.utility.Config.getValue(Config.DEFAULT_PAGE_PREFIX, "/template");
         return pagePrefix + url + extension;
     }
 
@@ -73,7 +72,7 @@ public class ServletUtility {
             actionKey = httpServletRequest.getServletPath();
         }
 
-        String rootPath = Config.getValue(CONFIG.ROOT_PATH);
+        String rootPath = com.sparrow.utility.Config.getValue(Config.ROOT_PATH);
         if (!StringUtility.isNullOrEmpty(rootPath)) {
             return actionKey;
         }
@@ -91,21 +90,21 @@ public class ServletUtility {
         if (rootPath.indexOf(CONSTANT.LOCALHOST) != 0 && rootPath.indexOf(CONSTANT.LOCALHOST_127) != 0) {
             String website = serverName.substring(serverName.indexOf(".") + 1);
             website = website.substring(0, website.indexOf("."));
-            Config.resetKey(CONFIG.WEBSITE, website);
+            com.sparrow.utility.Config.resetKey(Config.WEBSITE, website);
 
-            String rootDomain = Config.getValue(CONFIG.ROOT_DOMAIN);
+            String rootDomain = com.sparrow.utility.Config.getValue(Config.ROOT_DOMAIN);
             if (rootDomain == null) {
-                Config.resetKey(CONFIG.ROOT_DOMAIN, serverName.substring(serverName.indexOf(".")));
+                com.sparrow.utility.Config.resetKey(Config.ROOT_DOMAIN, serverName.substring(serverName.indexOf(".")));
             }
 
-            String domain = Config.getValue(CONFIG.DOMAIN);
+            String domain = com.sparrow.utility.Config.getValue(Config.DOMAIN);
             if (domain == null) {
-                Config.resetKey(CONFIG.DOMAIN,
+                com.sparrow.utility.Config.resetKey(Config.DOMAIN,
                         serverName);
             }
             CONSTANT.REPLACE_MAP.put("$website", website);
         }
-        Config.resetKey(CONFIG.ROOT_PATH, rootPath);
+        com.sparrow.utility.Config.resetKey(Config.ROOT_PATH, rootPath);
         return actionKey;
     }
 

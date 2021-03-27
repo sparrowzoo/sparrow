@@ -18,7 +18,8 @@
 package com.sparrow.utility;
 
 import com.sparrow.constant.*;
-import com.sparrow.enums.HTTP_METHOD;
+import com.sparrow.constant.File;
+import com.sparrow.enums.HttpMethod;
 
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.EXTENSION;
@@ -103,23 +104,23 @@ public class HttpClient {
     }
 
     public static String postBody(String pageUrl, String data) {
-        return post(HTTP_METHOD.POST, pageUrl, data, "text/html");
+        return post(HttpMethod.POST, pageUrl, data, "text/html");
     }
 
     public static String post(String pageUrl, String data) {
-        return post(HTTP_METHOD.POST, pageUrl, data, null);
+        return post(HttpMethod.POST, pageUrl, data, null);
     }
 
     public static String put(String pageUrl, String data) {
-        return post(HTTP_METHOD.PUT, pageUrl, data, null);
+        return post(HttpMethod.PUT, pageUrl, data, null);
     }
 
     public static String putJson(String pageUrl, String json) {
-        return post(HTTP_METHOD.PUT, pageUrl, json, "application/json");
+        return post(HttpMethod.PUT, pageUrl, json, "application/json");
     }
 
-    public static String post(HTTP_METHOD method, String pageUrl, String data,
-        String contentType) {
+    public static String post(HttpMethod method, String pageUrl, String data,
+                              String contentType) {
         return post(method, pageUrl, data, contentType, null, false);
     }
 
@@ -129,8 +130,8 @@ public class HttpClient {
      * @param contentType
      * @return 2013-8-26下午9:48:02 harry put与post类似，将method改成put即可
      */
-    public static String post(HTTP_METHOD method, String pageUrl, String data,
-        String contentType, Map<String, String> header, Boolean gzip) {
+    public static String post(HttpMethod method, String pageUrl, String data,
+                              String contentType, Map<String, String> header, Boolean gzip) {
         StringBuilder buffer = new StringBuilder();
         HttpURLConnection httpUrlConnction = null;
         DataOutputStream dataOutputStream = null;
@@ -262,7 +263,7 @@ public class HttpClient {
 
             String descDirectoryPath = fileFullPath.substring(0,
                 fileFullPath.lastIndexOf('/') + 1);
-            File descDirectory = new File(descDirectoryPath);
+            java.io.File descDirectory = new java.io.File(descDirectoryPath);
             if (!descDirectory.exists()) {
                 descDirectory.mkdirs();
             }
@@ -337,8 +338,8 @@ public class HttpClient {
 
     public static String downloadImage(String url) {
         String fileUUID = UUID.randomUUID().toString();
-        String temp = Config.getValue(CONFIG.TEMP);
-        String tempPhysicalPath = Config.getValue(CONFIG.RESOURCE_PHYSICAL_PATH);
+        String temp = com.sparrow.utility.Config.getValue(com.sparrow.constant.Config.TEMP);
+        String tempPhysicalPath = com.sparrow.utility.Config.getValue(com.sparrow.constant.Config.RESOURCE_PHYSICAL_PATH);
         int hashcode = fileUUID.hashCode();
         if (hashcode == Integer.MIN_VALUE) {
             hashcode += 1;
@@ -357,7 +358,7 @@ public class HttpClient {
         String descFilePath = tempPhysicalPath + "/" + imageUrl;
         HttpClient.downloadFile(url, descFilePath);
         String webUrl = temp + "/" + imageUrl;
-        return String.format(REGEX.TAG_TEMP_IMAGE_FORMAT.pattern(), webUrl,
+        return String.format(Regex.TAG_TEMP_IMAGE_FORMAT.pattern(), webUrl,
             url.hashCode());
     }
 
@@ -375,13 +376,13 @@ public class HttpClient {
                 charset = CONSTANT.CHARSET_UTF_8;
             }
             String html = get(url, charset);
-            if (html.trim().startsWith(FILE.ERROR_STATIC_HTML)) {
-                logger.warn(FILE.ERROR_STATIC_HTML + url);
+            if (html.trim().startsWith(File.ERROR_STATIC_HTML)) {
+                logger.warn(File.ERROR_STATIC_HTML + url);
                 return false;
             }
             String descDirectoryPath = htmlFileName.substring(0,
                 htmlFileName.lastIndexOf('/') + 1);
-            File descDirectory = new File(descDirectoryPath);
+            java.io.File descDirectory = new java.io.File(descDirectoryPath);
             if (!descDirectory.exists()) {
                 descDirectory.mkdirs();
             }
@@ -408,7 +409,7 @@ public class HttpClient {
 
     public static void clearNginxCache(String url) {
         try {
-            String rootPath = Config.getValue(CONFIG.ROOT_PATH);
+            String rootPath = com.sparrow.utility.Config.getValue(com.sparrow.constant.Config.ROOT_PATH);
             if (!StringUtility.isNullOrEmpty(rootPath)) {
                 if (!url.startsWith(rootPath)) {
                     url = rootPath + "/purge" + url;

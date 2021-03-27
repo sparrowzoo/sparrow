@@ -17,7 +17,7 @@
 
 package com.sparrow.support;
 
-import com.sparrow.enums.ORDER;
+import com.sparrow.enums.Order;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -28,23 +28,23 @@ import java.util.Map;
 public class MapValueComparator<T> implements Comparator<T> {
     Map<T, Double> map;
 
-    ORDER order;
+    Order order;
 
-    public MapValueComparator(Map<T, Double> map, ORDER order) {
+    public MapValueComparator(Map<T, Double> map, Order order) {
         this.map = map;
         order = order;
     }
 
     public MapValueComparator(Map<T, Double> map) {
         this.map = map;
-        order = ORDER.DESC;
+        order = Order.DESC;
     }
 
     @Override
     public int compare(T a, T b) {
         if (map.get(a) >= map.get(b)) {
-            return order == ORDER.DESC ? -1 : 1;
+            return order == Order.DESC ? -1 : 1;
         }
-        return order == ORDER.DESC ? 1 : -1;
+        return order == Order.DESC ? 1 : -1;
     }
 }

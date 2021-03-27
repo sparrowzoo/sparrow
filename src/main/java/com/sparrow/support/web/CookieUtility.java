@@ -18,14 +18,13 @@
 package com.sparrow.support.web;
 
 import com.sparrow.cache.CacheClient;
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.constant.cache.KEY;
-import com.sparrow.constant.cache.key.KEY_USER;
+import com.sparrow.constant.cache.key.KeyUser;
 import com.sparrow.exception.CacheConnectionException;
 import com.sparrow.protocol.LoginToken;
 import com.sparrow.protocol.constant.CLIENT_INFORMATION;
 import com.sparrow.support.LoginParser;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.JSUtility;
 import com.sparrow.utility.StringUtility;
 
@@ -44,14 +43,14 @@ public class CookieUtility {
 
     private CacheClient cacheClient;
 
-    private KEY.Business permissionBusiness= KEY_USER.PERMISSION;
+    private KEY.Business permissionBusiness= KeyUser.PERMISSION;
 
     public void setBackend(Boolean backend) {
         if (backend == null||!backend) {
-            this.permissionBusiness = KEY_USER.PERMISSION;
+            this.permissionBusiness = KeyUser.PERMISSION;
             return;
         }
-        this.permissionBusiness = KEY_USER.BACKEND_PERMISSION;
+        this.permissionBusiness = KeyUser.BACKEND_PERMISSION;
     }
 
     public void setCacheClient(CacheClient cacheClient) {
@@ -65,14 +64,14 @@ public class CookieUtility {
 
     public void setRoot(HttpServletResponse response, String key,
                         String value, int days) {
-        String domain = Config.getValue(CONFIG.ROOT_DOMAIN);
+        String domain = com.sparrow.utility.Config.getValue(Config.ROOT_DOMAIN);
         set(response, key, value, days, domain);
     }
 
     public void set(HttpServletResponse response, String key,
                     String value, int days, String domain) {
         if (StringUtility.isNullOrEmpty(domain)) {
-            domain = Config.getValue(CONFIG.DOMAIN);
+            domain = com.sparrow.utility.Config.getValue(Config.DOMAIN);
         }
         Cookie cookie = new Cookie(key, JSUtility.encodeURIComponent(value));
         if (domain != null) {

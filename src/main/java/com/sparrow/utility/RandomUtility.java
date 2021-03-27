@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.enums.ORDER;
+import com.sparrow.enums.Order;
 import com.sparrow.support.MapValueComparator;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ public class RandomUtility {
      * @return
      */
     public static <T> T lottery(Map<T, Double> rules, int poolSize, T defaultValue) {
-        Map<T, Double> valueSortedRules = new TreeMap<T, Double>(new MapValueComparator(rules, ORDER.ASC));
+        Map<T, Double> valueSortedRules = new TreeMap<T, Double>(new MapValueComparator(rules, Order.ASC));
         valueSortedRules.putAll(rules);
         int randomNumber = new java.util.Random().nextInt(poolSize);
         Double limit = 0.0;

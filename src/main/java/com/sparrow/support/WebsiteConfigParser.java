@@ -17,7 +17,7 @@
 
 package com.sparrow.support;
 
-import com.sparrow.constant.CONFIG_KEY_DB;
+import com.sparrow.constant.ConfigKeyDB;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.WebsiteConfig;
 import com.sparrow.utility.Config;
@@ -34,37 +34,37 @@ public class WebsiteConfigParser {
     public static WebsiteConfig parse(Map<String, String> websiteConfigMap) {
         WebsiteConfig websiteConfig=new WebsiteConfig();
         if (websiteConfigMap != null && websiteConfigMap.size() > 0) {
-           websiteConfig.setTitle(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                    + CONFIG_KEY_DB.WEBSITE_CONFIG.TITLE));
-            websiteConfig.setDescription(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.DESCRIPTION));
+           websiteConfig.setTitle(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT + "-"
+                    + ConfigKeyDB.WEBSITE_CONFIG.TITLE));
+            websiteConfig.setDescription(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT
+                    + "-" + ConfigKeyDB.WEBSITE_CONFIG.DESCRIPTION));
 
 
-            websiteConfig.setKeywords(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.KEYWORDS));
-            websiteConfig.setContact(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                    + CONFIG_KEY_DB.WEBSITE_CONFIG.CONTACT));
-            websiteConfig.setBanner(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                    + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER));
+            websiteConfig.setKeywords(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT
+                    + "-" + ConfigKeyDB.WEBSITE_CONFIG.KEYWORDS));
+            websiteConfig.setContact(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT + "-"
+                    + ConfigKeyDB.WEBSITE_CONFIG.CONTACT));
+            websiteConfig.setBanner(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT + "-"
+                    + ConfigKeyDB.WEBSITE_CONFIG.BANNER));
 
-            websiteConfig.setIcp(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                    + CONFIG_KEY_DB.WEBSITE_CONFIG.ICP));
+            websiteConfig.setIcp(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT + "-"
+                    + ConfigKeyDB.WEBSITE_CONFIG.ICP));
 
-            websiteConfig.setBannerFlash(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT
-                    + "-" + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER_FLASH));
-            websiteConfig.setLogo(websiteConfigMap.get(CONFIG_KEY_DB.WEBSITE_CONFIG_PARENT + "-"
-                    + CONFIG_KEY_DB.WEBSITE_CONFIG.LOGO));
+            websiteConfig.setBannerFlash(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT
+                    + "-" + ConfigKeyDB.WEBSITE_CONFIG.BANNER_FLASH));
+            websiteConfig.setLogo(websiteConfigMap.get(ConfigKeyDB.WEBSITE_CONFIG_PARENT + "-"
+                    + ConfigKeyDB.WEBSITE_CONFIG.LOGO));
             return websiteConfig;
         }
         String configPrefix = "web_config_";
-        websiteConfig.setTitle(Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.TITLE.toLowerCase()));
-        websiteConfig.setDescription(Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.DESCRIPTION.toLowerCase()));
-        websiteConfig.setKeywords(Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.KEYWORDS.toLowerCase()));
-        websiteConfig.setContact(Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.CONTACT.toLowerCase()));
-        String banner=Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER.toLowerCase());
-        websiteConfig.setIcp(Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.ICP.toLowerCase()));
-        String bannerFlash=Config.getLanguageValue(configPrefix + StringUtility.humpToLower(CONFIG_KEY_DB.WEBSITE_CONFIG.BANNER_FLASH));
-        String logo = Config.getLanguageValue(configPrefix + CONFIG_KEY_DB.WEBSITE_CONFIG.LOGO.toLowerCase());
+        websiteConfig.setTitle(Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.TITLE.toLowerCase()));
+        websiteConfig.setDescription(Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.DESCRIPTION.toLowerCase()));
+        websiteConfig.setKeywords(Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.KEYWORDS.toLowerCase()));
+        websiteConfig.setContact(Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.CONTACT.toLowerCase()));
+        String banner=Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.BANNER.toLowerCase());
+        websiteConfig.setIcp(Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.ICP.toLowerCase()));
+        String bannerFlash=Config.getLanguageValue(configPrefix + StringUtility.humpToLower(ConfigKeyDB.WEBSITE_CONFIG.BANNER_FLASH));
+        String logo = Config.getLanguageValue(configPrefix + ConfigKeyDB.WEBSITE_CONFIG.LOGO.toLowerCase());
         websiteConfig.setLogo(StringUtility.replace(logo, CONSTANT.REPLACE_MAP));
         websiteConfig.setBanner(StringUtility.replace(banner, CONSTANT.REPLACE_MAP));
         websiteConfig.setBannerFlash(StringUtility.replace(bannerFlash, CONSTANT.REPLACE_MAP));

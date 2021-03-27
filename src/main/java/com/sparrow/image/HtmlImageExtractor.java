@@ -1,7 +1,7 @@
 package com.sparrow.image;
 
-import com.sparrow.constant.FILE;
-import com.sparrow.constant.REGEX;
+import com.sparrow.constant.File;
+import com.sparrow.constant.Regex;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.protocol.dto.ImageDTO;
@@ -17,7 +17,7 @@ public class HtmlImageExtractor extends AbstractImageExtractor {
 
     @Override
     public String getImageRegexMark() {
-        return REGEX.TAG_IMAGE;
+        return Regex.TAG_IMAGE;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class HtmlImageExtractor extends AbstractImageExtractor {
         for (ImageDTO image : images) {
             String url = FileUtility.getInstance().getShufflePath(
                     image.getImageId(), image.getExtension(), true,
-                    FILE.SIZE.BIG);
+                    File.SIZE.BIG);
             String imageHtml = String.format(CONSTANT.IMAGE_HTML_MARK_FORMAT,
                     url);
             content = content.replace(String.format(CONSTANT.IMAGE_TEMP_MARK, image.getImageId()), imageHtml);

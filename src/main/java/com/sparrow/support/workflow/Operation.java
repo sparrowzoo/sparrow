@@ -17,7 +17,7 @@
 
 package com.sparrow.support.workflow;
 
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.SparrowError;
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.utility.StringUtility;
@@ -53,8 +53,8 @@ public class Operation {
     }
 
     public Boolean validate(Integer currentStatus, Integer currentRole) throws BusinessException {
-        Asserts.isTrue(StringUtility.existInArray(this.allowStatus, currentStatus), SPARROW_ERROR.GLOBAL_OPERATION_VALIDATE_STATUS_INVALID);
-        Asserts.isTrue(StringUtility.existInArray(this.allowRole, currentRole), SPARROW_ERROR.GLOBAL_OPERATION_VALIDATE_ROLE_INVALID);
+        Asserts.isTrue(StringUtility.existInArray(this.allowStatus, currentStatus), SparrowError.GLOBAL_OPERATION_VALIDATE_STATUS_INVALID);
+        Asserts.isTrue(StringUtility.existInArray(this.allowRole, currentRole), SparrowError.GLOBAL_OPERATION_VALIDATE_ROLE_INVALID);
         return true;
     }
 

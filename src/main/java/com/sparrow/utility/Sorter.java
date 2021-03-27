@@ -19,13 +19,13 @@ package com.sparrow.utility;
 
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.core.Pair;
-import com.sparrow.enums.ORDER;
+import com.sparrow.enums.Order;
 
 /**
  * @author harry
  */
 public class Sorter {
-    private ORDER direction;
+    private Order direction;
     private String sortKey;
     private String queryString;
 
@@ -38,7 +38,7 @@ public class Sorter {
         if (!StringUtility.isNullOrEmpty(sort)) {
             Pair<String, String> sortPair = Pair.split(sort, SYMBOL.UNDERLINE);
             sortKey = sortPair.getFirst();
-            direction = sortPair.getSecond().equalsIgnoreCase(ORDER.ASC.toString()) ? ORDER.DESC : ORDER.ASC;
+            direction = sortPair.getSecond().equalsIgnoreCase(Order.ASC.toString()) ? Order.DESC : Order.ASC;
         }
         this.queryString = queryString;
     }

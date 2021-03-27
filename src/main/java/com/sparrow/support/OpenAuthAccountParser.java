@@ -17,11 +17,10 @@
 
 package com.sparrow.support;
 
-import com.sparrow.constant.CONFIG;
+import com.sparrow.constant.Config;
 import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.protocol.OpenAuthAccount;
 import com.sparrow.protocol.enums.PLATFORM;
-import com.sparrow.utility.Config;
 
 /**
  * @author harry
@@ -45,31 +44,31 @@ public class OpenAuthAccountParser {
         openAuthProtocol.setPlatform(PLATFORM.valueOf(keyArray[0].toUpperCase()));
         openAuthProtocol.setOpenPlatform(keyArray[1]);
         openAuthProtocol.setName(keyArray[2]);
-        openAuthProtocol.setAppKey(getConfig(configKey, CONFIG.PLATFORM_APP_KEY));
-        openAuthProtocol.setAppSecret(getConfig(configKey, CONFIG.PLATFORM_APP_SECRET));
+        openAuthProtocol.setAppKey(getConfig(configKey, Config.PLATFORM_APP_KEY));
+        openAuthProtocol.setAppSecret(getConfig(configKey, Config.PLATFORM_APP_SECRET));
 
-        openAuthProtocol.setState(getConfig(configKey, CONFIG.PLATFORM_STATE));
-        openAuthProtocol.setScope(getConfig(configKey, CONFIG.PLATFORM_SCOPE));
-        openAuthProtocol.setPartner(getConfig(configKey, CONFIG.PLATFORM_PARTNER));
-        openAuthProtocol.setSellerAccount(getConfig(configKey, CONFIG.PLATFORM_SELLER_ACCOUNT));
-        openAuthProtocol.setPaySecret(getConfig(configKey, CONFIG.PLATFORM_PAY_SECRET));
-        openAuthProtocol.setNotifyUrl(getConfig(configKey, CONFIG.PLATFORM_NOTIFY_URL));
-        openAuthProtocol.setCallBackUrl(getConfig(configKey, CONFIG.PLATFORM_CALL_BACK_URL));
+        openAuthProtocol.setState(getConfig(configKey, Config.PLATFORM_STATE));
+        openAuthProtocol.setScope(getConfig(configKey, Config.PLATFORM_SCOPE));
+        openAuthProtocol.setPartner(getConfig(configKey, Config.PLATFORM_PARTNER));
+        openAuthProtocol.setSellerAccount(getConfig(configKey, Config.PLATFORM_SELLER_ACCOUNT));
+        openAuthProtocol.setPaySecret(getConfig(configKey, Config.PLATFORM_PAY_SECRET));
+        openAuthProtocol.setNotifyUrl(getConfig(configKey, Config.PLATFORM_NOTIFY_URL));
+        openAuthProtocol.setCallBackUrl(getConfig(configKey, Config.PLATFORM_CALL_BACK_URL));
 
         if (!openAuthProtocol.getNotifyUrl().startsWith(CONSTANT.HTTP_PROTOCOL)) {
-            openAuthProtocol.setNotifyUrl(Config.getValue(CONFIG.ROOT_PATH) + openAuthProtocol.getNotifyUrl());
+            openAuthProtocol.setNotifyUrl(com.sparrow.utility.Config.getValue(Config.ROOT_PATH) + openAuthProtocol.getNotifyUrl());
         }
 
         if (!openAuthProtocol.getCallBackUrl().startsWith(CONSTANT.HTTP_PROTOCOL)) {
-            openAuthProtocol.setCallBackUrl(Config.getValue(CONFIG.ROOT_PATH) + openAuthProtocol.getCallBackUrl());
+            openAuthProtocol.setCallBackUrl(com.sparrow.utility.Config.getValue(Config.ROOT_PATH) + openAuthProtocol.getCallBackUrl());
         }
 
-        openAuthProtocol.setCharset(getConfig(configKey, CONFIG.PLATFORM_CHARSET));
+        openAuthProtocol.setCharset(getConfig(configKey, Config.PLATFORM_CHARSET));
         return openAuthProtocol;
     }
 
 
     private static String getConfig(String prefix, String key) {
-        return Config.getValue(prefix + "_" + key);
+        return com.sparrow.utility.Config.getValue(prefix + "_" + key);
     }
 }

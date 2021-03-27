@@ -1,14 +1,13 @@
 package com.sparrow.support.mobile;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.Config;
+import com.sparrow.constant.ConfigKeyLanguage;
+import com.sparrow.constant.SparrowError;
 import com.sparrow.core.Pair;
 import com.sparrow.cryptogram.ThreeDES;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.MobileShortMessaging;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +25,10 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
 
     @Override public MobileShortMessaging.Builder init(String mobile) {
         return new MobileShortMessaging.Builder()
-                .companyName(Config.getLanguageValue(CONFIG_KEY_LANGUAGE.MOBILE_COMPANY))
-                .key(Config.getValue(CONFIG.MOBILE_KEY))
+                .companyName(com.sparrow.utility.Config.getLanguageValue(ConfigKeyLanguage.MOBILE_COMPANY))
+                .key(com.sparrow.utility.Config.getValue(Config.MOBILE_KEY))
                 .mobile(mobile)
-                .templateId(Config.getValue(CONFIG.MOBILE_TEMPLATE_ID));
+                .templateId(com.sparrow.utility.Config.getValue(Config.MOBILE_TEMPLATE_ID));
     }
 
 
@@ -42,12 +41,12 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
      */
     public Boolean valid(Long sendTime, String business) throws BusinessException {
         //手机验证码有效时间
-        int mobileValidateTokenAvailableTime = Config
-                .getIntegerValue(CONFIG.MOBILE_VALIDATE_TOKEN_AVAILABLE_TIME);
+        int mobileValidateTokenAvailableTime = com.sparrow.utility.Config
+                .getIntegerValue(Config.MOBILE_VALIDATE_TOKEN_AVAILABLE_TIME);
         Long currentTime = System.currentTimeMillis();
         Long validTime = sendTime + mobileValidateTokenAvailableTime * 1000;
         if (currentTime > validTime) {
-            throw new BusinessException(SPARROW_ERROR.USER_VALIDATE_TIME_OUT, business);
+            throw new BusinessException(SparrowError.USER_VALIDATE_TIME_OUT, business);
         }
         return true;
     }
@@ -60,18 +59,18 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
      * @return 是否验证成功
      */
     @Override public Boolean validate(String validateCode, MobileShortMessaging shortMessaging) throws BusinessException {
-        if (Config.getBooleanValue(CONFIG.DEBUG,false)) {
+        if (com.sparrow.utility.Config.getBooleanValue(Config.DEBUG,false)) {
             return true;
         }
         if (StringUtility.isNullOrEmpty(validateCode)) {
-            throw new BusinessException(SPARROW_ERROR.GLOBAL_PARAMETER_NULL, shortMessaging.getBusiness());
+            throw new BusinessException(SparrowError.GLOBAL_PARAMETER_NULL, shortMessaging.getBusiness());
         }
         Boolean result = valid(shortMessaging.getSendTime(), shortMessaging.getBusiness());
         if (!result) {
             return result;
         }
         if (!validateCode.equals(shortMessaging.getValidateCode())) {
-            throw new BusinessException(SPARROW_ERROR.GLOBAL_VALIDATE_CODE_ERROR, shortMessaging.getBusiness());
+            throw new BusinessException(SparrowError.GLOBAL_VALIDATE_CODE_ERROR, shortMessaging.getBusiness());
         }
         return true;
     }
@@ -99,7 +98,7 @@ public abstract class AbstractShortMessagingService implements ShortMessageServi
         String thirdSegment = mobile.substring(7);
 
         mobile = firstSegment + "****" + thirdSegment;
-        String secretMobile = ThreeDES.getInstance().encrypt(secondSegment, Config.getValue(CONFIG.MOBILE_SECRET_3DAS_KEY));
+        String secretMobile = ThreeDES.getInstance().encrypt(secondSegment, com.sparrow.utility.Config.getValue(Config.MOBILE_SECRET_3DAS_KEY));
         return Pair.create(mobile, secretMobile);
     }
 }

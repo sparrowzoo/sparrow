@@ -18,11 +18,8 @@
 package com.sparrow.container;
 
 import com.sparrow.cg.MethodAccessor;
-import com.sparrow.constant.SYS_OBJECT_NAME;
+import com.sparrow.constant.SysObjectName;
 import com.sparrow.core.TypeConverter;
-import com.sparrow.enums.CONTAINER;
-import com.sparrow.utility.StringUtility;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -61,7 +58,7 @@ public interface Container {
      */
     <T> T getBean(String beanName);
 
-    <T> T getBean(SYS_OBJECT_NAME sysObjectName);
+    <T> T getBean(SysObjectName sysObjectName);
 
     /**
      * 初始化container

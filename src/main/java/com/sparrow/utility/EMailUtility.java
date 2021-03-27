@@ -17,9 +17,9 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.CONFIG;
-import com.sparrow.constant.CONFIG_KEY_LANGUAGE;
-import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.Config;
+import com.sparrow.constant.ConfigKeyLanguage;
+import com.sparrow.constant.SparrowError;
 import com.sparrow.protocol.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,14 +64,14 @@ public class EMailUtility {
 
     public Boolean sendMail(String toAddress, String subject, String content,
         String language) throws BusinessException {
-        String websiteName = Config.getLanguageValue(
-            CONFIG_KEY_LANGUAGE.WEBSITE_NAME, language);
+        String websiteName = com.sparrow.utility.Config.getLanguageValue(
+            ConfigKeyLanguage.WEBSITE_NAME, language);
 
-        this.setHost(Config.getValue(CONFIG.EMAIL_HOST));
-        this.setFrom(Config.getValue(CONFIG.EMAIL_FROM));
-        this.setUsername(Config.getValue(CONFIG.EMAIL_USERNAME));
-        this.setPassword(Config.getValue(CONFIG.EMAIL_PASSWORD));
-        this.setLocalAddress(Config.getValue(CONFIG.EMAIL_LOCAL_ADDRESS));
+        this.setHost(com.sparrow.utility.Config.getValue(Config.EMAIL_HOST));
+        this.setFrom(com.sparrow.utility.Config.getValue(Config.EMAIL_FROM));
+        this.setUsername(com.sparrow.utility.Config.getValue(Config.EMAIL_USERNAME));
+        this.setPassword(com.sparrow.utility.Config.getValue(Config.EMAIL_PASSWORD));
+        this.setLocalAddress(com.sparrow.utility.Config.getValue(Config.EMAIL_LOCAL_ADDRESS));
         this.setAuthentication(true);
         if (content.contains("$website_name")) {
             content = content.replace("$website_name", websiteName);
@@ -130,7 +130,7 @@ public class EMailUtility {
                     transport.sendMessage(message, message.getAllRecipients());
                 } catch (Exception e) {
                     logger.error("send email error", e);
-                    throw new BusinessException(SPARROW_ERROR.GLOBAL_EMAIL_SEND_FAIL, Collections.singletonList((Object) this.getTo()));
+                    throw new BusinessException(SparrowError.GLOBAL_EMAIL_SEND_FAIL, Collections.singletonList((Object) this.getTo()));
                 } finally {
                     if (transport != null) {
                         transport.close();
@@ -142,7 +142,7 @@ public class EMailUtility {
             return true;
         } catch (Exception e) {
             logger.error("send email error", e);
-            throw new BusinessException(SPARROW_ERROR.GLOBAL_EMAIL_SEND_FAIL, Collections.singletonList((Object) this.getTo()));
+            throw new BusinessException(SparrowError.GLOBAL_EMAIL_SEND_FAIL, Collections.singletonList((Object) this.getTo()));
         }
     }
 

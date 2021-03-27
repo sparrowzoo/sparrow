@@ -1,6 +1,6 @@
 package com.sparrow.support;
 
-import com.sparrow.constant.USER;
+import com.sparrow.constant.User;
 import com.sparrow.protocol.PrivilegeSupport;
 
 /**
@@ -12,7 +12,7 @@ public abstract class AbstractPrivilegeService implements PrivilegeSupport {
     @Override
     public boolean accessible(Long writer, Long currentUserId) {
         // 当前是游客则无操作权限
-        if (USER.VISITOR_ID.equals(currentUserId)) {
+        if (User.VISITOR_ID.equals(currentUserId)) {
             return false;
         }
         // 帖子作者是当前用户id

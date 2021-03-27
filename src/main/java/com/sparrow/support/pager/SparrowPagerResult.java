@@ -1,7 +1,6 @@
 package com.sparrow.support.pager;
 
-import com.sparrow.constant.PAGER;
-import com.sparrow.protocol.VO;
+import com.sparrow.constant.Pager;
 import com.sparrow.protocol.constant.magic.ESCAPED;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.utility.StringUtility;
@@ -10,8 +9,8 @@ import java.util.List;
 
 public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
 
-    private String indexPageFormat = PAGER.ACTION_PAGE_FORMAT;
-    private String pageFormat = PAGER.ACTION_PAGE_FORMAT;
+    private String indexPageFormat = Pager.ACTION_PAGE_FORMAT;
+    private String pageFormat = Pager.ACTION_PAGE_FORMAT;
     private Integer pageNumberCount = 5;
     private boolean simple;
     private Integer pageCount;
@@ -84,11 +83,11 @@ public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
         if (this.currentPageIndex != 1) {
             if (StringUtility.isNullOrEmpty(this.indexPageFormat)) {
                 pageString.append("<a " + pageFirstStyle + " href=\""
-                        + this.pageFormat.replace(PAGER.PAGE_INDEX, "1")
+                        + this.pageFormat.replace(Pager.PAGE_INDEX, "1")
                         + "\">首页</a>\n");
             } else {
                 pageString.append("<a " + pageFirstStyle + " href=\""
-                        + this.indexPageFormat.replace(PAGER.PAGE_INDEX, "1")
+                        + this.indexPageFormat.replace(Pager.PAGE_INDEX, "1")
                         + "\">首页</a>\n");
             }
             if (!StringUtility.isNullOrEmpty(this.indexPageFormat)
@@ -96,7 +95,7 @@ public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
                 pageString.append("<a "
                         + pageNumberStyle
                         + " href=\""
-                        + this.indexPageFormat.replace(PAGER.PAGE_INDEX,
+                        + this.indexPageFormat.replace(Pager.PAGE_INDEX,
                         String.valueOf(this.currentPageIndex - 1)));
                 pageString.append("\">上一页");
                 pageString.append("</a>\n");
@@ -104,7 +103,7 @@ public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
                 pageString.append("<a "
                         + pageNumberStyle
                         + " href=\""
-                        + this.pageFormat.replace(PAGER.PAGE_INDEX,
+                        + this.pageFormat.replace(Pager.PAGE_INDEX,
                         String.valueOf(this.currentPageIndex - 1)));
                 pageString.append("\">上一页");
                 pageString.append("</a>\n");
@@ -128,13 +127,13 @@ public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
                 pageString.append("</a>\n");
             } else if (i == 1 && !StringUtility.isNullOrEmpty(this.indexPageFormat)) {
                 pageString.append("<a " + pageNumberStyle + " href=\""
-                        + this.indexPageFormat.replace(PAGER.PAGE_INDEX, "1")
+                        + this.indexPageFormat.replace(Pager.PAGE_INDEX, "1")
                         + "\">" + i + "</a>\n");
             } else {
                 pageString.append(" <a "
                         + pageNumberStyle
                         + " href=\""
-                        + this.pageFormat.replace(PAGER.PAGE_INDEX,
+                        + this.pageFormat.replace(Pager.PAGE_INDEX,
                         String.valueOf(i)) + "\">");
                 pageString.append(i);
                 pageString.append("</a>\n");
@@ -145,14 +144,14 @@ public class SparrowPagerResult<T,A> extends PagerResult<T,A> {
             pageString.append("<a "
                     + pageNumberStyle
                     + " href=\""
-                    + this.pageFormat.replace(PAGER.PAGE_INDEX,
+                    + this.pageFormat.replace(Pager.PAGE_INDEX,
                     String.valueOf(this.currentPageIndex + 1)));
             pageString.append("\">下一页");
             pageString.append("</a>\n");
             pageString.append("<a "
                     + pageNumberStyle
                     + " href=\""
-                    + this.pageFormat.replace(PAGER.PAGE_INDEX,
+                    + this.pageFormat.replace(Pager.PAGE_INDEX,
                     String.valueOf(pageCount)) + "\">末页</a>\n");
         } else {
             pageString.append("<a " + disablePageNumStyle + ">下一页</a>\n<a "

@@ -1,11 +1,9 @@
 package com.sparrow.core.cache;
 
 import com.sparrow.concurrent.SparrowThreadFactory;
-import com.sparrow.constant.DATE_TIME;
+import com.sparrow.constant.DateTime;
 
 import java.lang.ref.SoftReference;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -110,7 +108,7 @@ public class SoftExpirableCache<K, V> extends AbstractCache<K, V> implements Exp
         if (data != null) {
             ExpirableData<V> expirableData = data.get();
             if (expirableData != null) {
-                expirableData.setTimestamp(DATE_TIME.MIN_UNIX_TIMESTAMP.getTime());
+                expirableData.setTimestamp(DateTime.MIN_UNIX_TIMESTAMP.getTime());
             }
         }
     }

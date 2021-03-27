@@ -17,10 +17,10 @@
 
 package com.sparrow.support.excel;
 
-import com.sparrow.constant.REGEX;
+import com.sparrow.constant.Regex;
 import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.enums.DATA_TYPE;
+import com.sparrow.enums.DataType;
 import com.sparrow.support.excel.exception.TemplateCellValidateException;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
@@ -90,7 +90,7 @@ public class Validator {
      */
     public CellValue validate(Cell cell) throws TemplateCellValidateException {
         //一个cell不允许有多个 font 对象
-        DATA_TYPE dataType = DATA_TYPE.valueOf(this.getType());
+        DataType dataType = DataType.valueOf(this.getType());
         String content = ExcelUtility.readCell(cell, dataType).trim();
 
         //如果不允许空但内容为空则报必填异常
@@ -109,7 +109,7 @@ public class Validator {
             switch (dataType) {
                 case STRING:
                 case OPTION:
-                    if (dataType == DATA_TYPE.OPTION) {
+                    if (dataType == DataType.OPTION) {
                         Map<String, String> map = this.getOption();
                         if (map != null) {
                             String option = null;
@@ -122,7 +122,7 @@ public class Validator {
                             }
                         }
                     } else if (!StringUtility.isNullOrEmpty(this.regex)) {
-                        if (!Pattern.compile(regex, REGEX.OPTION).matcher(content).find()) {
+                        if (!Pattern.compile(regex, Regex.OPTION).matcher(content).find()) {
                             throw new TemplateCellValidateException(content + "输入格式不正确," + this.regex);
                         }
                     }
@@ -236,7 +236,7 @@ public class Validator {
         if (this.optionMap != null) {
             return this.optionMap;
         }
-        if (DATA_TYPE.valueOf(this.getType()) == DATA_TYPE.OPTION) {
+        if (DataType.valueOf(this.getType()) == DataType.OPTION) {
             String[] options = this.regex.split("\\|");
             Map<String, String> map = new HashMap<String, String>();
             for (String option : options) {

@@ -17,7 +17,7 @@
 
 package com.sparrow.orm.query;
 
-import com.sparrow.enums.ORDER;
+import com.sparrow.enums.Order;
 import com.sparrow.orm.query.impl.SimpleCriteriaField;
 
 /**
@@ -25,17 +25,17 @@ import com.sparrow.orm.query.impl.SimpleCriteriaField;
  */
 public class OrderCriteria {
     private CriteriaField field;
-    private ORDER order;
+    private Order order;
 
     public static OrderCriteria asc(String field) {
-        return new OrderCriteria(field, ORDER.ASC);
+        return new OrderCriteria(field, Order.ASC);
     }
 
     public static OrderCriteria desc(String field) {
-        return new OrderCriteria(field, ORDER.DESC);
+        return new OrderCriteria(field, Order.DESC);
     }
 
-    private OrderCriteria(String field, ORDER order) {
+    private OrderCriteria(String field, Order order) {
         this.field = new SimpleCriteriaField(field);
         this.order = order;
     }
@@ -44,7 +44,7 @@ public class OrderCriteria {
         return field;
     }
 
-    public ORDER getOrder() {
+    public Order getOrder() {
         return order;
     }
 }

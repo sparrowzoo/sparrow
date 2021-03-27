@@ -17,9 +17,8 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.REGEX;
+import com.sparrow.constant.Regex;
 
-import com.sparrow.protocol.constant.OPEN_TYPE;
 import com.sparrow.protocol.constant.magic.ESCAPED;
 import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.protocol.dto.SimpleItemDTO;
@@ -34,9 +33,9 @@ public class HtmlUtility {
 
     public static int getCountWithoutHtml(String sourceHTML) {
         // 过滤多余的回车
-        sourceHTML = sourceHTML.replaceAll(REGEX.TAG_BR, "<br/>");
+        sourceHTML = sourceHTML.replaceAll(Regex.TAG_BR, "<br/>");
         // 过滤多余的空格
-        sourceHTML = sourceHTML.replaceAll(REGEX.TAG_HTML_SPACE, "&nbsp;");
+        sourceHTML = sourceHTML.replaceAll(Regex.TAG_HTML_SPACE, "&nbsp;");
         // 字符数组
         char[] chars = sourceHTML.toCharArray();
         // 字符索引
@@ -94,9 +93,9 @@ public class HtmlUtility {
      */
     public static String filterHTML(String sourceHTML, String splitTag) {
         // 过滤多余的回车
-        sourceHTML = sourceHTML.replaceAll(REGEX.TAG_BR, " ");
+        sourceHTML = sourceHTML.replaceAll(Regex.TAG_BR, " ");
         // 过滤转义字符
-        sourceHTML = sourceHTML.replaceAll(REGEX.TAG_HTML_ESCAPE, "");
+        sourceHTML = sourceHTML.replaceAll(Regex.TAG_HTML_ESCAPE, "");
         // 字符数组
         char[] chars = sourceHTML.toCharArray();
         // 字符索引
@@ -164,7 +163,7 @@ public class HtmlUtility {
      * @return
      */
     public static boolean isBlockTag(String tagName) {
-        return RegexUtility.matches(tagName, REGEX.TAG_BLOCK);
+        return RegexUtility.matches(tagName, Regex.TAG_BLOCK);
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.DECIMAL_FORMAT;
+import com.sparrow.constant.DecimalFormatConstant;
 import com.sparrow.protocol.constant.magic.CAPITAL_RMB;
 import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.protocol.constant.magic.SYMBOL;
@@ -34,7 +34,7 @@ import java.text.DecimalFormat;
 
 public class DecimalUtility {
     public static String format(BigDecimal decimal) {
-        DecimalFormat df = new DecimalFormat(DECIMAL_FORMAT.WITH_2_SCALES_AND_COMMA_FILL_0);
+        DecimalFormat df = new DecimalFormat(DecimalFormatConstant.WITH_2_SCALES_AND_COMMA_FILL_0);
         return df.format(decimal);
     }
 

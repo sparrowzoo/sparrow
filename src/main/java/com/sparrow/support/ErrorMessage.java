@@ -18,7 +18,7 @@
 package com.sparrow.support;
 
 import com.sparrow.protocol.constant.magic.SYMBOL;
-import com.sparrow.enums.LANGUAGE;
+import com.sparrow.enums.Language;
 import com.sparrow.utility.Config;
 import com.sparrow.utility.StringUtility;
 
@@ -40,9 +40,9 @@ public class ErrorMessage {
         return getMessage(key, defaultMessage, null);
     }
 
-    public String getMessage(String key, String defaultMessage, LANGUAGE language) {
+    public String getMessage(String key, String defaultMessage, Language language) {
         if (language == null) {
-            language = LANGUAGE.ZH_CN;
+            language = Language.ZH_CN;
         }
         String message = Config.getLanguageValue(key, language.toString());
         if (!StringUtility.isNullOrEmpty(message)) {

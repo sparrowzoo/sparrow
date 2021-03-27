@@ -17,10 +17,10 @@
 
 package com.sparrow.utility;
 
-import com.sparrow.constant.DATE_TIME;
+import com.sparrow.constant.DateTime;
 import com.sparrow.protocol.constant.magic.DIGIT;
 import com.sparrow.core.Pair;
-import com.sparrow.enums.DATE_TIME_UNIT;
+import com.sparrow.enums.DateTimeUnit;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -39,7 +39,7 @@ public class DateTimeUtility {
 
     private static Logger logger = LoggerFactory.getLogger(DateTimeUtility.class);
 
-    public static Pair<Long, Long> getTimeSegment(DATE_TIME_UNIT condition, Long timeMillis) {
+    public static Pair<Long, Long> getTimeSegment(DateTimeUnit condition, Long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         Pair<Long, Long> pair = null;
@@ -129,11 +129,11 @@ public class DateTimeUtility {
      * @return
      */
     public static int getInterval(Long startTime, Long endTime,
-                                  DATE_TIME_UNIT dateTimeUnit) {
+                                  DateTimeUnit dateTimeUnit) {
         if (startTime == null || endTime == null) {
             return Integer.MIN_VALUE;
         }
-        return (int) ((endTime - startTime) / DATE_TIME.MILLISECOND_UNIT.get(dateTimeUnit));
+        return (int) ((endTime - startTime) / DateTime.MILLISECOND_UNIT.get(dateTimeUnit));
     }
 
     /**
@@ -181,12 +181,12 @@ public class DateTimeUtility {
      * @return
      */
     public static String getFormatCurrentTime(String format) {
-        DateFormat sdf = DATE_TIME.getInstance(format);
+        DateFormat sdf = DateTime.getInstance(format);
         return sdf.format(new Date(System.currentTimeMillis()));
     }
 
     public static Long parse(String date, String format) {
-        DateFormat sdf = DATE_TIME.getInstance(format);
+        DateFormat sdf = DateTime.getInstance(format);
         try {
             return sdf.parse(date).getTime();
         } catch (ParseException e) {
@@ -201,7 +201,7 @@ public class DateTimeUtility {
      * @return
      */
     public static String getFormatCurrentTime() {
-        return getFormatCurrentTime(DATE_TIME.FORMAT_YYYY_MM_DD_HH_MM_SS);
+        return getFormatCurrentTime(DateTime.FORMAT_YYYY_MM_DD_HH_MM_SS);
     }
 
     /**
@@ -212,7 +212,7 @@ public class DateTimeUtility {
      * @return
      */
     public static String getFormatTime(Date timestamp, String format) {
-        DateFormat sdf = DATE_TIME.getInstance(format);
+        DateFormat sdf = DateTime.getInstance(format);
         return sdf.format(timestamp);
     }
 
@@ -224,7 +224,7 @@ public class DateTimeUtility {
      * @return
      */
     public static String getFormatTime(Long timestamp, String format) {
-        DateFormat sdf = DATE_TIME.getInstance(format);
+        DateFormat sdf = DateTime.getInstance(format);
         return sdf.format(timestamp);
     }
 
@@ -240,10 +240,10 @@ public class DateTimeUtility {
      */
     public static String getBeforeFormatTimeBySecond(Long seconds, int depth, int start) {
         if (depth == 0) {
-            depth = DATE_TIME.BEFORE_FORMAT.size();
+            depth = DateTime.BEFORE_FORMAT.size();
         }
         Long interval = seconds;
-        Iterator<String> it = DATE_TIME.BEFORE_FORMAT.keySet().iterator();
+        Iterator<String> it = DateTime.BEFORE_FORMAT.keySet().iterator();
         Stack<Pair<Integer, String>> result = new Stack<>();
         StringBuilder beforeFormat = new StringBuilder();
         do {
@@ -252,7 +252,7 @@ public class DateTimeUtility {
                 result.push(Pair.create(interval.intValue(), key));
                 break;
             }
-            Integer value = DATE_TIME.BEFORE_FORMAT.get(key);
+            Integer value = DateTime.BEFORE_FORMAT.get(key);
             result.push(Pair.create((int) (interval % value), key));
             interval = interval / value;
         }
@@ -284,11 +284,11 @@ public class DateTimeUtility {
      * @param unit
      * @return 2014-3-10下午11:12:47 harry
      */
-    public static long ceiling(Calendar calendar, DATE_TIME_UNIT unit) {
-        if (unit.equals(DATE_TIME_UNIT.WEEK)) {
+    public static long ceiling(Calendar calendar, DateTimeUnit unit) {
+        if (unit.equals(DateTimeUnit.WEEK)) {
             throw new UnsupportedOperationException("WEEK date celling");
         }
-        calendar.add(DATE_TIME.DATE_TIME_UNIT_CALENDER_CONVERTER.get(unit), 1);
+        calendar.add(DateTime.DATE_TIME_UNIT_CALENDER_CONVERTER.get(unit), 1);
         floor(calendar, unit);
         return calendar.getTimeInMillis();
     }
@@ -299,15 +299,15 @@ public class DateTimeUtility {
      * @param calendar
      * @param unit
      */
-    public static long floor(Calendar calendar, DATE_TIME_UNIT unit) {
-        if (unit.equals(DATE_TIME_UNIT.WEEK)) {
+    public static long floor(Calendar calendar, DateTimeUnit unit) {
+        if (unit.equals(DateTimeUnit.WEEK)) {
             throw new UnsupportedOperationException("WEEK date floor");
         }
-        for (DATE_TIME_UNIT u : DATE_TIME.DEFAULT_FIRST_VALUE.keySet()) {
+        for (DateTimeUnit u : DateTime.DEFAULT_FIRST_VALUE.keySet()) {
             if (u.ordinal() >= unit.ordinal()) {
                 continue;
             }
-            calendar.set(DATE_TIME.DATE_TIME_UNIT_CALENDER_CONVERTER.get(u), DATE_TIME.DEFAULT_FIRST_VALUE.get(u));
+            calendar.set(DateTime.DATE_TIME_UNIT_CALENDER_CONVERTER.get(u), DateTime.DEFAULT_FIRST_VALUE.get(u));
         }
         return calendar.getTimeInMillis();
     }
