@@ -3,11 +3,12 @@ package com.sparrow.tracer;
 import org.slf4j.Logger;
 
 public interface Tracer {
+
+    boolean isTimeout();
+
     String getId();
 
-    SpanBuilder getSpanBuilder();
-
-    SpanBuilder build(String spanName);
+    SpanBuilder spanBuilder();
 
     Span root();
 
@@ -15,5 +16,5 @@ public interface Tracer {
 
     String walking();
 
-    void log(Logger logger, String parameters, String executeContext);
+    void log(Logger logger, String parameters);
 }

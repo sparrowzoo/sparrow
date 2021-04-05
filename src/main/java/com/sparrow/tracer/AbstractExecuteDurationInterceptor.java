@@ -44,8 +44,7 @@ public abstract class AbstractExecuteDurationInterceptor {
                 Class<?>[] par = ((MethodSignature) pjp.getSignature()).getParameterTypes();
                 Method targetMethod = classTarget.getMethod(methodName, par);
                 ExecuteDuration executeDuration = targetMethod.getAnnotation(ExecuteDuration.class);
-                span = tracer.getSpanBuilder().asChild().name(executeDuration.spanName()).start();
-                tracerAccessor.setSpan(span);
+                span = tracer.spanBuilder().asChild().name(executeDuration.spanName()).start();
             }
         }
         Object result;

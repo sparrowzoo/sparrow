@@ -19,6 +19,7 @@ package com.sparrow.json;
 
 import com.sparrow.protocol.POJO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +32,11 @@ public interface Json {
 
     String toString(Map<String, Object> map);
 
-    <T> String toString(List<T> models);
+    <T> String toString(Collection<T> models);
 
     <T> T parse(String json, Class<T> clazz);
 
-    <T> T parse(String json, Class... clazz);
+    Map<String, Object> parse(String json);
 
     <T> List<T> parseList(String json, Class<T> clazz);
-
-    Map<String, Object> parse(String json);
 }

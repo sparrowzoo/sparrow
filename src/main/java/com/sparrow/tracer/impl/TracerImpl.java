@@ -1,21 +1,40 @@
 package com.sparrow.tracer.impl;
 
-import com.sparrow.tracer.Span;
-import com.sparrow.tracer.SpanBuilder;
-import com.sparrow.tracer.Tracer;
+import com.sparrow.tracer.*;
 import com.sparrow.utility.CollectionsUtility;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TracerImpl implements Tracer {
+
+    private boolean timeout = false;
+
+    public void setTimeout() {
+        this.timeout = true;
+    }
+
+    private LogFormatter logFormatter;
+
+    private long timeoutThreshold = 300;
+
+    public long getTimeoutThreshold() {
+        return timeoutThreshold;
+    }
+
+    /**
+     * cursor 当前span指针
+     * thread local 需要remove 防止内存泄露，这里直接用map
+     */
+    private Map<Long, Span> cursor = new HashMap<>();
     /**
      * span id 生成器
      */
-    private AtomicInteger nextId = new AtomicInteger(0);
+    private AtomicInteger nextId;
     /**
      * trace id
      */
@@ -25,10 +44,6 @@ public class TracerImpl implements Tracer {
      */
     private Span root;
     /**
-     * parent 当前span指针
-     */
-    public Map<Long,Span> cursor = new HashMap<>();
-    /**
      * 全局span builder 对象
      */
     private SpanBuilder spanBuilder;
@@ -37,25 +52,36 @@ public class TracerImpl implements Tracer {
         return nextId.incrementAndGet();
     }
 
-    public TracerImpl(String traceId) {
-        this.traceId = traceId;
+    public TracerImpl() {
+        this(null, 300);
     }
 
-    public TracerImpl(String traceId, int startId) {
+    public TracerImpl(String traceId) {
+        this(traceId, 300);
+    }
+
+    public TracerImpl(String traceId, long timeoutThreshold) {
+        this.timeoutThreshold = timeoutThreshold;
         this.traceId = traceId;
-        this.nextId = new AtomicInteger(startId);
+        if(traceId==null){
+            this.traceId=UUID.randomUUID().toString();
+        }
+        this.nextId = new AtomicInteger(0);
+        this.logFormatter = LogFormatterProvider.getLogFormatter();
+        this.spanBuilder = new SpanBuilderImpl(this);
     }
 
     public void setRoot(Span root) {
         this.root = root;
     }
 
+    @Override
     public Span root() {
         return this.root;
     }
 
     public void setCursor(Span current) {
-        this.cursor.put(Thread.currentThread().getId(),current);
+        this.cursor.put(Thread.currentThread().getId(), current);
     }
 
     @Override
@@ -64,22 +90,20 @@ public class TracerImpl implements Tracer {
     }
 
     @Override
+    public boolean isTimeout() {
+        return this.timeout;
+    }
+
+    @Override
     public String getId() {
         return this.traceId;
     }
 
     @Override
-    public SpanBuilder getSpanBuilder() {
+    public SpanBuilder spanBuilder() {
         return this.spanBuilder;
     }
 
-    @Override
-    public SpanBuilder build(String spanName) {
-        SpanBuilderImpl builder = new SpanBuilderImpl(this);
-        builder.name(spanName);
-        this.spanBuilder = builder;
-        return builder;
-    }
 
     private void recursion(Span span, Map<Span, Integer> container, int depth) {
         if (span.follower() == null && CollectionsUtility.isNullOrEmpty(span.children())) {
@@ -105,38 +129,19 @@ public class TracerImpl implements Tracer {
         return prefix.toString();
     }
 
-    private String spanToMarkdown(SpanImpl span) {
-        return span.getId() + "|"
-                + (span.getParent() == null ? -1 : span.getParent().getId()) + "|"
-                + (span.isFollower() ? "F" : "C") + "|"
-                + span.getName() + "|"
-                + span.getStartTime() + "|"
-                + ((span.getEndTime() == null ? System.currentTimeMillis() : span.getEndTime()) - span.getStartTime()) + "ms";
-    }
-
     @Override
     public String walking() {
         Map<Span, Integer> spanDepthContainer = new LinkedHashMap<>();
         spanDepthContainer.put(root, 0);
         this.recursion(root, spanDepthContainer, 0);
-        StringBuilder walking = new StringBuilder("traceId:" + this.traceId);
-        walking.append("###depth|span-id|parent-id|F/C|span-name | start|duration");
-        walking.append("###---|---|---|---|---|---|---");
-        for (Span span : spanDepthContainer.keySet()) {
-            walking.append("###");
-            walking.append(spanDepthContainer.get(span));
-            walking.append("|");
-            walking.append(this.spanToMarkdown((SpanImpl) span));
-        }
-        return walking.toString();
+        return this.logFormatter.format(this.traceId, spanDepthContainer);
     }
 
     @Override
-    public void log(Logger logger, String parameters, String executeContext) {
-        logger.info("tracer id:{} parameter:{} execute logs {} execute duration {}",
+    public void log(Logger logger, String parameters) {
+        logger.info("tracer id:{} parameter:{} execute duration {}",
                 this.getId(),
                 parameters,
-                executeContext,
                 this.walking());
     }
 }

@@ -1,7 +1,7 @@
 package com.sparrow.tracer;
 
-import com.sparrow.protocol.POJO;
-
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public interface Span {
@@ -11,10 +11,27 @@ public interface Span {
 
     String getName();
 
+    String getId();
+
+    Span parent();
+
+    Span follower();
+
+    List<Span> children();
+
+    int duration();
+
     /**
      * Set a key:value tag on the Span.
      */
     Span setTag(String key, String value);
+
+    void format(String format, Object... argArray);
+
+    /**
+     * Set a key:value tag on the Span.
+     */
+    Span setTag(String key);
 
     /**
      * Same as {@link #setTag(String, String)}, but for boolean values.
@@ -26,15 +43,5 @@ public interface Span {
      */
     Span setTag(String key, Number value);
 
-    Span setTag(String key, POJO t);
-
-    Integer getId();
-
-    Span parent();
-
-    Span follower();
-
-    List<Span> children();
-
-    int duration();
+    Span setTag(String key, Collection t);
 }

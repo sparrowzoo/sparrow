@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class CollectionsUtility {
 
-    public static <T extends Comparable<Number>> T getLevel(List<T> list, Number currentValue) {
+    public static <T extends Comparable<T>> T getLevel(List<T> list, T currentValue) {
         T result = null;
         for (T item : list) {
             if (item.compareTo(currentValue) > 0) {

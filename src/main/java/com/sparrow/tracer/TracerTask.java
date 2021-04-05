@@ -19,7 +19,7 @@ public abstract class TracerTask implements Runnable {
     private Span cursor;
     private CountDownLatch countDownLatch;
 
-    abstract void task();
+    public abstract void task();
 
     @Override
     public void run() {

@@ -1,5 +1,6 @@
 package com.sparrow.tracer.impl;
 
+
 import com.sparrow.tracer.Span;
 import com.sparrow.tracer.SpanBuilder;
 import com.sparrow.tracer.Tracer;
@@ -16,6 +17,11 @@ public class SpanBuilderImpl implements SpanBuilder {
      * span name
      */
     private String name;
+
+    /**
+     * 类别
+     */
+    private String category;
     /**
      * 当前span 的parent
      * parent 为上一个span
@@ -50,11 +56,22 @@ public class SpanBuilderImpl implements SpanBuilder {
         return this;
     }
 
+    @Override
+    public SpanBuilder category(String category) {
+        this.category = category;
+        return this;
+    }
+
 
     @Override
     public Span start() {
-        SpanImpl span = new SpanImpl(this.tracer, System.currentTimeMillis(), this.name);
-        span.setId(this.tracer.nextId());
+        String name = this.name;
+        if (this.category != null) {
+            name = this.category + "#" + this.name;
+        }
+        SpanImpl span = new SpanImpl(this.tracer, System.currentTimeMillis(), name);
+        //todo get ip:port
+        span.setId("" + this.tracer.nextId());
         if (this.tracer.root() == null) {
             this.tracer.setRoot(span);
             this.tracer.setCursor(span);

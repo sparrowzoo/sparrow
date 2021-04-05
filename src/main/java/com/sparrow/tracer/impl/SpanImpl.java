@@ -1,14 +1,21 @@
 package com.sparrow.tracer.impl;
 
+
+import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.json.Json;
 import com.sparrow.protocol.POJO;
 import com.sparrow.tracer.Span;
+import com.sparrow.tracer.TagPair;
 import com.sparrow.tracer.Tracer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 public class SpanImpl implements Span {
+    private Json json = JsonFactory.getProvider();
+
     public SpanImpl(Tracer tracer, Long startTime, String name) {
         this.tracer = (TracerImpl) tracer;
         this.startTime = startTime;
@@ -23,8 +30,14 @@ public class SpanImpl implements Span {
     private boolean isFollower;
     private Long startTime;
     private String name;
-    private Integer id;
+    private String id;
     private Long endTime;
+
+    private List<TagPair> tagPairs = new ArrayList<>(64);
+
+    private void put(String key, Object value) {
+        this.tagPairs.add(new TagPair(key, value));
+    }
 
 
     public void setFollower(Span follower) {
@@ -56,6 +69,9 @@ public class SpanImpl implements Span {
         this.endTime = System.currentTimeMillis();
         this.finished = true;
         this.tracer.setCursor(this);
+        if (this.duration() > tracer.getTimeoutThreshold()) {
+            tracer.setTimeout();
+        }
     }
 
     @Override
@@ -64,31 +80,11 @@ public class SpanImpl implements Span {
     }
 
     @Override
-    public Span setTag(String key, String value) {
-        return null;
-    }
-
-    @Override
-    public Span setTag(String key, boolean value) {
-        return null;
-    }
-
-    @Override
-    public Span setTag(String key, Number value) {
-        return null;
-    }
-
-    @Override
-    public Span setTag(String key, POJO t) {
-        return null;
-    }
-
-    @Override
-    public Integer getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -112,6 +108,55 @@ public class SpanImpl implements Span {
         return (int) (this.getEndTime() - this.getStartTime());
     }
 
+    @Override
+    public Span setTag(String key, String value) {
+        this.put(key, value);
+        return this;
+    }
+
+    @Override
+    public void format(String format, Object... argArray) {
+        String[] args = new String[argArray.length];
+        int i = 0;
+        for (Object arg : argArray) {
+            if (arg instanceof Number) {
+                args[i++] = String.valueOf(arg);
+                continue;
+            }
+            if (arg instanceof String) {
+                args[i++] = (String) arg;
+                continue;
+            }
+            args[i++] = this.json.toString((POJO) arg);
+        }
+        this.put(String.format(format, args), "");
+    }
+
+    @Override
+    public Span setTag(String key) {
+        this.put(key, "");
+        return this;
+    }
+
+    @Override
+    public Span setTag(String key, boolean value) {
+        this.put(key, value);
+        return this;
+    }
+
+    @Override
+    public Span setTag(String key, Number value) {
+        this.put(key, value);
+        return this;
+    }
+
+    @Override
+    public Span setTag(String key, Collection list) {
+        this.put(key, this.json.toString(list));
+        return this;
+    }
+
+    @Override
     public Tracer getTracer() {
         return tracer;
     }
@@ -119,18 +164,18 @@ public class SpanImpl implements Span {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SpanImpl span = (SpanImpl) o;
         return Objects.equals(startTime, span.startTime) &&
                 Objects.equals(name, span.name) &&
                 Objects.equals(endTime, span.endTime) &&
                 Objects.equals(children, span.children) &&
                 Objects.equals(follower, span.follower);
-    }
-
-    public Span getParent() {
-        return parent;
     }
 
     public List<Span> getChildren() {
@@ -153,20 +198,9 @@ public class SpanImpl implements Span {
         return endTime;
     }
 
-    @Override
-    public String toString() {
-        return "Span{" +
-                "tracer=" + tracer +
-                ", parent=" + parent +
-                ", children=" + children +
-                ", follower=" + follower +
-                ", finished=" + finished +
-                ", isFollower=" + isFollower +
-                ", startTime=" + startTime +
-                ", name='" + name + '\'' +
-                ", id=" + id +
-                ", endTime=" + endTime +
-                '}';
+
+    public List<TagPair> getTag() {
+        return tagPairs;
     }
 
     @Override

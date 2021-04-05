@@ -20,6 +20,15 @@ public interface SpanBuilder {
      */
     SpanBuilder name(String operationName);
 
+
+    /**
+     * 分类
+     *
+     * @param category
+     * @return
+     */
+    SpanBuilder category(String category);
+
     /**
      * 设置span start 标记和时间
      * 开始时可以判断parent是否结束，来设置child/follower
